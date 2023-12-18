@@ -13,7 +13,7 @@ export default {
         violetdark: "#9d4edd"
       },
       fontFamily: {
-        inter: ['Inter', 'sans-serif']
+        NunitoSans: ['Nunito Sans', 'sans-serif']
       },
     },
   },
