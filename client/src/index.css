@@ -14,3 +14,6 @@ body {
 .gradiant-blue-r {
   @apply from-blue-600 to-blue-900 bg-gradient-to-b;
 }
+.text-gradiant{
+  @apply text-transparent bg-clip-text;
+}
