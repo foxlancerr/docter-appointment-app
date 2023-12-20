@@ -46,11 +46,11 @@ router.route('/signup').post(async (req, res) => {
 
 router.route('/signin')
     .post(async (req, res) => {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
         // res.json(req.body)
 
-        if (email.length === 0) {
-            res.json({ message: "email is required", success: false })
+        if (username.length === 0) {
+            res.json({ message: "username is required", success: false })
             return
         }
         if (password.length === 0) {

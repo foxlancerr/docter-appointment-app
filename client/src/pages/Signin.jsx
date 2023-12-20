@@ -1,13 +1,31 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import FrontImage from "../../assets/front-image.png";
+import toast from "react-hot-toast";
 
 const Signin = () => {
   const [formInfo, setFormInfo] = useState({});
 
+  const fetchData = async (data) => {
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/users/signin", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      console.log("Success:", result);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   // form data is collected here
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const form = new FormData(document.getElementById("sign-in-form"));
     const formData = {};
     for (let [key, value] of form) {
@@ -15,6 +33,7 @@ const Signin = () => {
     }
 
     setFormInfo(formData);
+    fetchData(formData);
   };
 
   console.log(formInfo);
@@ -72,7 +91,12 @@ const Signin = () => {
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
               />
             </div>
-            <button className="px-5 py-2 gradiant-blue-l mt-4 rounded-lg w-full font-bold text-xl text-white" onClick={(e)=>{handleSubmit(e)}}>
+            <button
+              className="px-5 py-2 gradiant-blue-l mt-4 rounded-lg w-full font-bold text-xl text-white"
+              onClick={(e) => {
+                handleSubmit(e);
+              }}
+            >
               Sign in
             </button>
           </form>
