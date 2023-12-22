@@ -25,7 +25,7 @@ const Signup = () => {
         toast.error(result.message);
       } else {
         toast.success(result.message);
-        toast("Redirecting to Home Page")
+        toast("Redirecting to SignIn Page")
         navigate("/signin")
       }
     } catch (err) {

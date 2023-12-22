@@ -49,7 +49,7 @@ const Signin = () => {
     fetchData(formData);
   };
 
-  console.log(formInfo);
+  // console.log(formInfo);
   return (
     <div className="flex justify-center items-center gradiant-blue-l h-screen">
       <div className="w-[60%] h-[80vh] gradiant-blue-r rounded-[10px]  flex overflow-hidden drop-shadow-lg shadow-blue">
