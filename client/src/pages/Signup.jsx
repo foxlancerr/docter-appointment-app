@@ -1,24 +1,50 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FrontImage from "../../assets/front-image.png";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const [formInfo, setFormInfo] = useState({});
+  const navigate = useNavigate()
+
+  const fetchData = async (data) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/v1/users/register",
+        {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await response.json();
+      if (!result?.success) {
+        toast.error(result.message);
+      } else {
+        toast.success(result.message);
+        toast("Redirecting to Home Page")
+        navigate("/signin")
+      }
+    } catch (err) {
+      console.log(err.message);
+      toast.error(err.message);
+    }
+  };
 
   // form data is collected here
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = new FormData(document.getElementById("sign-in-form"));
+    const form = new FormData(document.getElementById("sign-up-form"));
     const formData = {};
     for (let [key, value] of form) {
       formData[key] = value;
     }
 
     setFormInfo(formData);
-
-    fetch("/api/v1/users").then((data)=>{
-      console.log(data);
-    })
+    fetchData(formData);
   };
 
   console.log(formInfo);
@@ -48,7 +74,7 @@ const Signup = () => {
           <h1 className="mt-[40px] font-NunitoSans text-2xl font-extrabold text-center gradiant-blue-l text-gradiant">
             Welcome! lets <br /> signup
           </h1>
-          <form id="sign-in-form" className="mt-5">
+          <form id="sign-up-form" className="mt-5">
             <div className="mt-4">
               <input
                 type="text"

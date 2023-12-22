@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Signin, Signup, Home } from "./pages";
 import { Routes, Route } from "react-router-dom";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 import { GlobalContext } from "./context/GlobalContext";
 import { ProtectedRoutes, PublicRoutes } from "./routes";
 
@@ -14,11 +14,17 @@ const App = () => {
         <Route
           path="/"
           element={
+              <Home></Home>
+          }
+        ></Route>
+        {/* <Route
+          path="/"
+          element={
             <ProtectedRoutes>
               <Home></Home>
             </ProtectedRoutes>
           }
-        ></Route>
+        ></Route> */}
         <Route
           path="/signin"
           element={

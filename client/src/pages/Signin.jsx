@@ -1,25 +1,38 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FrontImage from "../../assets/front-image.png";
 import toast from "react-hot-toast";
+import { setItemInLocalStorage } from "../utils/webLocalStorage";
 
 const Signin = () => {
   const [formInfo, setFormInfo] = useState({});
+  const navigate = useNavigate();
 
   const fetchData = async (data) => {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/users/signin", {
-        method: "POST", // or 'PUT'
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        "http://localhost:3000/api/v1/users/signin",
+        {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       const result = await response.json();
-      console.log("Success:", result);
+      if (!result?.success) {
+        toast.error(result.message);
+      } else {
+        toast.success(result.message);
+        toast("Redirecting to Home Page");
+        setItemInLocalStorage("token", result.token);
+        navigate("/");
+      }
     } catch (err) {
       console.log(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -64,7 +77,7 @@ const Signin = () => {
             Hey! lets signin
           </h1>
           <form id="sign-in-form" className="mt-5">
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <input
                 type="text"
                 name="username"
@@ -72,15 +85,16 @@ const Signin = () => {
                 required
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
               />
-            </div>
-            {/* <div className="mt-4">
+            </div> */}
+            <div className="mt-4">
               <input
                 type="email"
                 placeholder="email"
+                name="email"
                 required
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
               />
-            </div> */}
+            </div>
             <div className="mt-4">
               <input
                 type="password"
