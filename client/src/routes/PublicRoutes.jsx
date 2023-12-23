@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
-import { GlobalContext } from "../context/GlobalContext";
 
 const PublicRoutes = ({ children }) => {
-  const { auth } = useContext(GlobalContext);
-  if (!auth) {
+  if (!JSON.parse(localStorage.getItem("token"))) {
     return <div>{children}</div>;
   } else {
     return <Navigate to="/"></Navigate>;

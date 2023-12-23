@@ -97,7 +97,7 @@ router.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
         success: false,
       });
     } else {
-      return res.status(404).json({
+      return res.status(200).json({
         message: "successfully authenticate it",
         success: true,
         data: {

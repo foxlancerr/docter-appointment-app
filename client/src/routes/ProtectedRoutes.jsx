@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
-import { GlobalContext } from "../context/GlobalContext";
+import React from "react";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoutes = ({ children }) => {
-  const { auth } = useContext(GlobalContext);
-  if (auth) {
+  if (JSON.parse(localStorage.getItem("token"))) {
     return <div>{children}</div>;
   } else {
     return <Navigate to="/signin"></Navigate>;
@@ -12,3 +10,5 @@ const ProtectedRoutes = ({ children }) => {
 };
 
 export default ProtectedRoutes;
+
+

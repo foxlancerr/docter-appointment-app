@@ -3,11 +3,18 @@ import React, { createContext, useState } from "react";
 export const GlobalContext = createContext();
 
 const GlobalContextProvider = ({ children }) => {
-  const [auth, setAuth] = useState(false);
-  const [loguser, setLogUser] = useState({});
+  const [load, setLoad] = useState(false);
+  const [loguserInfo, setLogUserInfo] = useState({});
 
   return (
-    <GlobalContext.Provider value={{ auth, setAuth, loguser, setLogUser }}>
+    <GlobalContext.Provider
+      value={{
+        loguserInfo,
+        setLogUserInfo,
+        load,
+        setLoad,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );

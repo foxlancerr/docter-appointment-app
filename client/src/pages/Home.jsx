@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { getItemFromLocalStorage } from "../utils/webLocalStorage";
 import { GlobalContext } from "../context/GlobalContext";
+import { Loader } from "../components";
 
 const Home = () => {
-  const { loguser, setLogUser } = useContext(GlobalContext);
+  const { loguserInfo, setLogUserInfo, setLoad } = useContext(GlobalContext);
 
   // this useEffect authenticate the user based on the token, is the user is authentic or not
   useEffect(() => {
+    setLoad(true);
     fetch("http://localhost:3000/api/v1/users/get-user-info-by-id", {
       method: "POST",
       headers: {
@@ -15,10 +17,11 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((result) => {
-        setLogUser(result.data);
-        // console.log(result);
+        setLogUserInfo(result.data);
+        setLoad(false);
       })
       .catch((err) => {
+        setLoad(false);
         console.log(err.message);
       });
   }, []);
@@ -26,8 +29,8 @@ const Home = () => {
   return (
     <div>
       Home Page
-      <p>{loguser?.username}</p>
-      <p>{loguser?.email}</p>
+      <p>{loguserInfo?.username}</p>
+      <p>{loguserInfo?.email}</p>
     </div>
   );
 };

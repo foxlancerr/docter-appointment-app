@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FrontImage from "../../assets/front-image.png";
 import toast from "react-hot-toast";
+import { GlobalContext } from "../context/GlobalContext";
 
 const Signup = () => {
   const [formInfo, setFormInfo] = useState({});
-  const navigate = useNavigate()
+
+  const { setLoad } = useContext(GlobalContext);
+  const navigate = useNavigate();
 
   const fetchData = async (data) => {
     try {
+      setLoad(true);
       const response = await fetch(
         "http://localhost:3000/api/v1/users/register",
         {
@@ -21,12 +25,14 @@ const Signup = () => {
       );
 
       const result = await response.json();
+      setLoad(false);
+
       if (!result?.success) {
         toast.error(result.message);
       } else {
         toast.success(result.message);
-        toast("Redirecting to SignIn Page")
-        navigate("/signin")
+        toast("Redirecting to SignIn Page");
+        navigate("/signin");
       }
     } catch (err) {
       console.log(err.message);
