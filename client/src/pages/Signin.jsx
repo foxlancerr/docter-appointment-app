@@ -56,7 +56,7 @@ const Signin = () => {
   // console.log(formInfo);
   return (
     <div className="flex justify-center items-center gradiant-blue-l h-screen">
-      <div className="w-[60%] h-[80vh] gradiant-blue-r rounded-[10px]  flex overflow-hidden drop-shadow-lg shadow-blue">
+      <div className="w-[60%] md:h-[80vh] gradiant-blue-r rounded-[10px]  flex overflow-hidden drop-shadow-lg shadow-blue">
         {/* left side */}
         <div className="w-full px-8 py-5 md:w-[60%] hidden md:flex flex-col gap-2">
           <div className="w-[300px] bg-red-9">
@@ -73,23 +73,14 @@ const Signin = () => {
         </div>
 
         {/* right side */}
-        <div className="md:w-[40%] w-full bg-white px-8 py-5">
+        <div className=" w-full  bg-white px-8 py-5 h-full">
           <h1 className="font-extrabold text-2xl gradiant-blue-l text-gradiant">
             Docterz
           </h1>
-          <h1 className="mt-[60px] font-NunitoSans text-2xl font-extrabold text-center gradiant-blue-l text-gradiant">
+          <h1 className="md:mt-[60px] mt-[30px] font-NunitoSans text-2xl font-extrabold text-center gradiant-blue-l text-gradiant">
             Hey! lets signin
           </h1>
           <form id="sign-in-form" className="mt-5">
-            {/* <div className="mt-4">
-              <input
-                type="text"
-                name="username"
-                placeholder="username"
-                required
-                className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
-              />
-            </div> */}
             <div className="mt-4">
               <input
                 type="email"

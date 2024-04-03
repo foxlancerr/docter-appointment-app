@@ -14,15 +14,15 @@ const App = () => {
       {load && <Loader></Loader>}
 
       <Routes>
-        {/* <Route path="/" element={<Home></Home>}></Route> */}
-        <Route
+        <Route path="/" element={<Home></Home>}></Route>
+        {/* <Route
           path="/"
           element={
             <ProtectedRoutes>
               <Home></Home>
             </ProtectedRoutes>
           }
-        ></Route>
+        ></Route> */}
         <Route
           path="/signin"
           element={

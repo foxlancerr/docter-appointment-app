@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { getItemFromLocalStorage } from "../utils/webLocalStorage";
 import { GlobalContext } from "../context/GlobalContext";
-import { Loader } from "../components";
+import { Header } from "../components";
 
 const Home = () => {
   const { loguserInfo, setLogUserInfo, setLoad } = useContext(GlobalContext);
@@ -28,9 +28,7 @@ const Home = () => {
 
   return (
     <div>
-      Home Page
-      <p>{loguserInfo?.username}</p>
-      <p>{loguserInfo?.email}</p>
+      <Header></Header>
     </div>
   );
 };
