@@ -17,8 +17,8 @@ export const sideBarLinks = [
     icon: MdOutlineDateRange,
   },
   {
-    label: "Previews",
-    route: "/previews",
+    label: "appointments",
+    route: "/appointments",
     icon: MdOutlineDateRange,
   },
   {

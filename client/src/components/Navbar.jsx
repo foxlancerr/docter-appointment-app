@@ -21,8 +21,9 @@ function Navbar() {
           onClick={() => setProfileShow(!profileShow)}
         />
         {profileShow && (
-          <div className="absolute -left-20 -bottom-[80px] bg-white w-max flex fle-col gap-2 py-2 px-3">
-            <h1 className="text-3xl">{user?.username}</h1>
+          <div className="absolute right-0 -bottom-[130px] bg-white-100  h-auto flex flex-col gap-2 p-6 rounded-[10px]">
+            <h1 className="text-xl">{user?.username}</h1>
+            <h1 className="text-xl">{user?.email}</h1>
           </div>
         )}
       </div>
