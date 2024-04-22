@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Avator1 } from "../assets";
+import { IoNotifications } from "react-icons/io5";
 function Navbar() {
   const user = useSelector((state) => state?.userInfo?.user);
   const [profileShow, setProfileShow] = useState(false);
@@ -11,7 +12,11 @@ function Navbar() {
           Docterz
         </h1>
       </div>
-      <div className="flex justify-between gap-2 relative">
+      <div className="flex justify-between items-center gap-7 relative">
+      <div className="relative">
+      <IoNotifications className="text-[2.4rem]"></IoNotifications>
+      <div className="absolute w-[10px] h-[10px] rounded-full bg-red-500 -top-0 right-1"></div>
+      </div>
         <img
           src={Avator1}
           alt="avotor1"
