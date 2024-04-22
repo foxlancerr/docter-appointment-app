@@ -5,7 +5,7 @@ import { avatorImages } from "../constants";
 
 function MeetingCard() {
   return (
-    <section className="bg-black/80 text-white min-h-[258px] w-full rounded-[10px] p-6 flex flex-col justify-between">
+    <section className="bg-black-200 text-white min-h-[258px] w-full rounded-[10px] p-6 flex flex-col justify-between">
       <article className="flex flex-col justify-start gap-2">
         <IoCalendarNumberOutline className="text-4xl"></IoCalendarNumberOutline>
         <h1 className="text-2xl font-bold">

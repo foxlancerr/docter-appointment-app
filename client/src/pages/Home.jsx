@@ -5,9 +5,13 @@ import { Header } from "../components";
 import Layout from "../components/Layout";
 import HomeHero from "../components/HomeHero";
 import HomeFlipList from "../components/HomeFlipList";
+import { useDispatch } from "react-redux";
+import { logInUser } from "../store/features/userInfo/userInfoSlice";
 
 const Home = () => {
-  const { loguserInfo, setLogUserInfo, setLoad } = useContext(GlobalContext);
+  const { loguserInfo, setLoad } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  console.log(loguserInfo);
 
   // this useEffect authenticate the user based on the token, is the user is authentic or not
   useEffect(() => {
@@ -20,7 +24,7 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((result) => {
-        setLogUserInfo(result.data);
+        dispatch(logInUser(result.data));
         setLoad(false);
       })
       .catch((err) => {

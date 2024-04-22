@@ -16,7 +16,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
-        <Route path="/apply-docter" element={<ApplyDocters></ApplyDocters>}></Route>
+
         {/* <Route
           path="/"
           element={
@@ -25,6 +25,14 @@ const App = () => {
             </ProtectedRoutes>
           }
         ></Route> */}
+        <Route
+          path="/apply-docter"
+          element={
+            <ProtectedRoutes>
+              <ApplyDocters></ApplyDocters>
+            </ProtectedRoutes>
+          }
+        ></Route>
         <Route
           path="/signin"
           element={
