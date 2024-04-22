@@ -2,6 +2,7 @@ import express from "express";
 import User from "../model/user.model.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import jwt from "jsonwebtoken";
+import Docter from "../model/docter.model.js";
 
 const router = express.Router();
 
@@ -106,6 +107,16 @@ router.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
         },
       });
     }
+  } catch (error) {
+    res.status(400).json({ message: err.message, success: false });
+  }
+});
+
+router.route("/apply-as-docter").post(async (req, res) => {
+  // console.log(req?.userId);
+  try {
+    const data = res.body();
+    const newDocter = await Docter.create(data);
   } catch (error) {
     res.status(400).json({ message: err.message, success: false });
   }
