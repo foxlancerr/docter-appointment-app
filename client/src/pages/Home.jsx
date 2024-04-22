@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { getItemFromLocalStorage } from "../utils/webLocalStorage";
 import { GlobalContext } from "../context/GlobalContext";
 import { Header } from "../components";
+import Layout from "../components/Layout";
+import HomeHero from "../components/HomeHero";
+import HomeFlipList from "../components/HomeFlipList";
 
 const Home = () => {
   const { loguserInfo, setLogUserInfo, setLoad } = useContext(GlobalContext);
@@ -27,9 +30,10 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
-      <Header></Header>
-    </div>
+    <Layout>
+      <HomeHero></HomeHero>
+      <HomeFlipList></HomeFlipList>
+    </Layout>
   );
 };
 

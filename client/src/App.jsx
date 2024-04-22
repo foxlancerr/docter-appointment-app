@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { GlobalContext } from "./context/GlobalContext";
 import { ProtectedRoutes, PublicRoutes } from "./routes";
 import { Loader } from "./components";
+import ApplyDocters from "./pages/ApplyDocters";
 
 const App = () => {
   const { load } = useContext(GlobalContext);
@@ -15,6 +16,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
+        <Route path="/apply-docter" element={<ApplyDocters></ApplyDocters>}></Route>
         {/* <Route
           path="/"
           element={

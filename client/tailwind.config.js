@@ -8,8 +8,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        violetlight: "#e0aaff",
-        primary: "#284b63",
+        "white-100": "#F0FFF0",
+        "white-200": "#F5F5F5",
+        "white-300": "#F8F8FF",
         violetdark: "#9d4edd"
       },
       fontFamily: {
