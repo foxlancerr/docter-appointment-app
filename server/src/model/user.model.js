@@ -20,6 +20,22 @@ const userSchema = new mongoose.Schema(
       required: [true, "The password is required"],
       trim: true,
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    isDocter: {
+      type: Boolean,
+      default: false,
+    },
+    seenNotifications: {
+      type: Array,
+      default: [],
+    },
+    unseenNotifications: {
+      type: Array,
+      default: [],
+    },
   },
   { timestamps: true }
 );

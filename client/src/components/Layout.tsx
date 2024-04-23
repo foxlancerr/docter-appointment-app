@@ -2,6 +2,7 @@ import React from "react";
 import { Header } from ".";
 import Aside from "./Aside";
 import Navbar from "./Navbar";
+import MobileNavbar from "./MobileNavbar";
 
 function Layout({ children }) {
   return (

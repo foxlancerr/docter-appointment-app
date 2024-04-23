@@ -2,9 +2,9 @@
 import React, { useContext, useState } from "react";
 
 import { HiMenuAlt3 } from "react-icons/hi";
+import { IoClose } from "react-icons/io5";
 import { FiSearch } from "react-icons/fi";
 import { profile_docter } from "../../assets";
-import { IoClose } from "react-icons/io5";
 import { GlobalContext } from "../context/GlobalContext";
 
 function Header() {

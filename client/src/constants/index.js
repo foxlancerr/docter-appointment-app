@@ -2,7 +2,9 @@ import { FaHome } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { MdOutlineDateRange } from "react-icons/md";
 import { IoVideocam } from "react-icons/io5";
+import { MdSettings } from "react-icons/md";
 import { FiUserPlus } from "react-icons/fi";
+import { IoMdLogOut } from "react-icons/io";
 import { Avator1, Avator2, Avator3, Avator4, Avator5 } from "../assets";
 
 export const sideBarLinks = [
@@ -30,6 +32,23 @@ export const sideBarLinks = [
     label: "Personal Room",
     route: "/personal-rooms",
     icon: FiPlus,
+  },
+];
+export const generalSideBarLinks = [
+  {
+    label: "General",
+    route: "/general",
+    icon: FaHome,
+  },
+  {
+    label: "Profile",
+    route: "/profile",
+    icon: MdSettings,
+  },
+  {
+    label: "Logout",
+    route: "/signin",
+    icon: IoMdLogOut,
   },
 ];
 
