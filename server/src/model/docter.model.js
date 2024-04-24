@@ -17,6 +17,7 @@ const docterSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    
     department: {
       type: String,
       unique: true,
@@ -39,13 +40,18 @@ const docterSchema = new mongoose.Schema(
       require: [true, "address are required"],
       trim: true,
     },
-    fee: {
+    feePerConsultant: {
       type: String,
       unique: true,
       trim: true,
     },
-    timeing: {
+    timing: {
       type: Array,
+      required: true,
+    },
+    status: {
+      type: String,
+      default: "Pending",
     },
   },
   { timestamps: true }

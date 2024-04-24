@@ -35,14 +35,14 @@ function Navbar() {
             onClick={() => setProfileShow(!profileShow)}
           />
           <div className=" text-black">
-            {!isMenuOpen && (
+           
               <HiMenuAlt3
                 onClick={() => {
                   setIsMenuOpen(!isMenuOpen);
                 }}
-                className="text-4xl"
+                className="text-4xl sm:hidden"
               ></HiMenuAlt3>
-            )}
+            
           </div>
           {profileShow && (
             <div className="absolute right-0 -bottom-[130px] bg-white-100  h-auto flex flex-col gap-2 p-6 rounded-[10px]">

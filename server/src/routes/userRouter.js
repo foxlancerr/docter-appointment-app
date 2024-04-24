@@ -89,7 +89,6 @@ router.route("/signin").post(async (req, res) => {
 });
 
 router.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
-  // console.log(req?.userId);
   try {
     const userLogin = await User.findOne({ _id: req?.userId });
     if (!userLogin) {
@@ -108,17 +107,29 @@ router.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(400).json({ message: err.message, success: false });
+    res.status(400).json({ message: error.message, success: false });
   }
 });
 
 router.route("/apply-as-docter").post(async (req, res) => {
-  // console.log(req?.userId);
   try {
-    const data = res.body();
-    const newDocter = await Docter.create(data);
+    const newDocter = new Docter({ ...req.body, status: "Pending" });
+    await newDocter.save();
+    const admin = await User.findOne({ isAdmin: true });
+    const unseenNotifications = admin.unseenNotifications;
+    unseenNotifications.push({
+      type: "new docter request",
+      message: `${newDocter.firstname} ${newDocter.lastname} has applied for docter account`,
+      data: {
+        docterId: newDocter._id,
+        name: newDocter.firstname + " " + newDocter.lastname,
+      },
+      onClickPath: "admin/docters",
+    });
+
+    await User.findByIdAndUpdate(admin._id, { unseenNotifications });
   } catch (error) {
-    res.status(400).json({ message: err.message, success: false });
+    res.status(400).json({ message: error.message, success: false });
   }
 });
 

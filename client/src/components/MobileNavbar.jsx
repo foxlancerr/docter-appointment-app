@@ -46,6 +46,9 @@ function MobileNavbar({ isMenuOpen, setIsMenuOpen }) {
               <Link
                 key={item.label}
                 to={item.route}
+                onClick={() => {
+                  item.label == "Logout" && localStorage.clear();
+                }}
                 className={`flex gap-3 items-center justify-start rounded p-4 hover:bg-blue-700 hover:text-white-200 ${
                   pathname == item.route && "bg-blue-700 text-white-100"
                 }`}
