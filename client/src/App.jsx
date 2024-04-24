@@ -6,6 +6,7 @@ import { GlobalContext } from "./context/GlobalContext";
 import { ProtectedRoutes, PublicRoutes } from "./routes";
 import { Loader } from "./components";
 import ApplyDocters from "./pages/ApplyDocters";
+import Notification from "./pages/Notification";
 
 const App = () => {
   const { load } = useContext(GlobalContext);
@@ -20,6 +21,14 @@ const App = () => {
           element={
             <ProtectedRoutes>
               <Home></Home>
+            </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoutes>
+              <Notification></Notification>
             </ProtectedRoutes>
           }
         ></Route>

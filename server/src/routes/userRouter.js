@@ -90,7 +90,9 @@ router.route("/signin").post(async (req, res) => {
 
 router.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
   try {
-    const userLogin = await User.findOne({ _id: req?.userId });
+    const userLogin = await User.findOne({ _id: req?.userId }).select(
+      "-password"
+    );
     if (!userLogin) {
       return res.status(200).json({
         message: "user does not exist !",
@@ -101,8 +103,7 @@ router.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
         message: "successfully authenticate it",
         success: true,
         data: {
-          username: userLogin.username,
-          email: userLogin.email,
+          ...userLogin._doc,
         },
       });
     }
@@ -113,6 +114,7 @@ router.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
 
 router.route("/apply-as-docter").post(async (req, res) => {
   try {
+    console.log(req.body)
     const newDocter = new Docter({ ...req.body, status: "Pending" });
     await newDocter.save();
     const admin = await User.findOne({ isAdmin: true });

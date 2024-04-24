@@ -1,5 +1,4 @@
 import { FaHome } from "react-icons/fa";
-import { FiPlus } from "react-icons/fi";
 import { MdOutlineDateRange } from "react-icons/md";
 import { IoVideocam } from "react-icons/io5";
 import { MdSettings } from "react-icons/md";
@@ -23,17 +22,34 @@ export const sideBarLinks = [
     route: "/appointments",
     icon: MdOutlineDateRange,
   },
+];
+
+export const userSideBarLinks = [
   {
-    label: "Recording",
-    route: "/recording",
-    icon: IoVideocam,
+    label: "Apply As Docter",
+    route: "/apply-docter",
+    icon: MdOutlineDateRange,
   },
   {
-    label: "Personal Room",
-    route: "/personal-rooms",
-    icon: FiPlus,
+    label: "appointments",
+    route: "/appointments",
+    icon: MdOutlineDateRange,
   },
 ];
+
+export const docterSideBarLinks = [
+  {
+    label: "user1",
+    route: "/user1",
+    icon: MdOutlineDateRange,
+  },
+  {
+    label: "user2",
+    route: "/user2",
+    icon: MdOutlineDateRange,
+  },
+];
+
 export const generalSideBarLinks = [
   {
     label: "General",

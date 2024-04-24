@@ -1,19 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import { getItemFromLocalStorage } from "../utils/webLocalStorage";
-import { GlobalContext } from "../context/GlobalContext";
-import Layout from "../components/Layout";
-import HomeHero from "../components/HomeHero";
-import HomeFlipList from "../components/HomeFlipList";
+import React, { useEffect } from "react";
+import Aside from "./Aside";
+import Navbar from "./Navbar";
 import { useDispatch } from "react-redux";
 import { logInUser } from "../store/features/userInfo/userInfoSlice";
+import { getItemFromLocalStorage } from "../utils/webLocalStorage";
 
-const Home = () => {
-  const { loguserInfo, setLoad } = useContext(GlobalContext);
+function Layout({ children }) {
   const dispatch = useDispatch();
-
   // this useEffect authenticate the user based on the token, is the user is authentic or not
   useEffect(() => {
-    setLoad(true);
     fetch("http://localhost:3000/api/v1/users/get-user-info-by-id", {
       method: "POST",
       headers: {
@@ -23,20 +18,22 @@ const Home = () => {
       .then((response) => response.json())
       .then((result) => {
         dispatch(logInUser(result.data));
-        setLoad(false);
       })
       .catch((err) => {
-        setLoad(false);
         console.log(err.message);
       });
   }, []);
-
   return (
-    <Layout>
-      <HomeHero></HomeHero>
-      <HomeFlipList></HomeFlipList>
-    </Layout>
+    <main className="relative">
+      <Navbar></Navbar>
+      <div className="flex">
+        <Aside></Aside>
+        <section className="flex min-h-screen flex-1 flex-col px-6 pb-9 pt-28 max-md:pb-14 sm:px-14  ">
+          <div className="w-full mt-4 mb-[2%]"> {children}</div>
+        </section>
+      </div>
+    </main>
   );
-};
+}
 
-export default Home;
+export default Layout;

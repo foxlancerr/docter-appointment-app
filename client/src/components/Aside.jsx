@@ -1,8 +1,16 @@
-import { generalSideBarLinks, sideBarLinks } from "../constants";
+import {
+  docterSideBarLinks,
+  generalSideBarLinks,
+  sideBarLinks,
+  userSideBarLinks,
+} from "../constants";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Aside() {
   const { pathname } = useLocation();
+  const user = useSelector((state) => state?.userInfo?.user);
+  console.log(user)
 
   return (
     <section className="sticky left-0 top-0 flex gap-3 h-screen w-fit flex-col justify-start p-6 pt-28 text-black-200 max-sm:hidden lg:w-[320px]">

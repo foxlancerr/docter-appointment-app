@@ -4,6 +4,7 @@ import { Avator1 } from "../assets";
 import { IoClose, IoNotifications } from "react-icons/io5";
 import MobileNavbar from "./MobileNavbar";
 import { HiMenuAlt3 } from "react-icons/hi";
+import { Link } from "react-router-dom";
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useSelector((state) => state?.userInfo?.user);
@@ -22,10 +23,12 @@ function Navbar() {
           </h1>
         </div>
         <div className="flex justify-between items-center gap-7 relative">
-          <div className="relative">
-            <IoNotifications className="text-[2.4rem]"></IoNotifications>
-            <div className="absolute w-[10px] h-[10px] rounded-full bg-red-500 -top-0 right-1"></div>
-          </div>
+          <Link to="/notifications" className="relative cursor-pointer">
+            <IoNotifications className="text-[3rem]"></IoNotifications>
+            <div className="absolute w-[25px] h-[25px] rounded-full bg-red-500 -top-2 right-5 flex justify-center items-center text-white">
+              {user?.unseenNotifications?.length}
+            </div>
+          </Link>
           <img
             src={Avator1}
             alt="avotor1"
@@ -35,14 +38,12 @@ function Navbar() {
             onClick={() => setProfileShow(!profileShow)}
           />
           <div className=" text-black">
-           
-              <HiMenuAlt3
-                onClick={() => {
-                  setIsMenuOpen(!isMenuOpen);
-                }}
-                className="text-4xl sm:hidden"
-              ></HiMenuAlt3>
-            
+            <HiMenuAlt3
+              onClick={() => {
+                setIsMenuOpen(!isMenuOpen);
+              }}
+              className="text-4xl sm:hidden"
+            ></HiMenuAlt3>
           </div>
           {profileShow && (
             <div className="absolute right-0 -bottom-[130px] bg-white-100  h-auto flex flex-col gap-2 p-6 rounded-[10px]">
