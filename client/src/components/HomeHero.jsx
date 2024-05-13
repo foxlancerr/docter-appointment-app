@@ -1,5 +1,5 @@
 import React from "react";
-import { BgHeroImage } from "../assets";
+import { BgHeroImage } from "../../assets/index";
 
 function HomeHero() {
   const now = new Date();

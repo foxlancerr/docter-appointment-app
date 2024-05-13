@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Avator1 } from "../assets";
+import { Avator1 } from "../../assets/index";
 import { IoClose, IoNotifications } from "react-icons/io5";
 import MobileNavbar from "./MobileNavbar";
 import { HiMenuAlt3 } from "react-icons/hi";

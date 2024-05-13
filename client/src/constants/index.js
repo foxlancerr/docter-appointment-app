@@ -4,7 +4,7 @@ import { IoVideocam } from "react-icons/io5";
 import { MdSettings } from "react-icons/md";
 import { FiUserPlus } from "react-icons/fi";
 import { IoMdLogOut } from "react-icons/io";
-import { Avator1, Avator2, Avator3, Avator4, Avator5 } from "../assets";
+import { Avator1, Avator2, Avator3, Avator4, Avator5 } from "../../assets/index";
 
 export const sideBarLinks = [
   {
@@ -18,8 +18,8 @@ export const sideBarLinks = [
     icon: MdOutlineDateRange,
   },
   {
-    label: "appointments",
-    route: "/appointments",
+    label: "appointment",
+    route: "/appointment",
     icon: MdOutlineDateRange,
   },
 ];

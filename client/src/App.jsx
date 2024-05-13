@@ -7,6 +7,7 @@ import { ProtectedRoutes, PublicRoutes } from "./routes";
 import { Loader } from "./components";
 import ApplyDocters from "./pages/ApplyDocters";
 import Notification from "./pages/Notification";
+import Appointment from "./pages/Appointment";
 
 const App = () => {
   const { load } = useContext(GlobalContext);
@@ -21,6 +22,14 @@ const App = () => {
           element={
             <ProtectedRoutes>
               <Home></Home>
+            </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/appointment"
+          element={
+            <ProtectedRoutes>
+              <Appointment></Appointment>
             </ProtectedRoutes>
           }
         ></Route>
