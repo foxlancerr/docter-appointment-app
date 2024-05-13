@@ -17,12 +17,6 @@ import { Avator2 } from "../../assets/index";
 function Appointment() {
   const workingHours = [
     {
-      key: 1,
-      day: "Sunday",
-      time: "3:00PM - 6:00PM",
-      openOffice: false,
-    },
-    {
       key: 2,
       day: "Monday",
       time: "9:00AM - 5:00PM",
@@ -58,13 +52,19 @@ function Appointment() {
       time: "9:00AM - 2:00PM",
       openOffice: false,
     },
+    {
+      key: 1,
+      day: "Sunday",
+      time: "3:00PM - 6:00PM",
+      openOffice: false,
+    },
   ];
   return (
     <Layout>
       <h1 className="text-3xl font-semibold pb-2 border-b-2 mb-10">
         Book Appointment
       </h1>
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap-10">
         <div className="flex items-start mt-3 flex-col gap-3 w-full">
           <div className="flex justify-start items-center gap-5 border-b-2 pb-5 w-full">
             <div className="relative">
@@ -100,22 +100,30 @@ function Appointment() {
               excepturi commodi,
             </p>
           </div>
-          <div className="flex gap-5 justify-center w-full my-5">
+          <div className="grid grid-cols-4 w-full">
             <IconCard
               title="7500+"
               sub_title="Patient"
               Icon={FaUserLarge}
+              classNames="bg-blue-600 text-white"
             ></IconCard>
             <IconCard
               title="10+"
               sub_title="Experience"
               Icon={FaBookMedical}
+              classNames="bg-slate-600 text-white"
             ></IconCard>
-            <IconCard title="3.7" sub_title="rating" Icon={IoStar}></IconCard>
+            <IconCard
+              title="3.7"
+              sub_title="rating"
+              Icon={IoStar}
+              classNames="bg-orange-600 text-white"
+            ></IconCard>
             <IconCard
               title="1k+"
               sub_title="review"
               Icon={BiSolidMessageSquareDots}
+              classNames="bg-green-600 text-white"
             ></IconCard>
           </div>
         </div>
@@ -133,7 +141,9 @@ function Appointment() {
                 <p className="text-black-100 text-[1.2rem] w-[50%] relative">
                   {work.day}
                   {!work.openOffice && (
-                    <span className="absolute text-[12px] left-16 -top-1 text-red-600 font-bold">Half Day</span>
+                    <span className="absolute text-[12px] left-16 -top-1 text-red-600 font-bold">
+                      Half Day
+                    </span>
                   )}
                 </p>
                 <p className="text-[1.2rem] text-black-300 font-bold">

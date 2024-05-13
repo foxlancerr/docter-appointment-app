@@ -1,7 +1,7 @@
 import profile_docter from "./images/profile_docter.jpg";
 
 import BgHeroImage from "./images/bg-image.jpg";
-import Avator1 from "./images/avatar-2.jpeg";
+import Avator1 from "./images/avatar-1.jpeg";
 import Avator2 from "./images/avatar-2.jpeg";
 import Avator3 from "./images/avatar-3.png";
 import Avator4 from "./images/avatar-4.png";
