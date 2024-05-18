@@ -1,4 +1,3 @@
-import { FaHome } from "react-icons/fa";
 import { MdOutlineDateRange } from "react-icons/md";
 import { IoVideocam } from "react-icons/io5";
 import { MdSettings } from "react-icons/md";
@@ -13,70 +12,106 @@ import {
   Avator5,
 } from "../../assets/index";
 
-export const sideBarLinks = [
+import {
+  FaHome,
+  FaUserMd,
+  FaCalendarAlt,
+  FaEnvelope,
+  FaUser,
+  FaCog,
+  FaUsers,
+  FaTools,
+  FaTachometerAlt,
+  FaUserInjured,
+} from "react-icons/fa";
+
+export const userSideBarLinks = [
   {
     label: "Home",
     route: "/",
     icon: FaHome,
   },
   {
-    label: "Patient",
-    route: "/patient",
-    icon: FaHome,
+    label: "Apply As Doctor",
+    route: "/apply-doctor",
+    icon: FaUserMd,
   },
   {
-    label: "Apply As Docter",
-    route: "/apply-docter",
-    icon: MdOutlineDateRange,
-  },
-  {
-    label: "appointment",
-    route: "/appointment",
-    icon: MdOutlineDateRange,
-  },
-];
-
-export const userSideBarLinks = [
-  {
-    label: "Apply As Docter",
-    route: "/apply-docter",
-    icon: MdOutlineDateRange,
-  },
-  {
-    label: "appointments",
+    label: "Appointments",
     route: "/appointments",
-    icon: MdOutlineDateRange,
+    icon: FaCalendarAlt,
+  },
+  {
+    label: "Messages",
+    route: "/messages",
+    icon: FaEnvelope,
   },
 ];
 
-export const docterSideBarLinks = [
+export const doctorSideBarLinks = [
   {
-    label: "user1",
-    route: "/user1",
-    icon: MdOutlineDateRange,
+    label: "Dashboard",
+    route: "/dashboard",
+    icon: FaTachometerAlt,
   },
   {
-    label: "user2",
-    route: "/user2",
-    icon: MdOutlineDateRange,
+    label: "Patients",
+    route: "/patients",
+    icon: FaUserInjured,
   },
-];
+  {
+    label: "Appointments",
+    route: "/appointments",
+    icon: FaCalendarAlt,
+  },
+  {
+    label: "Messages",
+    route: "/messages",
+    icon: FaEnvelope,
+  },
 
-export const generalSideBarLinks = [
-  {
-    label: "General",
-    route: "/general",
-    icon: FaHome,
-  },
   {
     label: "Profile",
     route: "/profile",
-    icon: MdSettings,
+    icon: FaUser,
+  },
+];
+
+export const adminSideBarLinks = [
+  {
+    label: "Dashboard",
+    route: "/admin/dashboard",
+    icon: FaTachometerAlt,
   },
   {
-    label: "Logout",
-    route: "/signin",
-    icon: IoMdLogOut,
+    label: "Manage Users",
+    route: "/admin/users",
+    icon: FaUsers,
+  },
+  {
+    label: "Manage Doctors",
+    route: "/admin/doctors",
+    icon: FaUserMd,
+  },
+  {
+    label: "Appointments",
+    route: "/admin/appointments",
+    icon: FaCalendarAlt,
+  },
+  {
+    label: "Messages",
+    route: "/admin/messages",
+    icon: FaEnvelope,
+  },
+  {
+    label: "Settings",
+    route: "/admin/settings",
+    icon: FaCog,
+  },
+  {
+    label: "Admin Panel",
+    route: "/admin/panel",
+    icon: FaTools,
   },
 ];
 
@@ -115,7 +150,7 @@ export const patientHero = [
   {
     title: "Today Patient",
     tagline: "10",
-    Icon: MdOutlineAccessTime ,
+    Icon: MdOutlineAccessTime,
     ClassName: "bg-orange-400 shadow-sm shadow-black/50",
   },
   {

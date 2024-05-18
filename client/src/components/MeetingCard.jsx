@@ -1,22 +1,30 @@
-import React from "react";
-import { IoCalendarNumberOutline } from "react-icons/io5";
-import { IoCopyOutline } from "react-icons/io5";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { avatorImages } from "../constants";
+import { Avator1 } from "../../assets";
 
 function MeetingCard() {
   return (
-    <section className="bg-black-200 text-white min-h-[258px] w-full rounded-[10px] p-6 flex flex-col justify-between">
-      <article className="flex flex-col justify-start gap-2">
-        <IoCalendarNumberOutline className="text-4xl"></IoCalendarNumberOutline>
-        <h1 className="text-2xl font-bold">
-          Team Sync: Sprint Planning & Updates
-        </h1>
-        <h3 className="text-xl">
-          March 15, 2024 - <span>10.00AM</span>{" "}
-        </h3>
+    <section className="bg-slate-300/50 text-black min-h-[258px] w-full shadow-lg shadow-black-300/20 rounded-[15px] p-6 flex flex-col justify-between relative">
+      <article className="flex items-start gap-5 justify-start relative">
+        <div className="shrink-0 relative">
+          <span className="absolute bottom-0 flex items-center gap-x-2 -left-1 py-1 px-1 text-3xl text-green-800">
+            <RiVerifiedBadgeFill></RiVerifiedBadgeFill>
+          </span>
+          <img src={Avator1} alt="avator1" className="w-24 h-24 rounded-full" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold">Dr. Parveen Shahid</h1>
+          <h3 className="text-xl">Orthopedic Surgeon</h3>
+          <p className="text-sm">
+            MBBS, FCPS (Surgery), IMGSS PGT in Orthopedics
+          </p>
+          <button className="bg-white/15 flex items-center px-4 py-2 rounded text-black bg-gray-200 mt-2">
+            Details
+          </button>
+        </div>
       </article>
-      <article className="relative">
-        <div className="relative flex">
+      <article className="relative flex sm:flex-row flex-col">
+        <div className="relative flex flex-grow flex-shrink-0">
           {avatorImages.slice(0, 3).map((img, index) => (
             <img
               src={img}
@@ -32,7 +40,7 @@ function MeetingCard() {
             ></img>
           ))}
           <div
-            className="absolute w-[40px] h-[40px] bg-black flex justify-center items-center rounded-full"
+            className="absolute w-[40px] h-[40px] bg-black flex justify-center items-center rounded-full text-white"
             style={{
               top: 0,
               left: 3 * 28,
@@ -42,12 +50,8 @@ function MeetingCard() {
           </div>
         </div>
         <div className="flex gap-3 items-center justify-end">
-          <button className="bg-blue-1 px-4 py-2 bg-blue-500 rounded text-white">Start</button>
-          <button className="bg-white/15 flex items-center px-4 py-2 rounded text-black bg-gray-200">
-            <span className="mr-2 ">
-              <IoCopyOutline></IoCopyOutline>
-            </span>
-            Copy Invitation
+          <button className="bg-blue-1 px-4 py-2 bg-blue-500 rounded text-white">
+            Book Appointment
           </button>
         </div>
       </article>

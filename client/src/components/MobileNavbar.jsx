@@ -1,10 +1,21 @@
 import React, { useState } from "react";
-import { generalSideBarLinks, sideBarLinks } from "../constants";
+import { adminSideBarLinks, doctorSideBarLinks, userSideBarLinks } from "../constants";
 import { Link, useLocation } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 function MobileNavbar({ isMenuOpen, setIsMenuOpen }) {
   const { pathname } = useLocation();
+  const user = useSelector((state) => state?.userInfo?.user);
+  console.log(user);
+  let sideBarLinks;
+  if (user?.role === "admin") {
+    sideBarLinks = adminSideBarLinks;
+  } else if (user?.role === "doctor") {
+    sideBarLinks = doctorSideBarLinks;
+  } else {
+    sideBarLinks = userSideBarLinks;
+  }
 
   return (
     <nav className="relative">
@@ -41,7 +52,7 @@ function MobileNavbar({ isMenuOpen, setIsMenuOpen }) {
             );
           })}
 
-          {generalSideBarLinks.map((item) => {
+          {sideBarLinks.map((item) => {
             return (
               <Link
                 key={item.label}

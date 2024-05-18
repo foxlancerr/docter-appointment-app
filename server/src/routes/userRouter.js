@@ -4,9 +4,9 @@ import authMiddleware from "../middleware/authMiddleware.js";
 import jwt from "jsonwebtoken";
 import Docter from "../model/docter.model.js";
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.route("/register").post(async (req, res) => {
+userRouter.route("/register").post(async (req, res) => {
   try {
     console.log(req.body);
     const { username, password, email } = req.body;
@@ -47,7 +47,7 @@ router.route("/register").post(async (req, res) => {
   }
 });
 
-router.route("/signin").post(async (req, res) => {
+userRouter.route("/signin").post(async (req, res) => {
   const { email, password } = req.body;
   console.log(req.body);
 
@@ -88,7 +88,7 @@ router.route("/signin").post(async (req, res) => {
   }
 });
 
-router.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
+userRouter.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
   try {
     const userLogin = await User.findOne({ _id: req?.userId }).select(
       "-password"
@@ -112,7 +112,7 @@ router.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
   }
 });
 
-router.route("/apply-as-docter").post(async (req, res) => {
+userRouter.route("/apply-as-docter").post(async (req, res) => {
   try {
     console.log(req.body)
     const newDocter = new Docter({ ...req.body, status: "Pending" });
@@ -135,4 +135,4 @@ router.route("/apply-as-docter").post(async (req, res) => {
   }
 });
 
-export default router;
+export default userRouter;

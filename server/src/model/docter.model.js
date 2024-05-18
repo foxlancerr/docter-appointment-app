@@ -1,61 +1,68 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from 'mongoose';
 
-const docterSchema = new mongoose.Schema(
-  {
-    firstname: {
-      type: String,
-      required: [true, "The firstname is required"],
-      trim: true,
-    },
-    lastname: {
-      type: String,
-      required: [true, "The lastname is required"],
-      trim: true,
-    },
-    phone: {
-      type: String,
-      unique: true,
-      trim: true,
-    },
-    
-    department: {
-      type: String,
-      unique: true,
-      trim: true,
-    },
-    profession: {
-      type: String,
-      unique: true,
-      trim: true,
-    },
-    experaince: {
-      type: String,
-      unique: true,
-      trim: true,
-      require: [true, "experaince are required"],
-    },
-    address: {
-      type: String,
-      unique: true,
-      require: [true, "address are required"],
-      trim: true,
-    },
-    feePerConsultant: {
-      type: String,
-      unique: true,
-      trim: true,
-    },
-    timing: {
-      type: Array,
-      required: true,
-    },
-    status: {
-      type: String,
-      default: "Pending",
-    },
+const doctorSchema = new mongoose.Schema({
+  firstname: {
+    type: String,
+    required: true,
   },
-  { timestamps: true }
-);
+  lastname: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  department: {
+    type: String,
+    required: true,
+  },
+  profession: {
+    type: String,
+    required: true,
+  },
+  experience: {
+    type: Number,
+    required: true,
+  },
+  license: {
+    type: String,
+    required: true,
+  },
+  feePerConsultation: {
+    type: Number,
+    required: true,
+  },
+  daysAvailable: {
+    type: [String],
+    required: true,
+  },
+  startTime: {
+    type: String,
+    required: true,
+  },
+  endTime: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending',
+  },
+  unseenNotification: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
+  seenNotification: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
+}, { timestamps: true });
 
-const Docter = mongoose.model("docter", docterSchema);
-export default Docter;
+const Doctor = mongoose.model('Doctor', doctorSchema);
+
+export default Doctor;
