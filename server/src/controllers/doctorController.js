@@ -1,4 +1,5 @@
 import Doctor from "../model/docter.model.js";
+import User from "../model/user.model.js";
 import asyncHandler from "express-async-handler";
 
 // @desc    Apply for doctor account
@@ -22,12 +23,13 @@ export const applyDoctor = asyncHandler(async (req, res) => {
     endTime,
   } = req.body;
 
+  console.log(req.body);
   const doctorExists = await Doctor.findOne({ email });
 
-  if (doctorExists) {
-    res.status(400);
-    throw new Error("Doctor already applied with this email");
-  }
+  // if (doctorExists) {
+  //   res.status(400);
+  //   throw new Error("Doctor already applied with this email");
+  // }
 
   const doctor = new Doctor({
     firstname,
@@ -107,3 +109,91 @@ export const patientRequestedForTreatment = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// @desc    Get all pending doctor applications
+// @route   GET /api/v1/doctors/approve/:doctorId
+// @access  Admin
+export const approveDoctor = async (req, res) => {
+  try {
+    const { doctorId } = req.params;
+
+    const doctor = await Doctor.findByIdAndUpdate(
+      doctorId,
+      {
+        status: "approved",
+      },
+      { new: true }
+    );
+
+    if (doctor) {
+      const user = await User.findOneAndUpdate(
+        { email: doctor.email },
+        { isDocter: true },
+        { new: true } // To return the updated document
+      );
+
+      if (user) {
+        console.log(user);
+        user.unseenNotifications.push(
+          `Your application as Doctor has been approved.`
+        );
+        await user.save();
+
+        res.status(200).json({
+          success: true,
+          message: "Doctor approved successfully",
+          doctor,
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: "user not found with corresponding email",
+        });
+      }
+    } else {
+      res.status(404).json({ success: false, message: "Doctor not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const rejectDoctor = async (req, res) => {
+  try {
+    const { doctorId } = req.params;
+
+    console.log(doctorId);
+
+    const doctor = await Doctor.findByIdAndUpdate(
+      doctorId,
+      { status: "rejected" },
+      { new: true }
+    );
+
+    if (doctor) {
+      const user = await User.findOne({ email: doctor.email });
+
+      if (user) {
+        user.unseenNotifications.push(
+          `Your application as Doctor has been rejected.`
+        );
+        await user.save();
+
+        res.status(200).json({
+          success: true,
+          message: "Doctor rejected successfully",
+          doctor,
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: "user not found with corresponding email",
+        });
+      }
+    } else {
+      res.status(404).json({ success: false, message: "Doctor not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

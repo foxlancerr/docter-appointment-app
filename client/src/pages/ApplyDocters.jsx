@@ -20,6 +20,7 @@ function ApplyDoctors() {
       );
 
       const result = await response.json();
+      console.log(result)
       if (!result?.success) {
         toast.error(result.message);
       } else {
@@ -27,6 +28,7 @@ function ApplyDoctors() {
         toast("Successfully Applied for Doctor Account");
       }
     } catch (err) {
+      console.log(err)
       console.log("Already applied for Doctor Account");
       toast.error("already applied for Doctor Account");
     }
@@ -47,9 +49,9 @@ function ApplyDoctors() {
       }
     }
   
-    console.log("Form Data:", formData);
-  
+    
     fetchData(formData);
+    console.log("Form Data:", formData);
   };
   
 
@@ -148,5 +150,6 @@ function ApplyDoctors() {
     </Layout>
   );
 }
+
 
 export default ApplyDoctors;

@@ -1,13 +1,95 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
-import { avatorImages } from "../constants";
-import { IoCalendarNumberOutline, IoCopyOutline } from "react-icons/io5";
+
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 function Notification() {
   const user = useSelector((state) => state?.userInfo?.user);
   const tabs = ["All", "seen", "unseen", "approved", "rejected"];
   const [activeTab, setActiveTab] = useState("All");
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const filterNotifications = () => {
+    const allNotifications = [
+      ...user?.unseenNotifications,
+      ...user?.seenNotifications,
+    ];
+
+    if (activeTab === "All") {
+      return allNotifications;
+    } else if (activeTab === "seen") {
+      return user?.seenNotifications;
+    } else if (activeTab === "unseen") {
+      return user?.unseenNotifications;
+    } else if (activeTab === "approved") {
+      return allNotifications.filter(
+        (notification) => user?.isDocter && notification?.status === "approved"
+      );
+    } else if (activeTab === "rejected") {
+      return allNotifications.filter(
+        (notification) => user?.isDocter && notification?.status === "rejected"
+      );
+    }
+    return [];
+  };
+
+  const filteredNotifications = filterNotifications();
+
+  const handleApprove = async (doctorId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/v1/doctor/approve/${doctorId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${user.token}`, // assuming you're using JWT for authentication
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success(result.message);
+        // Update local state or refetch notifications
+      } else {
+        toast.error(result.message);
+      }
+    } catch (err) {
+      toast.error("An error occurred while approving the doctor");
+    }
+  };
+
+  const handleReject = async (doctorId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/v1/doctor/reject/${doctorId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`, // assuming you're using JWT for authentication
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success(result.message);
+        // Update local state or refetch notifications
+      } else {
+        toast.error(result.message);
+      }
+    } catch (err) {
+      toast.error("An error occurred while rejecting the doctor");
+    }
+  };
 
   return (
     <Layout>
@@ -15,14 +97,17 @@ function Notification() {
         {tabs.map((tab, index) => (
           <span
             key={index}
-            className="text-xl p-3 capitalize block cursor-pointer"
+            className={`text-xl p-3 capitalize block cursor-pointer ${
+              activeTab === tab ? "font-bold underline text-blue-600" : ""
+            }`}
+            onClick={() => handleTabClick(tab)}
           >
             {tab}
           </span>
         ))}
       </div>
       <section className="flex flex-col py-10">
-        {user?.unseenNotifications?.map((notification, index) => (
+        {filteredNotifications?.map((notification, index) => (
           <div
             key={index}
             className="flex justify-between bg-white-300 mb-5 border-b-4 border-black-100-300 p-6 rounded gap-5"
@@ -35,10 +120,16 @@ function Notification() {
             </div>
 
             <div className="flex gap-3 items-center justify-end">
-              <button className="bg-blue-1 px-4 py-2  rounded text-white bg-red-600 text-xl">
+              <button
+                className="bg-blue-1 px-4 py-2  rounded text-white bg-red-600 text-xl"
+                onClick={() => handleReject(notification.data.docterId)}
+              >
                 Reject
               </button>
-              <button className="bg-white/15 flex items-center px-4 py-2 rounded text-white bg-blue-600 text-xl">
+              <button
+                className="bg-white/15 flex items-center px-4 py-2 rounded text-white bg-green-500 text-xl"
+                onClick={() => handleApprove(notification.data.docterId)}
+              >
                 Approve
               </button>
             </div>
@@ -46,61 +137,6 @@ function Notification() {
         ))}
       </section>
     </Layout>
-    // <Layout>
-    //   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-    //     {user?.unseenNotifications?.map((notification, index) => (
-    //       <section
-    //         key={index}
-    //         className="bg-black-200 text-white min-h-[258px] w-full rounded-[10px] p-6 flex flex-col justify-between"
-    //       >
-    //         <article className="flex flex-col justify-start gap-2">
-
-    //           <h1 className="text-2xl font-bold">
-    //             {notification?.message}
-    //           </h1>
-    //           <h3 className="text-xl">
-    //             March 15, 2024 - <span>10.00AM</span>{" "}
-    //           </h3>
-    //         </article>
-    //         <article className="relative">
-    //           <div className="relative flex">
-    //             {avatorImages.slice(0, 3).map((img, index) => (
-    //               <img
-    //                 src={img}
-    //                 alt="img"
-    //                 key={index}
-    //                 width={35}
-    //                 height={35}
-    //                 className="object-cover absolute rounded-full"
-    //                 style={{
-    //                   top: 2,
-    //                   left: index * 28,
-    //                 }}
-    //               ></img>
-    //             ))}
-    //             <div
-    //               className="absolute w-[40px] h-[40px] bg-black flex justify-center items-center rounded-full"
-    //               style={{
-    //                 top: 0,
-    //                 left: 3 * 28,
-    //               }}
-    //             >
-    //               +{avatorImages.length - 3}
-    //             </div>
-    //           </div>
-    //           <div className="flex gap-3 items-center justify-end">
-    //             <button className="bg-blue-1 px-4 py-2  rounded text-white bg-red-600">
-    //               Reject
-    //             </button>
-    //             <button className="bg-white/15 flex items-center px-4 py-2 rounded text-white bg-blue-600">
-    //               Approve
-    //             </button>
-    //           </div>
-    //         </article>
-    //       </section>
-    //     ))}
-    //   </div>
-    // </Layout>
   );
 }
 

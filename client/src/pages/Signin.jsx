@@ -11,6 +11,7 @@ const Signin = () => {
   const navigate = useNavigate();
 
   const fetchData = async (data) => {
+    console.log(data)
     try {
       setLoad(true);
       const response = await fetch(

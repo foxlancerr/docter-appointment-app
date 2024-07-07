@@ -88,34 +88,40 @@ userRouter.route("/signin").post(async (req, res) => {
   }
 });
 
-userRouter.route("/get-user-info-by-id").post(authMiddleware, async (req, res) => {
-  try {
-    const userLogin = await User.findOne({ _id: req?.userId }).select(
-      "-password"
-    );
-    if (!userLogin) {
-      return res.status(200).json({
-        message: "user does not exist !",
-        success: false,
-      });
-    } else {
-      return res.status(200).json({
-        message: "successfully authenticate it",
-        success: true,
-        data: {
-          ...userLogin._doc,
-        },
-      });
+userRouter
+  .route("/get-user-info-by-id")
+  .post(authMiddleware, async (req, res) => {
+    try {
+      const userLogin = await User.findOne({ _id: req?.userId }).select(
+        "-password"
+      );
+      if (!userLogin) {
+        return res.status(200).json({
+          message: "user does not exist !",
+          success: false,
+        });
+      } else {
+        return res.status(200).json({
+          message: "successfully authenticate it",
+          success: true,
+          data: {
+            ...userLogin._doc,
+          },
+        });
+      }
+    } catch (error) {
+      res.status(400).json({ message: error.message, success: false });
     }
-  } catch (error) {
-    res.status(400).json({ message: error.message, success: false });
-  }
-});
+  });
 
-userRouter.route("/apply-as-docter").post(async (req, res) => {
+// @desc    Apply for doctor account
+// @route   POST /api/v1/users/apply-as-doctor
+// @access  Public
+
+userRouter.route("/apply-as-doctor").post(async (req, res) => {
   try {
-    console.log(req.body)
-    const newDocter = new Docter({ ...req.body, status: "Pending" });
+    console.log(req.body);
+    const newDocter = new Docter({ ...req.body, status: "pending" });
     await newDocter.save();
     const admin = await User.findOne({ isAdmin: true });
     const unseenNotifications = admin.unseenNotifications;
@@ -126,6 +132,7 @@ userRouter.route("/apply-as-docter").post(async (req, res) => {
         docterId: newDocter._id,
         name: newDocter.firstname + " " + newDocter.lastname,
       },
+
       onClickPath: "admin/docters",
     });
 
