@@ -127,7 +127,7 @@ export const approveDoctor = async (req, res) => {
 
     if (doctor) {
       const user = await User.findOneAndUpdate(
-        { email: doctor.email },
+        // { email: doctor.email },
         { isDocter: true },
         { new: true } // To return the updated document
       );

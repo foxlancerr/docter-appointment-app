@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
-
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
-function Notification() {
+function PatientNotification() {
   const user = useSelector((state) => state?.userInfo?.user);
   const tabs = ["All", "seen", "unseen", "approved", "rejected"];
   const [activeTab, setActiveTab] = useState("All");
@@ -14,27 +13,30 @@ function Notification() {
   };
 
   const filterNotifications = () => {
-    const allNotifications = [
-      ...user?.unseenNotifications,
-      ...user?.seenNotifications,
-    ];
+    const unseenNotifications = user?.unseenNotifications || [];
+    const seenNotifications = user?.seenNotifications || [];
+    const allNotifications = [...unseenNotifications, ...seenNotifications];
 
-    if (activeTab === "All") {
-      return allNotifications;
-    } else if (activeTab === "seen") {
-      return user?.seenNotifications;
-    } else if (activeTab === "unseen") {
-      return user?.unseenNotifications;
-    } else if (activeTab === "approved") {
-      return allNotifications.filter(
-        (notification) => user?.isDocter && notification?.status === "approved"
-      );
-    } else if (activeTab === "rejected") {
-      return allNotifications.filter(
-        (notification) => user?.isDocter && notification?.status === "rejected"
-      );
+    switch (activeTab) {
+      case "All":
+        return allNotifications;
+      case "seen":
+        return seenNotifications;
+      case "unseen":
+        return unseenNotifications;
+      case "approved":
+        return allNotifications.filter(
+          (notification) =>
+            user?.isDocter && notification?.data?.status === "approved"
+        );
+      case "rejected":
+        return allNotifications.filter(
+          (notification) =>
+            user?.isDocter && notification?.data?.status === "rejected"
+        );
+      default:
+        return [];
     }
-    return [];
   };
 
   const filteredNotifications = filterNotifications();
@@ -91,12 +93,38 @@ function Notification() {
     }
   };
 
+  const markAsSeen = async (notificationId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/v1/notification/seen/${notificationId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`, // assuming you're using JWT for authentication
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success("Notification marked as seen");
+        // Update local state or refetch notifications
+      } else {
+        toast.error("Failed to mark notification as seen");
+      }
+    } catch (err) {
+      toast.error("An error occurred while marking notification as seen");
+    }
+  };
+
   return (
     <Layout>
       <div className="w-full my-3 flex border-b-4 ">
         {tabs.map((tab, index) => (
           <span
-            key={index}
+            key={index + tab}
             className={`text-xl p-3 capitalize block cursor-pointer ${
               activeTab === tab ? "font-bold underline text-blue-600" : ""
             }`}
@@ -120,14 +148,22 @@ function Notification() {
             </div>
 
             <div className="flex gap-3 items-center justify-end">
+              {activeTab === "unseen" && (
+                <button
+                  className="bg-blue-500 px-4 py-2 rounded text-white text-xl"
+                  onClick={() => markAsSeen(notification._id)}
+                >
+                  Mark as Seen
+                </button>
+              )}
               <button
-                className="bg-blue-1 px-4 py-2  rounded text-white bg-red-600 text-xl"
+                className="bg-red-600 px-4 py-2 rounded text-white text-xl"
                 onClick={() => handleReject(notification.data.docterId)}
               >
                 Reject
               </button>
               <button
-                className="bg-white/15 flex items-center px-4 py-2 rounded text-white bg-green-500 text-xl"
+                className="bg-green-500 px-4 py-2 rounded text-white text-xl"
                 onClick={() => handleApprove(notification.data.docterId)}
               >
                 Approve
@@ -140,4 +176,4 @@ function Notification() {
   );
 }
 
-export default Notification;
+export default PatientNotification;

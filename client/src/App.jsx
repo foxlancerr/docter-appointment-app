@@ -6,9 +6,12 @@ import { GlobalContext } from "./context/GlobalContext";
 import { ProtectedRoutes, PublicRoutes } from "./routes";
 import { Loader } from "./components";
 import ApplyDocters from "./pages/ApplyDocters";
-import Notification from "./pages/Notification";
+import DoctorNotification from "./pages/DocterNotification";
+import UserNotification from "./pages/DocterNotification";
 import Appointment from "./pages/Appointment";
 import Patient from "./pages/Patient";
+import PatientNotification from "./pages/patientNotification";
+import AdminNotification from "./pages/AdminNotification";
 
 const App = () => {
   const { load } = useContext(GlobalContext);
@@ -35,10 +38,26 @@ const App = () => {
           }
         ></Route>
         <Route
-          path="/notifications"
+          path="/doctor-notifications"
           element={
             <ProtectedRoutes>
-              <Notification></Notification>
+              <DoctorNotification></DoctorNotification>
+            </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/patient-notifications"
+          element={
+            <ProtectedRoutes>
+              <PatientNotification></PatientNotification>
+            </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/admin-notifications"
+          element={
+            <ProtectedRoutes>
+              <AdminNotification></AdminNotification>
             </ProtectedRoutes>
           }
         ></Route>

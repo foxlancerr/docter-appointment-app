@@ -20,22 +20,29 @@ const userSchema = new mongoose.Schema(
       required: [true, "The password is required"],
       trim: true,
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    userType: {
+      type: String,
+      default: "patient",
+      enum: ["admin", "patient", "doctor"],
     },
-    isDocter: {
-      type: Boolean,
-      default: false,
+    roleDetails: {
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: "userType",
     },
-    seenNotifications: {
-      type: Array,
-      default: [],
-    },
-    unseenNotifications: {
-      type: Array,
-      default: [],
-    },
+    seenNotifications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Notification",
+      },
+    ],
+    unseenNotifications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Notification",
+      },
+    ],
+
+    // Add more common fields if needed
   },
   { timestamps: true }
 );

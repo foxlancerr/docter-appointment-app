@@ -9,15 +9,15 @@ import { useSelector } from "react-redux";
 function Aside() {
   const { pathname } = useLocation();
   const user = useSelector((state) => state?.userInfo?.user);
-  console.log(user);
+  console.log("user >>>>>>>>>>>>>>>>>>", user);
 
   let sideBarLinks;
-  if (user?.role === "admin") {
-    sideBarLinks = adminSideBarLinks;
-  } else if (user?.role === "doctor") {
-    sideBarLinks = doctorSideBarLinks;
-  } else {
+  if (user?.userType == "patient") {
     sideBarLinks = userSideBarLinks;
+  } else if (user?.userType == "admin") {
+    sideBarLinks = adminSideBarLinks;
+  } else {
+    sideBarLinks = doctorSideBarLinks;
   }
 
   return (

@@ -1,122 +1,115 @@
 import express from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../model/user.model.js";
 import authMiddleware from "../middleware/authMiddleware.js";
-import jwt from "jsonwebtoken";
-import Docter from "../model/docter.model.js";
-
 const userRouter = express.Router();
 
-userRouter.route("/register").post(async (req, res) => {
+// @desc    User Registration
+// @route   POST http://localhost:3000/api/v1/users/register
+// @access  Public
+userRouter.post("/register", async (req, res) => {
   try {
-    console.log(req.body);
     const { username, password, email } = req.body;
 
-    if (username.length === 0) {
-      res.json({ message: "username is required", success: false });
-      return;
-    }
-    if (email.length === 0) {
-      res.json({ message: "email is required", success: false });
-      return;
-    }
-    if (password.length === 0) {
-      res.json({ message: "password is required", success: false });
-      return;
+    // Validate required fields
+    if (!username || !email || !password) {
+      return res
+        .status(400)
+        .json({ message: "All fields are required", success: false });
     }
 
-    const userPresent = await User.findOne({ email: email });
-    if (userPresent) {
-      res
+    // check if the user already exist or not
+    const existUser = await User.findOne({ email: email });
+    if (existUser) {
+      return res
         .status(404)
-        .json({ message: "user is already exist", success: false });
-      return;
+        .json({ message: "user already register", success: false });
     }
 
-    const newUser = await User.create({
+    await User.create({
       username,
       email,
       password,
     });
 
-    res
-      .status(200)
-      .json({ message: "New user created successfully", success: true });
+    return res.status(201).json({
+      message: `${username} are successfully registered`,
+      success: true,
+    });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message, success: false });
+    console.error("Error creating user:", error.message);
+    res.status(500).json({ message: "Server error", success: false });
   }
 });
 
-userRouter.route("/signin").post(async (req, res) => {
+// @desc    User Signin
+// @route   POST http://localhost:3000/api/v1/users/signin
+// @access  Public
+userRouter.post("/signin", async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
 
-  if (email.length === 0) {
-    return res.json({ message: "email is required", success: false });
-  }
-  if (password.length === 0) {
-    return res.json({ message: "password is required", success: false });
-  }
-  const userValid = await User.findOne({
-    email: email,
-  });
   try {
-    console.log(userValid);
-    if (!userValid) {
-      return res.status(404).json({
-        message: "No User is found with this Email !",
-        success: false,
-      });
+    // Validate if email and password are provided
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required", success: false });
     }
 
-    const passwordAuth = await userValid.isPasswordCorrect(password);
-    console.log(passwordAuth);
-    if (!passwordAuth) {
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
       return res
         .status(404)
-        .json({ message: "password is incorrect", success: false });
-    } else {
-      const token = jwt.sign({ id: userValid._id }, process.env.SECRET_KEY, {
-        expiresIn: "1d",
-      });
-      res
-        .status(200)
-        .json({ message: "user is successfully Login", token, success: true });
+        .json({ message: "User not found in database", success: false });
     }
-  } catch (err) {
-    res.json({ message: err.message, success: false });
+
+    // Validate password
+    const isPasswordValid = await user.isPasswordCorrect(password);
+    if (!isPasswordValid) {
+      return res
+        .status(401)
+        .json({ message: "User not found in database", success: false });
+    }
+
+    // Generate JWT token for authenticated user
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+      expiresIn: "1d",
+    });
+    res
+      .status(200)
+      .json({ message: "User logged in successfully", token, success: true });
+  } catch (error) {
+    console.error("Error during signin:", error.message);
+    res.status(500).json({ message: "Server error", success: false });
   }
 });
 
-userRouter
-  .route("/get-user-info-by-id")
-  .post(authMiddleware, async (req, res) => {
-    try {
-      const userLogin = await User.findOne({ _id: req?.userId }).select(
-        "-password"
-      );
-      if (!userLogin) {
-        return res.status(200).json({
-          message: "user does not exist !",
-          success: false,
-        });
-      } else {
-        return res.status(200).json({
-          message: "successfully authenticate it",
-          success: true,
-          data: {
-            ...userLogin._doc,
-          },
-        });
-      }
-    } catch (error) {
-      res.status(400).json({ message: error.message, success: false });
-    }
-  });
+// @desc    Get User Info by ID
+// @route   POST http://localhost:3000/api/v1/users/get-user-info-by-id
+// @access  Private (requires authentication)
+userRouter.post("/get-user-info-by-id",authMiddleware, async (req, res) => {
+  try {
+    // Fetch user information by user ID (assuming `req.userId` is set by your authentication middleware)
+    const user = await User.findById(req.userId).select("-password");
 
-// @desc    Apply for doctor account
-// @route   POST /api/v1/users/apply-as-doctor
-// @access  Public
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
+    }
+
+    res.status(200).json({ message: "User found", success: true, data: user });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+});
+
+// // @desc    Apply for doctor account
+// // @route   POST http://localhost:3000/api/v1/users/apply-as-doctor
+// // @access  Public
 
 userRouter.route("/apply-as-doctor").post(async (req, res) => {
   try {
@@ -141,5 +134,46 @@ userRouter.route("/apply-as-doctor").post(async (req, res) => {
     res.status(400).json({ message: error.message, success: false });
   }
 });
+
+// userRouter.put("/mark-as-seen/:notificationId", async (req, res) => {
+//   const { notificationId } = req.params;
+//   const { userId } = req.body;
+
+//   try {
+//     const admin = await User.findById(userId);
+
+//     if (!admin) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "User not found" });
+//     }
+
+//     const notification = admin.unseenNotifications.id(notificationId);
+
+//     if (!notification) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Notification not found" });
+//     }
+
+//     // Remove from unseen and add to seen
+//     admin.unseenNotifications.id(notificationId).remove();
+//     admin.seenNotifications.push(notification);
+
+//     await admin.save();
+
+//     res
+//       .status(200)
+//       .json({
+//         success: true,
+//         message: "Notification marked as seen",
+//         notification,
+//       });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ success: false, message: "Internal server error", error });
+//   }
+// });
 
 export default userRouter;

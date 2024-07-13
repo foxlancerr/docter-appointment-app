@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import User from './user.model.js';
+import Admin from './admin.model.js';
+import Notification from './notification.model.js';
 
 const doctorSchema = new mongoose.Schema({
   firstname: {
@@ -12,11 +15,6 @@ const doctorSchema = new mongoose.Schema({
   phone: {
     type: String,
     required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
   },
   address: {
     type: String,
@@ -59,10 +57,25 @@ const doctorSchema = new mongoose.Schema({
     enum: ['pending', 'approved', 'rejected'],
     default: 'pending',
   },
-  unseenNotification: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
-  seenNotification: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
+
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+
+  seenNotifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }],
+  unseenNotifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }],
+  patients: [
+    {
+      patientId: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient' },
+      disease: { type: String },
+      // Add more patient-related details here as needed
+    },
+  ],
 }, { timestamps: true });
 
-const Doctor = mongoose.model('Doctor', doctorSchema);
+const Doctor = mongoose.model("doctor", doctorSchema)
+
 
 export default Doctor;

@@ -4,31 +4,33 @@ import InputBox from "../components/InputBox";
 import toast from "react-hot-toast";
 import { setItemInLocalStorage } from "../utils/webLocalStorage";
 import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function ApplyDoctors() {
+  const loginUser = useSelector((state) => state?.userInfo?.user);
   const fetchData = async (data) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/v1/users/apply-as-doctor",
+        "http://localhost:3000/api/v1/doctor/apply",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ ...data, email: loginUser?.email }),
         }
       );
 
       const result = await response.json();
-      console.log(result)
+      console.log(result);
       if (!result?.success) {
         toast.error(result.message);
+        toast("some thing went wrong");
       } else {
         toast.success(result.message);
-        toast("Successfully Applied for Doctor Account");
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       console.log("Already applied for Doctor Account");
       toast.error("already applied for Doctor Account");
     }
@@ -48,12 +50,10 @@ function ApplyDoctors() {
         formData[key] = value;
       }
     }
-  
-    
+
     fetchData(formData);
     console.log("Form Data:", formData);
   };
-  
 
   return (
     <Layout>
@@ -69,7 +69,7 @@ function ApplyDoctors() {
             </div>
             <div className="grid grid-cols-2 mt-3 gap-5 max-md:grid-cols-1">
               <InputBox _name="phone" type="tel" label="Phone Number" />
-              <InputBox _name="email" type="email" label="Email" />
+              {/* <InputBox _name="email" type="email" label="Email" /> */}
             </div>
             <div className="grid grid-cols-2 mt-3 gap-5 max-md:grid-cols-1">
               <InputBox _name="address" type="text" label="Address" />
@@ -121,7 +121,9 @@ function ApplyDoctors() {
                         value={day}
                         className="mr-2"
                       />
-                      <label htmlFor={day} className="text-base">{day}</label>
+                      <label htmlFor={day} className="text-base">
+                        {day}
+                      </label>
                     </div>
                   ))}
                 </div>
@@ -150,6 +152,5 @@ function ApplyDoctors() {
     </Layout>
   );
 }
-
 
 export default ApplyDoctors;
