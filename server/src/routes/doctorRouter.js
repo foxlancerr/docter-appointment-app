@@ -250,7 +250,7 @@ doctorRouter.post("/apply", async (req, res) => {
     const createdNotifications = await Notification.insertMany(notifications);
 
     for (const admin of admins) {
-      admin.unseenNotifications.push(...createdNotifications.map((n) => n._id));
+      admin.notification.push(...createdNotifications.map((n) => n._id));
       await admin.save();
     }
 

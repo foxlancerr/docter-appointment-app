@@ -8,9 +8,15 @@ const adminSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    notifications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Notification",
+      },
+    ],
   },
   { timestamps: true }
 );
 
-const Admin = User.discriminator("admin", adminSchema);
+const Admin = mongoose.model("admin", adminSchema);
 export default Admin;

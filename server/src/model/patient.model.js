@@ -11,12 +11,10 @@ const patientSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    seenNotifications: [
+    notifications: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Notification" },
     ],
-    unseenNotifications: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Notification" },
-    ],
+    
     treatmentDetails: {
       type: String,
       default: "",

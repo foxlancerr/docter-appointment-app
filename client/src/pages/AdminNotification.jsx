@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 function AdminNotification() {
   const user = useSelector((state) => state?.userInfo?.user);
-
-  const [localUser, setLocalUser] = useState(user);
+  const [notifications, setNotifications] = useState([]);
   const tabs = ["All", "seen", "unseen", "approved", "rejected"];
   const [activeTab, setActiveTab] = useState("All");
 
@@ -14,116 +13,46 @@ function AdminNotification() {
     setActiveTab(tab);
   };
 
-  const filterNotifications = () => {
-    const unseenNotifications = user?.unseenNotifications || [];
-    const seenNotifications = user?.seenNotifications || [];
-    const allNotifications = [...unseenNotifications, ...seenNotifications];
+  useEffect(() => {
+    const fetchNotifications = async () => {
 
+      if (!user || !user._id) {
+        return; // Exit early if user or user._id is not defined
+      }
+
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/v1/notification/get-notification/${user._id}`
+        );
+
+        const result = await response.json();
+        console.log(result);
+
+        if (result.success) {
+          setNotifications(result.notifications);
+        } else {
+          toast.error(result.message);
+        }
+      } catch (err) {
+        toast.error("An error occurred while fetching notifications");
+      }
+    };
+    fetchNotifications();
+  }, [user]);
+
+  const filterNotifications = () => {
     switch (activeTab) {
       case "All":
-        return allNotifications;
+        return notifications;
       case "seen":
-        return seenNotifications;
+        return notifications.filter((notification) => notification.seen);
       case "unseen":
-        return unseenNotifications;
-      case "approved":
-        return allNotifications.filter(
-          (notification) =>
-            user?.isDocter && notification?.data?.status === "approved"
-        );
-      case "rejected":
-        return allNotifications.filter(
-          (notification) =>
-            user?.isDocter && notification?.data?.status === "rejected"
-        );
+        return notifications.filter((notification) => !notification.seen);
       default:
-        return [];
+        return notifications;
     }
   };
-
   const filteredNotifications = filterNotifications();
-
-  console.log(filteredNotifications, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-  const handleApprove = async (doctorId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/v1/doctor/approve/${doctorId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: `Bearer ${user.token}`, // assuming you're using JWT for authentication
-          },
-        }
-      );
-
-      const result = await response.json();
-
-      if (result.success) {
-        toast.success(result.message);
-        // Update local state or refetch notifications
-      } else {
-        toast.error(result.message);
-      }
-    } catch (err) {
-      toast.error("An error occurred while approving the doctor");
-    }
-  };
-
-  const handleReject = async (doctorId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/v1/doctor/reject/${doctorId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`, // assuming you're using JWT for authentication
-          },
-        }
-      );
-
-      const result = await response.json();
-
-      if (result.success) {
-        toast.success(result.message);
-        // Update local state or refetch notifications
-      } else {
-        toast.error(result.message);
-      }
-    } catch (err) {
-      toast.error("An error occurred while rejecting the doctor");
-    }
-  };
-
-  const markAsSeen = async (notificationId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/v1/notifications/mark-as-seen/${notificationId}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`,
-          },
-          body: JSON.stringify({ userId: user._id, userType: user.isAdmin ? 'admin' : user.isDoctor ? 'doctor' : 'user' }),
-        }
-      );
-  
-      const result = await response.json();
-  
-      if (result.success) {
-        toast.success('Notification marked as seen');
-        // Update local state or refetch notifications
-      } else {
-        toast.error('Failed to mark notification as seen');
-      }
-    } catch (err) {
-      toast.error('An error occurred while marking notification as seen');
-    }
-  };
-  
 
   return (
     <Layout>

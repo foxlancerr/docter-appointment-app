@@ -117,8 +117,8 @@ userRouter.route("/apply-as-doctor").post(async (req, res) => {
     const newDocter = new Docter({ ...req.body, status: "pending" });
     await newDocter.save();
     const admin = await User.findOne({ isAdmin: true });
-    const unseenNotifications = admin.unseenNotifications;
-    unseenNotifications.push({
+    const notification = admin.notification;
+    notification.push({
       type: "new docter request",
       message: `${newDocter.firstname} ${newDocter.lastname} has applied for docter account`,
       data: {

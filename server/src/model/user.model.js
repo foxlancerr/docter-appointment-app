@@ -29,13 +29,7 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       refPath: "userType",
     },
-    seenNotifications: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Notification",
-      },
-    ],
-    unseenNotifications: [
+    notification: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Notification",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -12,30 +12,39 @@ function PatientNotification() {
     setActiveTab(tab);
   };
 
-  const filterNotifications = () => {
-    const unseenNotifications = user?.unseenNotifications || [];
-    const seenNotifications = user?.seenNotifications || [];
-    const allNotifications = [...unseenNotifications, ...seenNotifications];
+  const [notifications, setNotifications] = useState([]);
 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/v1/notification/get-notifications/${user._id}`
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+          setNotifications(result.notifications);
+        } else {
+          toast.error(result.message);
+        }
+      } catch (err) {
+        toast.error("An error occurred while fetching notifications");
+      }
+    };
+    fetchNotifications();
+  }, [user]);
+
+  const filterNotifications = () => {
     switch (activeTab) {
       case "All":
-        return allNotifications;
+        return notifications;
       case "seen":
-        return seenNotifications;
+        return notifications.filter((notification) => notification.seen);
       case "unseen":
-        return unseenNotifications;
-      case "approved":
-        return allNotifications.filter(
-          (notification) =>
-            user?.isDocter && notification?.data?.status === "approved"
-        );
-      case "rejected":
-        return allNotifications.filter(
-          (notification) =>
-            user?.isDocter && notification?.data?.status === "rejected"
-        );
+        return notifications.filter((notification) => !notification.seen);
       default:
-        return [];
+        return notifications;
     }
   };
 

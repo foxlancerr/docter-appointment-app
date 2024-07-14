@@ -10,9 +10,9 @@ function Navbar() {
   const user = useSelector((state) => state?.userInfo?.user);
   const navigate = useNavigate();
   let navigateToNotificationsRoute;
-  if (user?.userType == "admin") {
+  if (user?.userType == 'admin') {
     navigateToNotificationsRoute = "/admin-notifications";
-  } else if (user?.userType == "doctor") {
+  } else if (user?.userType == 'doctor') {
     navigateToNotificationsRoute = "/doctor-notifications";
   } else {
     navigateToNotificationsRoute = "/patient-notifications";

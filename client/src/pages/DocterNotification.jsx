@@ -18,10 +18,11 @@ function DoctorNotification() {
     const fetchNotifications = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/v1/notifications/get-notifications/${user._id}`
+          `http://localhost:3000/api/v1/notification/get-notifications/${user._id}`
         );
 
         const result = await response.json();
+        console.log(result)
 
         if (result.success) {
           setNotifications(result.notifications);
