@@ -12,6 +12,7 @@ import Appointment from "./pages/Appointment";
 import Patient from "./pages/Patient";
 import PatientNotification from "./pages/patientNotification";
 import AdminNotification from "./pages/AdminNotification";
+import HomePage from "./components/landing-page";
 
 const App = () => {
   const { load } = useContext(GlobalContext);
@@ -23,6 +24,14 @@ const App = () => {
       <Routes>
         <Route
           path="/"
+          element={
+            // <PublicRoutes>
+              <HomePage></HomePage>
+            // </PublicRoutes>
+          }
+        ></Route>
+        <Route
+          path="/dashboard"
           element={
             <ProtectedRoutes>
               <Home></Home>

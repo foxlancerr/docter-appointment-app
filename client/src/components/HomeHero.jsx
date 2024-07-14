@@ -31,8 +31,9 @@ function HomeHero() {
     >
       <div className=" absolute top-0 left-0 w-full h-full bg-black/70 z-1"></div>
 
-      <h1 className="text-white text-2xl md:text-5xl font-bold z-10">
-        Consult top doctors online <br></br> for any health concern
+      <h1 className="text-white text-2xl md:text-3xl z-10">
+        <span className="font-bold text-4xl"> Consult</span> Top Doctors Online{" "}
+        <br></br> For Any Health Concern
       </h1>
       <div className=" z-20 flex flex-col justify-between h-full">
         <h2 className="py-2 px-2 bg-white/15 rounded max-sm:text-[16px] text-white font-bold text-base  bg-blue-700">

@@ -6,6 +6,8 @@ import HomeHero from "../components/HomeHero";
 import HomeFlipList from "../components/HomeFlipList";
 import { useDispatch } from "react-redux";
 import { logInUser } from "../store/features/userInfo/userInfoSlice";
+import { Button } from "@/components/ui/button";
+import FaqAccordion from "@/components/landing-page/faqs";
 
 const Home = () => {
   const { loguserInfo, setLoad } = useContext(GlobalContext);
@@ -33,6 +35,7 @@ const Home = () => {
 
   return (
     <Layout>
+      <FaqAccordion></FaqAccordion>
       <HomeHero></HomeHero>
       <HomeFlipList></HomeFlipList>
     </Layout>
