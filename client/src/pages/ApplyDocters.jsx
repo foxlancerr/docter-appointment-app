@@ -1,6 +1,6 @@
 import React from "react";
-import Layout from "../components/Layout";
-import InputBox from "../components/InputBox";
+import Layout from "../components/dashboard/DashboardLayout";
+import InputBox from "../components/dashboard/InputBox";
 import toast from "react-hot-toast";
 import { setItemInLocalStorage } from "../utils/webLocalStorage";
 import { Navigate } from "react-router-dom";

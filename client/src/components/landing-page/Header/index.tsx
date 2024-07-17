@@ -10,7 +10,7 @@ function Header() {
           first order by using promo "Welcome200"
         </p>
       </nav>
-      <nav className="bg-gray-800 text-white px-5 py-3">
+      <nav className="bg-blue-100 text-black px-5 py-3">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-2xl font-bold">
             <Link to="/">Doctorz</Link>
@@ -32,14 +32,14 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:text-gray-300">
+              <Link to="/contact-us" className="hover:text-gray-300">
                 Contact
               </Link>
             </li>
           </ul>
           <div className="flex gap-2">
-            <button className="">Sign In</button>|
-            <button className="">Sign Up</button>
+            <Link to="/signin" className="">Sign In</Link>|
+            <Link to="/signup" className="">Sign Up</Link>
           </div>
         </div>
       </nav>

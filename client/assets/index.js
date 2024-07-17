@@ -6,7 +6,7 @@ import Avator2 from "./images/avatar-2.jpeg";
 import Avator3 from "./images/avatar-3.png";
 import Avator4 from "./images/avatar-4.png";
 import Avator5 from "./images/avatar-5.png";
-
+import FrontImageSignUp from "./front-image.png";
 export {
   BgHeroImage,
   Avator1,
@@ -15,4 +15,5 @@ export {
   Avator4,
   Avator5,
   profile_docter,
+  FrontImageSignUp,
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../components/Layout";
+import Layout from "../components/dashboard/DashboardLayout";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 

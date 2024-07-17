@@ -1,8 +1,8 @@
 import React from "react";
-import Layout from "../components/Layout";
+import Layout from "../components/dashboard/DashboardLayout";
 import Table from "../components/Table";
-import MeetingCard from "../components/MeetingCard";
-import HomeCard from "../components/HomeCard";
+import MeetingCard from "../components/dashboard/MeetingCard";
+import HomeCard from "../components/dashboard/HomeCard";
 import { patientHero } from "../constants";
 
 function Patient() {

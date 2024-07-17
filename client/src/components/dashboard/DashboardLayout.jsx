@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
-import Aside from "./Aside";
-import Navbar from "./Navbar";
+
 import { useDispatch } from "react-redux";
-import { logInUser } from "../store/features/userInfo/userInfoSlice";
-import { getItemFromLocalStorage } from "../utils/webLocalStorage";
+import { logInUser } from "../../store/features/userInfo/userInfoSlice";
+import { getItemFromLocalStorage } from "@/utils/webLocalStorage";
+import Navbar from "./Navbar";
+import Aside from "./Aside";
+
 
 function Layout({ children }) {
   const dispatch = useDispatch();

@@ -1,18 +1,26 @@
 import React, { useContext } from "react";
-import { Signin, Signup, Home } from "./pages";
+// import { Signin, Signup, Home } from "./pages";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { GlobalContext } from "./context/GlobalContext";
-import { ProtectedRoutes, PublicRoutes } from "./routes";
+// import { ProtectedRoutes, PublicRoutes } from "./routes";
 import { Loader } from "./components";
-import ApplyDocters from "./pages/ApplyDocters";
-import DoctorNotification from "./pages/DocterNotification";
-import UserNotification from "./pages/DocterNotification";
-import Appointment from "./pages/Appointment";
-import Patient from "./pages/Patient";
-import PatientNotification from "./pages/patientNotification";
-import AdminNotification from "./pages/AdminNotification";
 import HomePage from "./components/landing-page";
+import ContactUs from "./components/shared/ContactUs";
+import ServicesList from "./pages/Services/ServicesList";
+import Signin from "./pages/auth/Signin";
+import Signup from "./pages/auth/Signup";
+import { ProtectedRoutes, PublicRoutes } from "./routes";
+import { Home } from "./pages/auth";
+import ApplyDocters from "./pages/ApplyDocters";
+// import DoctorNotification from "./pages/DocterNotification";
+// import UserNotification from "./pages/DocterNotification";
+// import Appointment from "./pages/Appointment";
+// import Patient from "./pages/Patient";
+// import PatientNotification from "./pages/patientNotification";
+// import AdminNotification from "./pages/AdminNotification";
+// import HomePage from "./components/landing-page";
+// import ContactUs from "./components/shared/ContactUs";
 
 const App = () => {
   const { load } = useContext(GlobalContext);
@@ -26,19 +34,48 @@ const App = () => {
           path="/"
           element={
             // <PublicRoutes>
-              <HomePage></HomePage>
+            <HomePage></HomePage>
+            // </PublicRoutes>
+          }
+        ></Route>
+        <Route path="/contact-us" element={<ContactUs></ContactUs>}></Route>
+        <Route path="/services" element={<ServicesList></ServicesList>}></Route>
+        <Route
+          path="/signin"
+          element={
+            // <PublicRoutes>
+            <Signin></Signin>
             // </PublicRoutes>
           }
         ></Route>
         <Route
+          path="/signup"
+          element={
+            // <PublicRoutes>
+            <Signup></Signup>
+            // </PublicRoutes>
+          }
+        ></Route>
+
+        <Route
           path="/dashboard"
           element={
+            // <ProtectedRoutes>
+            <Home></Home>
+            // </ProtectedRoutes>
+          }
+        ></Route>
+
+        <Route
+          path="/apply-doctor"
+          element={
             <ProtectedRoutes>
-              <Home></Home>
+              <ApplyDocters></ApplyDocters>
             </ProtectedRoutes>
           }
         ></Route>
-        <Route
+
+        {/*<Route
           path="/appointments"
           element={
             <ProtectedRoutes>
@@ -70,14 +107,7 @@ const App = () => {
             </ProtectedRoutes>
           }
         ></Route>
-        <Route
-          path="/apply-doctor"
-          element={
-            <ProtectedRoutes>
-              <ApplyDocters></ApplyDocters>
-            </ProtectedRoutes>
-          }
-        ></Route>
+        
         <Route
           path="/patients"
           element={
@@ -86,22 +116,7 @@ const App = () => {
             </ProtectedRoutes>
           }
         ></Route>
-        <Route
-          path="/signin"
-          element={
-            <PublicRoutes>
-              <Signin></Signin>
-            </PublicRoutes>
-          }
-        ></Route>
-        <Route
-          path="/signup"
-          element={
-            <PublicRoutes>
-              <Signup></Signup>
-            </PublicRoutes>
-          }
-        ></Route>
+       */}
       </Routes>
     </>
   );

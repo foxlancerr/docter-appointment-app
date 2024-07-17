@@ -1,10 +1,7 @@
-import {
-  doctorSideBarLinks,
-  userSideBarLinks,
-  adminSideBarLinks,
-} from "../constants";
+
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { adminSideBarLinks, doctorSideBarLinks, userSideBarLinks } from "@/constants";
 
 function Aside() {
   const { pathname } = useLocation();

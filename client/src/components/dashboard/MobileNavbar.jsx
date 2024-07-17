@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { adminSideBarLinks, doctorSideBarLinks, userSideBarLinks } from "../constants";
+import { adminSideBarLinks, doctorSideBarLinks, userSideBarLinks } from "../../constants";
 import { Link, useLocation } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import { useSelector } from "react-redux";

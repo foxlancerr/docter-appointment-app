@@ -1,2 +1,2 @@
-import Loader from "./Loader";
+import Loader from "./dashboard/Loader";
 export { Loader };

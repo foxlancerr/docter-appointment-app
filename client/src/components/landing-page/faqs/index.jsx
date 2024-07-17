@@ -11,7 +11,7 @@ import faqs from "../../../data/faqs.js";
 
 const FaqAccordion = () => {
   return (
-    <div className="max-w-4xl mx-auto p-10">
+    <div className="max-w-4xl mx-auto py-24 px-5">
       <h1 className="text-3xl font-bold text-center mb-6 text-black">Frequently Asked Questions</h1>
       <p className="text-center mb-8 text-gray-600">{faqs.description}</p>
       <Tabs defaultValue={faqs.QuestionsData[0].category_name}>

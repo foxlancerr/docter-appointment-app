@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BgHeroImage } from "../../assets/index";
+import { BgHeroImage } from "../../../assets/index";
 
 function HomeHero() {
   const [dateAndTime, setDateAndTime] = useState({

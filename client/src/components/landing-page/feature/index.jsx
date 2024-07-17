@@ -26,11 +26,11 @@ const FeatureFooter = [
 
 function FeatureSection() {
   return (
-    <>
+    <div className="py-24">
       <h1 className="text-3xl font-bold text-center mb-6 text-black">
         Why Doctorz?
       </h1>
-      <footer className="bottom-footer py-10 px-5 bg-black">
+      <div className="bottom-footer py-16 px-5 bg-black">
         <div className="flex justify-center items-center flex-wrap gap-10">
           {FeatureFooter.map((feature) => (
             <div className="flex gap-4 items-center" key={feature.id}>
@@ -46,8 +46,8 @@ function FeatureSection() {
             </div>
           ))}
         </div>
-      </footer>
-    </>
+      </div>
+    </div>
   );
 }
 

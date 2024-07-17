@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { getItemFromLocalStorage } from "../utils/webLocalStorage";
-import { GlobalContext } from "../context/GlobalContext";
-import Layout from "../components/Layout";
-import HomeHero from "../components/HomeHero";
-import HomeFlipList from "../components/HomeFlipList";
-import { useDispatch } from "react-redux";
-import { logInUser } from "../store/features/userInfo/userInfoSlice";
-import { Button } from "@/components/ui/button";
+import Layout from "@/components/dashboard/DashboardLayout";
+import HomeFlipList from "@/components/dashboard/HomeFlipList";
+import HomeHero from "@/components/dashboard/HomeHero";
 import FaqAccordion from "@/components/landing-page/faqs";
+import { GlobalContext } from "@/context/GlobalContext";
+import { logInUser } from "@/store/features/userInfo/userInfoSlice";
+import { getItemFromLocalStorage } from "@/utils/webLocalStorage";
+import { useContext, useEffect } from "react";
+import { useDispatch } from "react-redux";
+
 
 const Home = () => {
   const { loguserInfo, setLoad } = useContext(GlobalContext);
@@ -34,11 +34,11 @@ const Home = () => {
   }, []);
 
   return (
+    // <h1>hii</h1>
     <Layout>
-      <FaqAccordion></FaqAccordion>
       <HomeHero></HomeHero>
-      <HomeFlipList></HomeFlipList>
-    </Layout>
+       <HomeFlipList></HomeFlipList> 
+     </Layout>
   );
 };
 

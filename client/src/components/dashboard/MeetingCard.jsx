@@ -1,6 +1,6 @@
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { avatorImages } from "../constants";
-import { Avator1 } from "../../assets";
+import { avatorImages } from "../../constants";
+import { Avator1 } from "../../../assets";
 
 function MeetingCard() {
   return (

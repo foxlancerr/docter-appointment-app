@@ -1,7 +1,8 @@
-import { homeCardLinks } from "../constants";
+import { homeCardLinks } from "../../constants";
 import React from "react";
 import HomeCard from "./HomeCard";
 import MeetingCard from "./MeetingCard";
+
 
 function HomeFlipList() {
   return (

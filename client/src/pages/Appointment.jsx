@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "../components/Layout";
+import Layout from "../components/dashboard/DashboardLayout";
 import { FaUserLarge } from "react-icons/fa6";
 import { MdVerifiedUser } from "react-icons/md";
 import { FaHeartbeat } from "react-icons/fa";
@@ -11,8 +11,8 @@ import { IoStar } from "react-icons/io5";
 
 import { PiStarHalfBold } from "react-icons/pi";
 import { IoLocationSharp } from "react-icons/io5";
-import IconCard from "../components/appaintment-com/IconCard";
-import { Avator2 } from "../../assets/index";
+import { Avator2 } from "@/../assets/index.js";
+
 
 function Appointment() {
   const workingHours = [
@@ -165,3 +165,19 @@ function Appointment() {
 }
 
 export default Appointment;
+
+function IconCard({ title, sub_title, Icon, classNames }) {
+  return (
+    <div className={`flex flex-col items-center mt-5`}>
+      <span
+        className={` flex justify-center items-center p-4 rounded-full shrink-0 ${classNames} mb-3`}
+      >
+        <Icon className="text-[1.5rem]"></Icon>
+      </span>
+      <div className="flex flex-col w-full items-center">
+        <h1 className="text-2xl font-semibold">{title}</h1>
+        <p className="text-[16px]">{sub_title}</p>
+      </div>
+    </div>
+  );
+}
