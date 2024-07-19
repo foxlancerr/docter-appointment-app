@@ -1,199 +1,136 @@
 import Doctor from "../model/docter.model.js";
-import User from "../model/user.model.js";
-import asyncHandler from "express-async-handler";
 
-// @desc    Apply for doctor account
-// @route   POST /api/v1/doctors/apply-as-doctor
+// @desc    Get All Doctors
+// @route   POST http://localhost:3000/api/v1/doctors
 // @access  Public
-export const applyDoctor = asyncHandler(async (req, res) => {
-  console.log(req.body);
-  const {
-    firstname,
-    lastname,
-    phone,
-    email,
-    address,
-    department,
-    profession,
-    experience,
-    license,
-    feePerConsultation,
-    daysAvailable,
-    startTime,
-    endTime,
-  } = req.body;
-
-  console.log(req.body);
-  const doctorExists = await Doctor.findOne({ email });
-
-  // if (doctorExists) {
-  //   res.status(400);
-  //   throw new Error("Doctor already applied with this email");
-  // }
-
-  const doctor = new Doctor({
-    firstname,
-    lastname,
-    phone,
-    email,
-    address,
-    department,
-    profession,
-    experience,
-    license,
-    feePerConsultation,
-    daysAvailable,
-    startTime,
-    endTime,
-  });
-
-  const createdDoctor = await doctor.save();
-  res.status(201).json({
-    success: true,
-    data: createdDoctor,
-  });
-});
-
-// @desc    Get all pending doctor applications
-// @route   GET /api/v1/doctors/pending
-// @access  Admin
-export const getAllPendingDoctors = asyncHandler(async (req, res) => {
-  const doctors = await Doctor.find({ status: "pending" });
-  res.json(doctors);
-});
-
-// @desc    Update doctor application status
-// @route   PUT /api/v1/doctors/status/:id
-// @access  Admin
-export const updateDoctorStatus = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-
-  const doctor = await Doctor.findById(id);
-
-  if (!doctor) {
-    res.status(404);
-    throw new Error("Doctor not found");
-  }
-
-  doctor.status = status;
-  const updatedDoctor = await doctor.save();
-
-  res.json({
-    success: true,
-    data: updatedDoctor,
-  });
-});
-
-export const patientRequestedForTreatment = asyncHandler(async (req, res) => {
-  const { doctorId } = req.params;
-  const { patientId } = req.body;
-
+export const getAllDoctors = async (req, res) => {
   try {
-    // Find the doctor by ID
-    const doctor = await Doctor.findById(doctorId);
-
-    if (!doctor) {
-      return res.status(404).json({ message: "Doctor not found" });
-    }
-
-    // Add patient ID to unseenNotification array
-    doctor.unseenNotification.push(patientId);
-
-    // Save the updated doctor document
-    await doctor.save();
-
-    res.status(200).json({ message: "Patient added to unseen notifications" });
+    const doctors = await Doctor.find();
+    res.status(200).json({
+      data: doctors,
+      success: true,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-// @desc    Get all pending doctor applications
-// @route   GET /api/v1/doctors/approve/:doctorId
-// @access  Admin
-export const approveDoctor = async (req, res) => {
-  try {
-    const { doctorId } = req.params;
-
-    const doctor = await Doctor.findByIdAndUpdate(
-      doctorId,
-      {
-        status: "approved",
-      },
-      { new: true }
-    );
-
-    if (doctor) {
-      const user = await User.findOneAndUpdate(
-        // { email: doctor.email },
-        { isDocter: true },
-        { new: true } // To return the updated document
-      );
-
-      if (user) {
-        console.log(user);
-        user.unseenNotifications.push(
-          `Your application as Doctor has been approved.`
-        );
-        await user.save();
-
-        res.status(200).json({
-          success: true,
-          message: "Doctor approved successfully",
-          doctor,
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          message: "user not found with corresponding email",
-        });
-      }
-    } else {
-      res.status(404).json({ success: false, message: "Doctor not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res
+      .status(500)
+      .json({ message: "Server error", success: false, error: error });
   }
 };
 
-export const rejectDoctor = async (req, res) => {
+// @desc    Get Doctor based on id
+// @route   POST http://localhost:3000/api/v1/doctor/:id
+// @access  Public
+export const getDoctorById = async (req, res) => {
   try {
-    const { doctorId } = req.params;
-
-    console.log(doctorId);
-
-    const doctor = await Doctor.findByIdAndUpdate(
-      doctorId,
-      { status: "rejected" },
-      { new: true }
-    );
-
-    if (doctor) {
-      const user = await User.findOne({ email: doctor.email });
-
-      if (user) {
-        user.unseenNotifications.push(
-          `Your application as Doctor has been rejected.`
-        );
-        await user.save();
-
-        res.status(200).json({
-          success: true,
-          message: "Doctor rejected successfully",
-          doctor,
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          message: "user not found with corresponding email",
-        });
-      }
-    } else {
-      res.status(404).json({ success: false, message: "Doctor not found" });
+    const doctor = await Doctor.findById(req.params.id);
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
     }
+    res.status(200).json({
+      data: doctor,
+      success: true,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res
+      .status(500)
+      .json({ message: "Server error", success: false, error: error });
+  }
+};
+
+// @desc    Create New doctors
+// @route   POST http://localhost:3000/api/v1/doctor
+// @access  Public
+export const createDoctor = async (req, res) => {
+  const {
+    name,
+    verified,
+    reviews,
+    specialty,
+    yearsExperience,
+    about,
+    services,
+    education,
+    specializations,
+    languages,
+    experience,
+    otherLocations,
+    fees,
+    daysAvailable,
+  } = req.body;
+
+  try {
+    const newDoctor = new Doctor({
+      name,
+      verified,
+      reviews,
+      specialty,
+      yearsExperience,
+      about,
+      services,
+      education,
+      specializations,
+      languages,
+      experience,
+      otherLocations,
+      fees,
+      daysAvailable,
+    });
+
+    const savedDoctor = await newDoctor.save();
+    res.status(201).json({
+      data: savedDoctor,
+      success: true,
+      message: "new doctor saved successfully",
+    });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "Error creating doctor", success: false, error: error });
+  }
+};
+
+// @desc    Update Doctors based on ID
+// @route   POST http://localhost:3000/api/v1/doctor/:id
+// @access  Public
+export const updateDoctorById = async (req, res) => {
+  try {
+    const updatedDoctor = await Doctor.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedDoctor) {
+      return res
+        .status(404)
+        .json({ message: "Doctor not found", success: false });
+    }
+    res
+      .status(200)
+      .json({ message: "Doctor updated", success: true, data: updatedDoctor });
+  } catch (error) {
+    res.status(400).json({ message: "Error updating doctor", error });
+  }
+};
+
+// @desc   Delete Doctors based on ID
+// @route   POST http://localhost:3000/api/v1/doctor
+// @access  Public
+export const deleteDoctorById = async (req, res) => {
+  try {
+    const deletedDoctor = await Doctor.findByIdAndDelete(req.params.id);
+    if (!deletedDoctor) {
+      return res
+        .status(404)
+        .json({ message: "Doctor not found", success: false });
+    }
+    res.status(200).json({
+      message: "Doctor deleted successfully",
+      data: deletedDoctor,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Server error", success: false, error: error });
   }
 };

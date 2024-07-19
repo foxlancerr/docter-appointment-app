@@ -1,55 +1,67 @@
 import mongoose from "mongoose";
-import User from "./user.model.js";
-
-const patientSchema = new mongoose.Schema(
-  {
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    isDoctor: {
-      type: Boolean,
-      default: false,
-    },
-    notifications: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Notification" },
-    ],
-    
-    treatmentDetails: {
-      type: String,
-      default: "",
-    },
-    diseases: {
-      type: [String],
-      default: [],
-    },
-    doctors: [
-      {
-        doctorId: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" },
-        doctorName: { type: String },
-        // Add more doctor-specific details here as needed
-      },
-    ],
-    medicines: [
-      {
-        medicineName: { type: String },
-        dosage: { type: String },
-        // Add more medicine details here as needed
-      },
-    ],
-    appointments: [
-      {
-        doctorId: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" },
-        appointmentDate: { type: Date },
-        reason: { type: String },
-        // Add more appointment details as needed
-      },
-    ],
-    
-    // Add more necessary fields relevant to the patient here
+const patientSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
   },
-  { timestamps: true }
-);
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  phone: {
+    type: String,
+    required: true
+  },
+  dateOfBirth: {
+    type: Date,
+    required: true
+  },
+  gender: {
+    type: String,
+    enum: ['Male', 'Female', 'Other'],
+    required: true
+  },
+  address: {
+    street: String,
+    city: String,
+    state: String,
+    zip: String,
+    country: String
+  },
+  medicalHistory: [{
+    condition: String,
+    diagnosisDate: Date,
+    treatment: String,
+    currentStatus: String
+  }],
+  medications: [{
+    name: String,
+    dosage: String,
+    frequency: String,
+    startDate: Date,
+    endDate: Date,
+    prescribingDoctor: String
+  }],
+  allergies: [{
+    allergen: String,
+    reaction: String,
+    severity: String,
+    firstObserved: Date
+  }],
+  appointments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Appointment'
+  }],
+  emergencyContact: {
+    name: String,
+    relationship: String,
+    phone: String,
+    email: String
+  }
+}, {
+  timestamps: true
+});
 
-const Patient = User.discriminator("patient", patientSchema);
+const Patient = mongoose.model('Patient', patientSchema);
 export default Patient;
