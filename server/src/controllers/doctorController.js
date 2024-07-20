@@ -1,7 +1,7 @@
 import Doctor from "../model/docter.model.js";
 
 // @desc    Get All Doctors
-// @route   POST http://localhost:3000/api/v1/doctors
+// @route   POST http://localhost:3000/api/v1/doctor
 // @access  Public
 export const getAllDoctors = async (req, res) => {
   try {
