@@ -1,47 +1,15 @@
-// import React, { useEffect, useState } from "react";
-// import DoctorCard from "./DoctorCard";
-// import Doctors from "../../../public/data/doctors.json";
-// import { fetchDoctorList } from "@/utils/api-calls";
-
-// function DoctorList() {
-//   const [doctorList, setDoctorList] = useState([]);
-
-//   useEffect(() => {
-//     fetchDoctorList()
-//       .then((response) => {
-//         setDoctorList(response.data);
-//       })
-//       .catch((err) => {
-//         console.error(err);
-//       });
-//   }, []);
-//   console.log(doctorList);
-//   return (
-//     <div className="container  mx-auto">
-//       <h1>Top Specailist</h1>
-//       <section className="grid grid-cols-1 sm:grid-cols-2 gap-5 gap-x-5">
-//         {doctorList &&
-//           doctorList?.map((item, index) => {
-//             return <DoctorCard doctor={item} key={index}></DoctorCard>;
-//           })}
-//       </section>
-//     </div>
-//   );
-// }
-
-// export default DoctorList;
 import React, { useEffect, useState } from "react";
 import DoctorCard from "./DoctorCard";
 import { fetchDoctorList } from "@/utils/api-calls";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import toast from "react-hot-toast";
 
 function DoctorList() {
   const [doctorList, setDoctorList] = useState([]);
@@ -70,6 +38,7 @@ function DoctorList() {
     indexOfFirstDoctor,
     indexOfLastDoctor
   );
+
 
   return (
     <div className="container mx-auto">

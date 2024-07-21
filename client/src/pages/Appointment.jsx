@@ -1,183 +1,425 @@
-import React from "react";
-import Layout from "../components/dashboard/DashboardLayout";
-import { FaUserLarge } from "react-icons/fa6";
-import { MdVerifiedUser } from "react-icons/md";
-import { FaHeartbeat } from "react-icons/fa";
-import { IoStarOutline } from "react-icons/io5";
-import { BiSolidMessageSquareDots } from "react-icons/bi";
-import { FaBookMedical } from "react-icons/fa";
+import Layout from "@/components/dashboard/DashboardLayout";
+import { DatePicker } from "@/components/shared/DatePicker";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { bookAppointment } from "@/utils/api-calls";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { IoStar } from "react-icons/io5";
+const Appointment = () => {
+  const user = useSelector((state) => state?.userInfo?.user);
+  const { doctorId } = useParams();
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
+  const [endTime, setEndTime] = useState();
+  const [startTime, setStartTime] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [gender, setGender] = useState("");
+  const [address, setAddress] = useState({
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "",
+  });
+  const [medicalHistory, setMedicalHistory] = useState([
+    { condition: "", diagnosisDate: "", treatment: "", currentStatus: "" },
+  ]);
+  const [medications, setMedications] = useState([
+    {
+      name: "",
+      dosage: "",
+      frequency: "",
+      startDate: "",
+      endDate: "",
+      prescribingDoctor: "",
+    },
+  ]);
+  const [allergies, setAllergies] = useState([
+    { allergen: "", reaction: "", severity: "", firstObserved: "" },
+  ]);
+  const [emergencyContact, setEmergencyContact] = useState({
+    name: "",
+    relationship: "",
+    phone: "",
+    email: "",
+  });
 
-import { PiStarHalfBold } from "react-icons/pi";
-import { IoLocationSharp } from "react-icons/io5";
-import { Avator2 } from "@/../assets/index.js";
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const appointmentData = {
+      name,
+      email,
+      phone,
+      dateOfBirth,
+      gender,
+      address,
+      medicalHistory,
+      medications,
+      allergies,
+      emergencyContact,
+      endTime,
+      startTime,
+      doctorId,
+      patientId: user?._id,
+    };
 
+    const response = await bookAppointment(appointmentData);
+    if (response.success) {
+      toast.success(response.message);
+      navigate("/"); // Navigate to the patient list or details page
+    } else {
+      toast.success(response.message);
+    }
+  };
 
-function Appointment() {
-  const workingHours = [
-    {
-      key: 2,
-      day: "Monday",
-      time: "9:00AM - 5:00PM",
-      openOffice: true,
-    },
-    {
-      key: 3,
-      day: "Tuesday",
-      time: "9:00AM - 5:00PM",
-      openOffice: true,
-    },
-    {
-      key: 4,
-      day: "Wednesday",
-      time: "9:00AM - 5:00PM",
-      openOffice: true,
-    },
-    {
-      key: 5,
-      day: "Thursday",
-      time: "9:00AM - 5:00PM",
-      openOffice: true,
-    },
-    {
-      key: 6,
-      day: "Friday",
-      time: "9:00AM - 12:30PM",
-      openOffice: true,
-    },
-    {
-      key: 7,
-      day: "Saturday",
-      time: "9:00AM - 2:00PM",
-      openOffice: false,
-    },
-    {
-      key: 1,
-      day: "Sunday",
-      time: "3:00PM - 6:00PM",
-      openOffice: false,
-    },
-  ];
+  const renderStep1 = () => (
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter full name"
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter email address"
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="phone">Phone</Label>
+          <Input
+            id="phone"
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="Enter phone number"
+            required
+          />
+        </div>
+        <div>
+          <div className="flex gap-1 flex-col flex-1">
+            <label htmlFor="start-date">Date of Birth</label>
+            <DatePicker
+              label="Pick a start date"
+              date={dateOfBirth}
+              setDate={setDateOfBirth}
+            />
+          </div>
+        </div>
+        <div>
+          <Label htmlFor="gender">Gender</Label>
+          <Select id="gender" value={gender} onValueChange={setGender} required>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select gender" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Gender</SelectLabel>
+                <SelectItem value="Male">Male</SelectItem>
+                <SelectItem value="Female">Female</SelectItem>
+                <SelectItem value="Other">Other</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <div className="mt-5">
+        <Label htmlFor="address">Address</Label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input
+            id="street"
+            value={address.street}
+            onChange={(e) => setAddress({ ...address, street: e.target.value })}
+            placeholder="Street"
+          />
+          <Input
+            id="city"
+            value={address.city}
+            onChange={(e) => setAddress({ ...address, city: e.target.value })}
+            placeholder="City"
+          />
+          <Input
+            id="state"
+            value={address.state}
+            onChange={(e) => setAddress({ ...address, state: e.target.value })}
+            placeholder="State"
+          />
+          <Input
+            id="zip"
+            value={address.zip}
+            onChange={(e) => setAddress({ ...address, zip: e.target.value })}
+            placeholder="ZIP Code"
+          />
+          <Input
+            id="country"
+            value={address.country}
+            onChange={(e) =>
+              setAddress({ ...address, country: e.target.value })
+            }
+            placeholder="Country"
+          />
+        </div>
+      </div>
+      <div className="mt-5">
+        <Label htmlFor="emergencyContact">Emergency Contact</Label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input
+            id="emergencyContactName"
+            value={emergencyContact.name}
+            onChange={(e) =>
+              setEmergencyContact({
+                ...emergencyContact,
+                name: e.target.value,
+              })
+            }
+            placeholder="Name"
+          />
+          <Input
+            id="emergencyContactRelationship"
+            value={emergencyContact.relationship}
+            onChange={(e) =>
+              setEmergencyContact({
+                ...emergencyContact,
+                relationship: e.target.value,
+              })
+            }
+            placeholder="Relationship"
+          />
+          <Input
+            id="emergencyContactPhone"
+            value={emergencyContact.phone}
+            onChange={(e) =>
+              setEmergencyContact({
+                ...emergencyContact,
+                phone: e.target.value,
+              })
+            }
+            placeholder="Phone"
+          />
+          <Input
+            id="emergencyContactEmail"
+            value={emergencyContact.email}
+            onChange={(e) =>
+              setEmergencyContact({
+                ...emergencyContact,
+                email: e.target.value,
+              })
+            }
+            placeholder="Email"
+          />
+        </div>
+      </div>
+      <Button
+        onClick={() => setStep(2)}
+        className="w-full bg-blue-500 text-white hover:bg-blue-600 mt-10"
+      >
+        Next Step
+      </Button>
+    </>
+  );
+
+  const renderStep2 = () => (
+    <>
+      <div className="flex gap-5">
+        <div className="flex gap-1 flex-col flex-1">
+          <label htmlFor="start-date">Start Date</label>
+          <DatePicker
+            label="Pick a start date"
+            date={startTime}
+            setDate={setStartTime}
+          />
+        </div>
+        <div className="flex gap-1 flex-col flex-1">
+          <label htmlFor="end-date">End Date</label>
+          <DatePicker
+            label="Pick an end date"
+            date={endTime}
+            setDate={setEndTime}
+          />
+        </div>
+      </div>
+      <div className="mt-5">
+        <Label htmlFor="medicalHistory">Medical History</Label>
+        {medicalHistory.map((item, index) => (
+          <Card key={index} className="p-4 mb-4 bg-gray-100">
+            <div className="grid grid-cols-1 gap-4">
+              <Input
+                value={item.condition}
+                onChange={(e) => {
+                  const updatedHistory = [...medicalHistory];
+                  updatedHistory[index].condition = e.target.value;
+                  setMedicalHistory(updatedHistory);
+                }}
+                placeholder="Condition"
+              />
+              {/* Use a date picker component here */}
+              <Input
+                value={item.treatment}
+                onChange={(e) => {
+                  const updatedHistory = [...medicalHistory];
+                  updatedHistory[index].treatment = e.target.value;
+                  setMedicalHistory(updatedHistory);
+                }}
+                placeholder="Treatment"
+              />
+              <Input
+                value={item.currentStatus}
+                onChange={(e) => {
+                  const updatedHistory = [...medicalHistory];
+                  updatedHistory[index].currentStatus = e.target.value;
+                  setMedicalHistory(updatedHistory);
+                }}
+                placeholder="Current Status"
+              />
+            </div>
+          </Card>
+        ))}
+      </div>
+      <div className="mt-5">
+        <Label htmlFor="medications">Medications</Label>
+        {medications.map((item, index) => (
+          <Card key={index} className="p-4 mb-4 bg-gray-100">
+            <div className="grid grid-cols-1 gap-4">
+              <Input
+                value={item.name}
+                onChange={(e) => {
+                  const updatedMedications = [...medications];
+                  updatedMedications[index].name = e.target.value;
+                  setMedications(updatedMedications);
+                }}
+                placeholder="Medication Name"
+              />
+              <Input
+                value={item.dosage}
+                onChange={(e) => {
+                  const updatedMedications = [...medications];
+                  updatedMedications[index].dosage = e.target.value;
+                  setMedications(updatedMedications);
+                }}
+                placeholder="Dosage"
+              />
+              <Input
+                value={item.frequency}
+                onChange={(e) => {
+                  const updatedMedications = [...medications];
+                  updatedMedications[index].frequency = e.target.value;
+                  setMedications(updatedMedications);
+                }}
+                placeholder="Frequency"
+              />
+              {/* Use date picker components here /}
+                  <Input
+                  value={item.prescribingDoctor}
+                  onChange={(e) => {
+                  const updatedMedications = [...medications];
+                  updatedMedications[index].prescribingDoctor = e.target.value;
+                  setMedications(updatedMedications);
+                  }}
+                  placeholder="Prescribing Doctor"
+                  />
+                  </div>
+                  </Card>
+                  ))}
+                  </div>
+                  <div>
+                  <Label htmlFor="allergies">Allergies</Label>
+                  {allergies.map((item, index) => (
+                  <Card key={index} className="p-4 mb-4 bg-gray-100">
+                  <div className="grid grid-cols-1 gap-4">
+                  <Input
+                  value={item.allergen}
+                  onChange={(e) => {
+                  const updatedAllergies = [...allergies];
+                  updatedAllergies[index].allergen = e.target.value;
+                  setAllergies(updatedAllergies);
+                  }}
+                  placeholder="Allergen"
+                  />
+                  <Input
+                  value={item.reaction}
+                  onChange={(e) => {
+                  const updatedAllergies = [...allergies];
+                  updatedAllergies[index].reaction = e.target.value;
+                  setAllergies(updatedAllergies);
+                  }}
+                  placeholder="Reaction"
+                  />
+                  <Input
+                  value={item.severity}
+                  onChange={(e) => {
+                  const updatedAllergies = [...allergies];
+                  updatedAllergies[index].severity = e.target.value;
+                  setAllergies(updatedAllergies);
+                  }}
+                  placeholder="Severity"
+                  />
+                  {/ Use a date picker component here */}
+            </div>
+          </Card>
+        ))}
+      </div>
+      <div className="flex justify-between gap-5 mt-5">
+        <Button
+          onClick={() => setStep(1)}
+          className="w-full bg-gray-500 hover:bg-gray-800 text-white hover
+                  "
+        >
+          Previous Step
+        </Button>
+        <Button
+          type="submit"
+          className="w-full bg-blue-500 text-white hover:bg-blue-600"
+        >
+          Submit
+        </Button>
+      </div>
+    </>
+  );
+
   return (
     <Layout>
-      <h1 className="text-3xl font-semibold pb-2 border-b-2 mb-10">
-        Book Appointment
-      </h1>
-      <div className="grid lg:grid-cols-2 grid-cols-1 gap-10">
-        <div className="flex items-start mt-3 flex-col gap-3 w-full">
-          <div className="flex justify-start items-center gap-5 border-b-2 pb-5 w-full">
-            <div className="relative">
-              <div className="w-[100px] h-[100px] rounded-full bg-slate-400 overflow-hidden">
-                <img
-                  src={Avator2}
-                  className="object-cover object-top"
-                  alt="avotor1"
-                />
-              </div>
-              <span className="absolute bottom-0 right-0 text-3xl  rounded-full text-green-500">
-                <MdVerifiedUser></MdVerifiedUser>
-              </span>
-            </div>
-
-            <div className="flex flex-col">
-              <h1 className="text-2xl font-extrabold">Dr. Johny Wilson</h1>
-              <h3>Dentist</h3>
-              <p className="flex items-center mt-2 text-black-100 gap-1">
-                <span className="text-xl">
-                  <IoLocationSharp></IoLocationSharp>
-                </span>{" "}
-                NewYork, United States
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <h1 className="text-xl underline italic font-semibold">About</h1>
-            <p className="text-[15px] leading-5 text-black-200">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Reprehenderit odio magnam cum adipisci corporis? Sapiente a
-              excepturi commodi,
-            </p>
-          </div>
-          <div className="grid grid-cols-4 w-full">
-            <IconCard
-              title="7500+"
-              sub_title="Patient"
-              Icon={FaUserLarge}
-              classNames="bg-blue-600 text-white"
-            ></IconCard>
-            <IconCard
-              title="10+"
-              sub_title="Experience"
-              Icon={FaBookMedical}
-              classNames="bg-slate-600 text-white"
-            ></IconCard>
-            <IconCard
-              title="3.7"
-              sub_title="rating"
-              Icon={IoStar}
-              classNames="bg-orange-600 text-white"
-            ></IconCard>
-            <IconCard
-              title="1k+"
-              sub_title="review"
-              Icon={BiSolidMessageSquareDots}
-              classNames="bg-green-600 text-white"
-            ></IconCard>
-          </div>
-        </div>
-
-        <div className="bg-blue-">
-          <div className="p-5 rounded-[10px] bg-white-200">
-            <h1 className="text-xl underline mb-2 italic font-semibold">
-              Working Hours
-            </h1>
-            {workingHours.map((work) => (
-              <div
-                key={work.key}
-                className="flex mb-1 justify-between items-center"
-              >
-                <p className="text-black-100 text-[1.2rem] w-[50%] relative">
-                  {work.day}
-                  {!work.openOffice && (
-                    <span className="absolute text-[12px] left-16 -top-1 text-red-600 font-bold">
-                      Half Day
-                    </span>
-                  )}
-                </p>
-                <p className="text-[1.2rem] text-black-300 font-bold">
-                  {work.time}
-                </p>
-              </div>
-            ))}
-          </div>
-          <button
-            className="bg-blue-800 rounded-full text-center text-2xl mt-7 w-full py-3 px-6 text-white mr-[2%]"
-            type="submit"
-          >
-            Book Appointment
-          </button>
-        </div>
+      <div className="container mx-auto py-6">
+        <h1 className="text-3xl font-semibold pb-2 border-b-2 mb-10">
+          Book Appointment
+        </h1>
+        <Card className="p-6 bg-white">
+          <form onSubmit={handleSubmit}>
+            {step === 1 && renderStep1()}
+            {step === 2 && renderStep2()}
+          </form>
+        </Card>
       </div>
     </Layout>
   );
-}
+};
 
 export default Appointment;
-
-function IconCard({ title, sub_title, Icon, classNames }) {
-  return (
-    <div className={`flex flex-col items-center mt-5`}>
-      <span
-        className={` flex justify-center items-center p-4 rounded-full shrink-0 ${classNames} mb-3`}
-      >
-        <Icon className="text-[1.5rem]"></Icon>
-      </span>
-      <div className="flex flex-col w-full items-center">
-        <h1 className="text-2xl font-semibold">{title}</h1>
-        <p className="text-[16px]">{sub_title}</p>
-      </div>
-    </div>
-  );
-}

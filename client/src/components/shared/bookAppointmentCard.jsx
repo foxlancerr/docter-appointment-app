@@ -1,14 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  FaMapMarkerAlt,
-  FaCalendarDay,
-  FaClock,
-  FaMoneyBillWave,
-} from "react-icons/fa";
+import { Calendar } from "@/components/ui/calendar";
+
 import { IoMdArrowForward } from "react-icons/io";
-const AppointmentCard = ({ fees, daysAvailable }) => {
+import { checkAvailabilityOfDoctors } from "@/utils/api-calls";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+const AppointmentCard = ({ fees, daysAvailable, _id }) => {
+  const navigate = useNavigate();
+  async function checkAvailability() {
+    const response = await checkAvailabilityOfDoctors(_id);
+    if (response.success) {
+      toast.success(response.message);
+    } else {
+      toast.error(response.message);
+    }
+  }
+  async function bookAppointment() {
+    const token = JSON.parse(localStorage.getItem("token"));
+    if (token) {
+      navigate(`/patient/appointment/${_id}`);
+      toast("Redirecting to appointment-page");
+    } else {
+      navigate("/signin");
+      toast("Redirecting to Signin Page");
+    }
+  }
+  
   return (
     <Card className="max-w-md mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
       <CardHeader>
@@ -23,7 +42,7 @@ const AppointmentCard = ({ fees, daysAvailable }) => {
         </div>
         <div className="flex items-center justify-between border-b-gray-100 pb-2 border-b-2 ">
           <p className="text-gray-700">Days:</p>
-          <p className="flex gap-1"> 
+          <p className="flex gap-1">
             {daysAvailable?.map((day, index) => {
               return (
                 <span
@@ -46,10 +65,22 @@ const AppointmentCard = ({ fees, daysAvailable }) => {
             );
           })}
         </div>
-        <Button className="w-full bg-blue-500 text-white hover:bg-blue-600 flex items-center justify-center">
-          Book Appointment
-          <IoMdArrowForward className="ml-2" />
-        </Button>
+        <div className="flex gap-3 flex-col">
+          <Button
+            className="w-full bg-black text-white hover:bg-black/70 flex items-center justify-center"
+            onClick={checkAvailability}
+          >
+            Check Availibility
+            <IoMdArrowForward className="ml-2" />
+          </Button>
+          <Button
+            className="w-full bg-blue-500 text-white hover:bg-blue-600 flex items-center justify-center"
+            onClick={bookAppointment}
+          >
+            Book Appointment
+            <IoMdArrowForward className="ml-2" />
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
