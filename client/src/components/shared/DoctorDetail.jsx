@@ -140,10 +140,7 @@ function DoctorDetail() {
         </div>
 
         <div className="sm:w-[30%]">
-          <AppointmentCard
-            fees={doctorDetail.fees}
-            daysAvailable={doctorDetail.daysAvailable}
-          />
+          <AppointmentCard {...doctorDetail} />
         </div>
       </div>
     </HomeLayout>

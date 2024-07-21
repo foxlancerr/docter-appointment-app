@@ -1,4 +1,5 @@
 import Patient from "../model/patient.model.js";
+import { createAppointment } from "./appointmentController.js";
 
 // ON ADMIN CASE:
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -9,10 +10,51 @@ import Patient from "../model/patient.model.js";
 // @access  Public
 export const createPatient = async (req, res) => {
   try {
-    const patient = new Patient(req.body);
+    console.log("frontend data >>>>>>>>>>>", req.body);
+    const {
+      name,
+      email,
+      phone,
+      dateOfBirth,
+      gender,
+      address,
+      medicalHistory,
+      medications,
+      allergies,
+      emergencyContact,
+      endTime,
+      startTime,
+      doctorId,
+      patientId,
+    } = req.body;
+    // const checkAvailiblity = await createAppointment(
+    //   patientId,
+    //   doctorId,
+    //   startTime,
+    //   endTime
+    // );
+    // if (!checkAvailiblity.success) {
+    //   return res.status(201).json({
+    //     message: "Patient created successfully",
+    //     success: true,
+    //     data: patient,
+    //   });
+    // }
+    const patient = new Patient({
+      name,
+      email,
+      phone,
+      dateOfBirth,
+      gender,
+      address,
+      medicalHistory,
+      medications,
+      allergies,
+      emergencyContact,
+    });
     await patient.save();
     res.status(201).json({
-      message: "Patient created successfully",
+      message: "Record updated & wait unless doctor approved it",
       success: true,
       data: patient,
     });

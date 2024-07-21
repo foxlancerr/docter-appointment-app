@@ -1,15 +1,18 @@
-import Appointment from "../model/appointment.model.js"
+import Appointment from "../model/appointment.model.js";
 
 // @desc    Check if doctor is available
 // @route   GET /api/v1/appointments/check-availability
 // @access  Public
 export const checkAvailability = async (req, res) => {
+  console.log(req.query)
   try {
     const { doctorId, startTime, endTime } = req.query;
 
     // Convert startTime and endTime to Date objects
     const start = new Date(startTime);
-    const end = new Date(endTime);
+    const end = endTime
+      ? new Date(endTime)
+      : new Date(start.getTime() + 30 * 60000);
 
     // Check if any existing appointments overlap with the requested time
     const overlappingAppointment = await Appointment.findOne({
