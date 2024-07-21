@@ -1,5 +1,5 @@
 import Layout from "@/components/dashboard/DashboardLayout";
-import { DatePicker } from "@/components/shared/DatePicker";
+// import { DatePicker } from "@/components/shared/DatePicker";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -18,18 +18,19 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import DatePickerBox from "@/components/shared/DatePicker";
 
 const Appointment = () => {
   const user = useSelector((state) => state?.userInfo?.user);
   const { doctorId } = useParams();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  const [endTime, setEndTime] = useState();
-  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState(null);
+  const [startTime, setStartTime] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState(null);
   const [gender, setGender] = useState("");
   const [address, setAddress] = useState({
     street: "",
@@ -128,10 +129,9 @@ const Appointment = () => {
         <div>
           <div className="flex gap-1 flex-col flex-1">
             <label htmlFor="start-date">Date of Birth</label>
-            <DatePicker
-              label="Pick a start date"
-              date={dateOfBirth}
-              setDate={setDateOfBirth}
+            <DatePickerBox
+              value={dateOfBirth}
+              onChange={(selctedDate) => setDateOfBirth(selctedDate)}
             />
           </div>
         </div>
@@ -251,19 +251,19 @@ const Appointment = () => {
     <>
       <div className="flex gap-5">
         <div className="flex gap-1 flex-col flex-1">
-          <label htmlFor="start-date">Start Date</label>
-          <DatePicker
-            label="Pick a start date"
-            date={startTime}
-            setDate={setStartTime}
+          <label htmlFor="start-date">Start Date | Time</label>
+          <DatePickerBox
+            value={startTime}
+            onChange={(selctedTime) => setStartTime(selctedTime)}
+            type="time"
           />
         </div>
         <div className="flex gap-1 flex-col flex-1">
-          <label htmlFor="end-date">End Date</label>
-          <DatePicker
-            label="Pick an end date"
-            date={endTime}
-            setDate={setEndTime}
+          <label htmlFor="end-date">End Date |Time</label>
+          <DatePickerBox
+            value={endTime}
+            onChange={(selctedTime) => setEndTime(selctedTime)}
+            type="time"
           />
         </div>
       </div>
