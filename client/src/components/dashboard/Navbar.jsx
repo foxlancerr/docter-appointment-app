@@ -30,7 +30,7 @@ function Navbar() {
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
       ></MobileNavbar>
-      <nav className="flex justify-between fixed z-30 w-full items-center bg-white-300 px-6 py-4 lg:px-10">
+      <nav className="flex justify-between fixed z-30 w-full items-center bg-[#023e7d] text-white px-6 py-4 lg:px-10">
         <div className="" id="top_nav_right_side">
           <h1 className="font-extrabold text-3xl gradiant-blue-l text-gradiant">
             Docterz
@@ -63,7 +63,7 @@ function Navbar() {
             ></HiMenuAlt3>
           </div>
           {profileShow && (
-            <div className="absolute right-0 -bottom-[130px] bg-white-100  h-auto flex flex-col gap-2 p-6 rounded-[10px]">
+            <div className="absolute right-0 -bottom-[130px] bg-white text-[#023e7d]  h-auto flex flex-col gap-2 p-6 rounded-[10px]">
               <h1 className="text-xl">{user?.username}</h1>
               <h1 className="text-xl">{user?.email}</h1>
 

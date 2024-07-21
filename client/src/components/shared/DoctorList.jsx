@@ -43,7 +43,7 @@ function DoctorList() {
   return (
     <div className="container mx-auto">
       <h1>Top Specialists</h1>
-      <section className="grid grid-cols-1 sm:grid-cols-2 gap-5 gap-x-5 mb-5">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-5 gap-x-5 mb-5">
         {currentDoctors.map((item, index) => (
           <DoctorCard doctor={item} key={index}></DoctorCard>
         ))}

@@ -45,6 +45,7 @@ export const checkAvailability = async (req, res) => {
 // @access  Public
 export const createAppointment = async (req, res) => {
   try {
+    console.log("frontend data:",req.body)
     const { patientId, doctorId, startTime, endTime } = req.body;
 
     // Convert startTime and endTime to Date objects
@@ -80,6 +81,7 @@ export const createAppointment = async (req, res) => {
       data: newAppointment,
     });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({
       message: "Error creating appointment",
       success: false,

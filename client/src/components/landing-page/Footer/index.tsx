@@ -115,7 +115,7 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="top-footer bg-black/80 text-white p-10">
+      <footer className="top-footer bg-[#023e7d] text-white p-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
           <div className="col-start-1 col-end-3">
             <div className="mb-2 gap-4">
@@ -172,7 +172,7 @@ const Footer = () => {
           </div>
           
           <div>
-            <h1 className="text-xl font-bold mb-3">CONTACT US</h1>
+            <h1 className="text-xl font-bold mb-3 text-[#023e7d]">CONTACT US</h1>
             <div className="flex flex-col">
               <Link to="">Tel: (021) 111-329-224</Link>
               <Link to="">Email: pharmacy@doctorz.pk</Link>
@@ -218,7 +218,7 @@ const Footer = () => {
         </div>
       </footer>
 
-      <footer className="bottom-footer p-5 bg-black/80 border-t-2 border-white-500">
+      <footer className="bottom-footer p-5 bg-[#023e7d] border-t-2 border-white-500">
         <div className="flex justify-center items-center flex-wrap gap-10">
           <p className="text-white text-sm">
             © 2024 Doctors, All Rights Reserved.

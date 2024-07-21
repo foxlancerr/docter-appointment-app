@@ -6,7 +6,7 @@ function HomeLayout({ children }) {
   return (
     <div>
       <Header></Header>
-      <main className="py-20">{children}</main>
+      <main className="py-10">{children}</main>
       <Footer></Footer>
     </div>
   );

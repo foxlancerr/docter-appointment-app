@@ -1,41 +1,45 @@
-"use client"
+import * as React from "react";
+import dayjs, { Dayjs } from "dayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DateTimePicker, TimePicker } from "@mui/x-date-pickers";
 
-import * as React from "react"
-import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-
-export function DatePicker({ label, date, setDate }) {
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant={"outline"}
-          className={cn(
-            "w-[280px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>{label}</span>}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          initialFocus
-        />
-      </PopoverContent>
-    </Popover>
-  )
+export default function DatePickerBox({
+  label,
+  onChange,
+  value,
+  type = "date",
+}) {
+  const parsedValue = value ? dayjs(value) : null;
+  if (type === "date") {
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DemoContainer components={["DatePicker"]}>
+          <DatePicker label={label} value={parsedValue} onChange={onChange} />
+        </DemoContainer>
+      </LocalizationProvider>
+    );
+  } else if (type === "date-time") {
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DemoContainer components={["DateTimePicker"]}>
+          <DateTimePicker
+            label={label}
+            value={parsedValue}
+            onChange={onChange}
+          />
+        </DemoContainer>
+      </LocalizationProvider>
+    );
+  } else if (type === "time") {
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DemoContainer components={["TimePicker"]}>
+          <TimePicker label={label} value={parsedValue} onChange={onChange} />
+        </DemoContainer>
+      </LocalizationProvider>
+    );
+  }
 }

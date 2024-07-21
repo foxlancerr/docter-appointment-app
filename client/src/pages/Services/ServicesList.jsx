@@ -44,18 +44,20 @@ const services = [
 const ServicesList = () => {
   return (
     <HomeLayout>
-      <div>
-        <h2 className="text-center text-4xl font-bold text-gray-900">
-          Our Services
-        </h2>
-        <p className="mb-10 lg:mb-12 font-light text-center text-gray-500">
-          Just Pick up the affordable service you like.
-        </p>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-8 mt-8 lg:mt-14 px-10">
-        {services.map((item, index) => (
-          <ServicesCard item={item} index={index} key={index} />
-        ))}
+      <div className="py-10">
+        <div>
+          <h2 className="text-center text-4xl font-bold text-[#023e7d]">
+            Our Services
+          </h2>
+          <p className="mb-10 lg:mb-12 font-light text-center text-gray-500">
+            Just Pick up the affordable service you like.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-8 mt-8 lg:mt-14 px-10">
+          {services.map((item, index) => (
+            <ServicesCard item={item} index={index} key={index} />
+          ))}
+        </div>
       </div>
     </HomeLayout>
   );

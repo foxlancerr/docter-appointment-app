@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchDoctorById } from "@/utils/api-calls";
 import {
   Card,
   CardHeader,
@@ -11,10 +10,11 @@ import {
 } from "@/components/ui/card";
 import { GoVerified } from "react-icons/go";
 import { IoMdStar } from "react-icons/io";
-import HomeLayout from "../HomeLayout";
-import AppointmentCard from "./bookAppointmentCard";
+import Layout from "./DashboardLayout";
+import AppointmentCard from "../shared/bookAppointmentCard";
+import { fetchDoctorById } from "@/utils/api-calls";
 
-function DoctorDetail() {
+function DashboardDoctorDetail() {
   const { id } = useParams();
   const [doctorDetail, setDoctorDetail] = useState({});
   //   const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual authentication check
@@ -31,7 +31,7 @@ function DoctorDetail() {
   }, [id]);
 
   return (
-    <HomeLayout>
+    <Layout>
       <div className="container mx-auto p-5 flex justify-between flex-col-reverse sm:flex-row gap-5">
         {/* Main Content */}
         <div className="sm:w-[65%]">
@@ -155,8 +155,8 @@ function DoctorDetail() {
           <AppointmentCard {...doctorDetail} />
         </div>
       </div>
-    </HomeLayout>
+    </Layout>
   );
 }
 
-export default DoctorDetail;
+export default DashboardDoctorDetail;

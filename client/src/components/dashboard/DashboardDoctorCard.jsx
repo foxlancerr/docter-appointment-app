@@ -5,13 +5,14 @@ import { IoMdStar } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { Card } from "../ui/card";
 import toast from "react-hot-toast";
+import Layout from "./DashboardLayout";
 
-function DoctorCard({ doctor }) {
+function DashboardDoctorCard({ doctor }) {
   const navigate = useNavigate();
   console.log(doctor);
 
   const handleViewProfile = () => {
-    navigate(`/doctors/${doctor._id}`);
+    navigate(`/dashboard/doctors/${doctor._id}`);
   };
 
   async function bookAppointment() {
@@ -85,4 +86,4 @@ function DoctorCard({ doctor }) {
   );
 }
 
-export default DoctorCard;
+export default DashboardDoctorCard;
