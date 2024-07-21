@@ -13,7 +13,7 @@ function MeetingCard() {
           <img src={Avator1} alt="avator1" className="w-24 h-24 rounded-full" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold">Dr. Parveen Shahid</h1>
+          <h1 className="text-2xl font-bold text-[#023e7d]">Dr. Parveen Shahid</h1>
           <h3 className="text-xl">Orthopedic Surgeon</h3>
           <p className="text-sm">
             MBBS, FCPS (Surgery), IMGSS PGT in Orthopedics
@@ -50,7 +50,7 @@ function MeetingCard() {
           </div>
         </div>
         <div className="flex gap-3 items-center justify-end">
-          <button className="bg-blue-1 px-4 py-2 bg-blue-500 rounded text-white">
+          <button className="bg-blue-1 px-4 py-2 bg-[#023e7d] rounded text-white">
             Book Appointment
           </button>
         </div>

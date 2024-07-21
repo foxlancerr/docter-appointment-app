@@ -43,18 +43,28 @@ function DashboardDoctorList() {
   return (
     <Layout>
       <div className="container mx-auto">
-        <h1>Top Specialists</h1>
-        <section className="grid grid-cols-1 sm:grid-cols-2 gap-5 gap-x-5 mb-5">
+        <h1 className="text-3xl font-semibold pb-2 border-b-2 mb-10 text-[#023e7d]">
+        Top Specialists
+        </h1>
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-5 gap-x-5 mb-5">
           {currentDoctors.map((item, index) => (
-            <DashboardDoctorCard doctor={item} key={index}></DashboardDoctorCard>
+            <DashboardDoctorCard
+              doctor={item}
+              key={index}
+            ></DashboardDoctorCard>
           ))}
         </section>
         <Pagination
           total={Math.ceil(totalDoctors / doctorsPerPage)}
           current={currentPage}
           onPageChange={handlePageChange}
+          
         >
-          <PaginationContent>
+          <PaginationContent
+          style = {{
+            color:"#023e7d"
+          }}
+          >
             {currentPage > 1 && (
               <PaginationItem>
                 <PaginationPrevious

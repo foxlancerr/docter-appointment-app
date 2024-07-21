@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchDoctorById } from "@/utils/api-calls";
 import {
   Card,
   CardHeader,
@@ -13,6 +12,7 @@ import { GoVerified } from "react-icons/go";
 import { IoMdStar } from "react-icons/io";
 import Layout from "./DashboardLayout";
 import AppointmentCard from "../shared/bookAppointmentCard";
+import { fetchDoctorById } from "@/utils/api-calls";
 
 function DashboardDoctorDetail() {
   const { id } = useParams();
@@ -41,7 +41,9 @@ function DashboardDoctorDetail() {
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle>{doctorDetail.name}</CardTitle>
+                  <CardTitle className="text-[#023e7d]">
+                    {doctorDetail.name}
+                  </CardTitle>
                   <CardDescription>{doctorDetail.specialty}</CardDescription>
                   <div className="flex items-center mt-2">
                     {doctorDetail.verified && (
@@ -53,9 +55,11 @@ function DashboardDoctorDetail() {
                   </div>
                   <div className="flex items-center mt-2">
                     <span className="flex text-yellow-500 text-lg">
-                      {[...Array(doctorDetail.reviews)].map((_, index) => (
-                        <IoMdStar key={index} />
-                      ))}
+                      <IoMdStar />
+                      <IoMdStar />
+                      <IoMdStar />
+                      <IoMdStar />
+                      <IoMdStar />
                     </span>
                     <p className="ml-2 text-sm text-gray-500">
                       {doctorDetail.reviews} reviews
@@ -63,10 +67,18 @@ function DashboardDoctorDetail() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-gray-500">
-                    Experience: {doctorDetail.yearsExperience} Years
+                  <p className="text-gray-500 font-semibold text-sm">
+                    <span className="text-[#023e7d] font-semibold text-sm">
+                      Experience:{" "}
+                    </span>
+                    {doctorDetail.yearsExperience} Years
                   </p>
-                  <p className="text-gray-500">Fees: Rs. {doctorDetail.fees}</p>
+                  <p className="text-gray-500 font-semibold text-sm">
+                    <span className="text-[#023e7d] font-semibold text-sm">
+                      Fees:{" "}
+                    </span>
+                    {doctorDetail.fees} PKR
+                  </p>
                 </div>
               </div>
             </CardHeader>
@@ -76,7 +88,7 @@ function DashboardDoctorDetail() {
           </Card>
           <Card className="mb-5">
             <CardHeader>
-              <CardTitle>Services</CardTitle>
+              <CardTitle className="text-[#023e7d]">Services</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="list-disc list-inside">
@@ -88,7 +100,7 @@ function DashboardDoctorDetail() {
           </Card>
           <Card className="mb-5">
             <CardHeader>
-              <CardTitle>Education</CardTitle>
+              <CardTitle className="text-[#023e7d]">Education</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="list-disc list-inside">
@@ -100,7 +112,7 @@ function DashboardDoctorDetail() {
           </Card>
           <Card className="mb-5">
             <CardHeader>
-              <CardTitle>Experience</CardTitle>
+              <CardTitle className="text-[#023e7d]">Experience</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="list-disc list-inside">
@@ -115,7 +127,7 @@ function DashboardDoctorDetail() {
           </Card>
           <Card className="mb-5">
             <CardHeader>
-              <CardTitle>Languages</CardTitle>
+              <CardTitle className="text-[#023e7d]">Languages</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="list-disc list-inside">
@@ -127,7 +139,7 @@ function DashboardDoctorDetail() {
           </Card>
           <Card className="mb-5">
             <CardHeader>
-              <CardTitle>Other Locations</CardTitle>
+              <CardTitle className="text-[#023e7d]">Other Locations</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="list-disc list-inside">
@@ -140,7 +152,7 @@ function DashboardDoctorDetail() {
         </div>
 
         <div className="sm:w-[30%]">
-          <AppointmentCard{...doctorDetail} />
+          <AppointmentCard {...doctorDetail} />
         </div>
       </div>
     </Layout>

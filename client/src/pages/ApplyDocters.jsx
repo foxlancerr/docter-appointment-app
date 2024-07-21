@@ -57,12 +57,12 @@ function ApplyDoctors() {
 
   return (
     <Layout>
+      <h1 className="text-3xl font-semibold pb-2 border-b-2 mb-10 text-[#023e7d]">
+        Apply Doctor Account
+      </h1>
       <section>
         <form onSubmit={handleSubmit} id="apply-as-doctor" className="">
           <div className="bg-white p-10 rounded-2xl shadow-lg max-md:p-6">
-            <h1 className="text-4xl font-extrabold mb-8">
-              Apply Doctor Account
-            </h1>
             <div className="grid grid-cols-2 gap-5 max-md:grid-cols-1">
               <InputBox _name="firstname" type="text" label="First Name" />
               <InputBox _name="lastname" type="text" label="Last Name" />
@@ -142,7 +142,7 @@ function ApplyDoctors() {
             </div>
           </div>
           <button
-            className="bg-blue-800 rounded-2xl text-2xl py-3 px-6 text-white mt-8 float-right"
+            className="bg-[#023e7d] hover:bg-[#023e7d]/90 rounded-full text-xl py-2 px-6 text-white mt-8 float-right"
             type="submit"
           >
             Submit

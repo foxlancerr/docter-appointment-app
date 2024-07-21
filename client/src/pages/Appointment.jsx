@@ -94,7 +94,9 @@ const Appointment = () => {
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name" className="text-[#023e7d]">
+            Name
+          </Label>
           <Input
             id="name"
             type="text"
@@ -105,7 +107,9 @@ const Appointment = () => {
           />
         </div>
         <div>
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className="text-[#023e7d]">
+            Email
+          </Label>
           <Input
             id="email"
             type="email"
@@ -116,7 +120,9 @@ const Appointment = () => {
           />
         </div>
         <div>
-          <Label htmlFor="phone">Phone</Label>
+          <Label htmlFor="phone" className="text-[#023e7d]">
+            Phone
+          </Label>
           <Input
             id="phone"
             type="text"
@@ -128,7 +134,9 @@ const Appointment = () => {
         </div>
         <div>
           <div className="flex gap-1 flex-col flex-1">
-            <label htmlFor="start-date">Date of Birth</label>
+            <label htmlFor="start-date" className="text-[#023e7d]">
+              Date of Birth
+            </label>
             <DatePickerBox
               value={dateOfBirth}
               onChange={(selctedDate) => setDateOfBirth(selctedDate)}
@@ -136,14 +144,16 @@ const Appointment = () => {
           </div>
         </div>
         <div>
-          <Label htmlFor="gender">Gender</Label>
+          <Label htmlFor="gender" className="text-[#023e7d]">
+            Gender
+          </Label>
           <Select id="gender" value={gender} onValueChange={setGender} required>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select gender" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Gender</SelectLabel>
+                <SelectLabel className="text-[#023e7d]">Gender</SelectLabel>
                 <SelectItem value="Male">Male</SelectItem>
                 <SelectItem value="Female">Female</SelectItem>
                 <SelectItem value="Other">Other</SelectItem>
@@ -153,7 +163,9 @@ const Appointment = () => {
         </div>
       </div>
       <div className="mt-5">
-        <Label htmlFor="address">Address</Label>
+        <Label htmlFor="address" className="text-[#023e7d]">
+          Address
+        </Label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
             id="street"
@@ -190,7 +202,9 @@ const Appointment = () => {
         </div>
       </div>
       <div className="mt-5">
-        <Label htmlFor="emergencyContact">Emergency Contact</Label>
+        <Label htmlFor="emergencyContact" className="text-[#023e7d]">
+          Emergency Contact
+        </Label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
             id="emergencyContactName"
@@ -240,7 +254,7 @@ const Appointment = () => {
       </div>
       <Button
         onClick={() => setStep(2)}
-        className="w-full bg-blue-500 text-white hover:bg-blue-600 mt-10"
+        className="w-full bg-[#023e7d] text-white hover:bg-[#023e7d]/90 mt-10"
       >
         Next Step
       </Button>
@@ -251,7 +265,9 @@ const Appointment = () => {
     <>
       <div className="flex gap-5">
         <div className="flex gap-1 flex-col flex-1">
-          <label htmlFor="start-date">Start Date | Time</label>
+          <label htmlFor="start-date" className="text-[#023e7d]">
+            Start Date | Time
+          </label>
           <DatePickerBox
             value={startTime}
             onChange={(selctedTime) => setStartTime(selctedTime)}
@@ -259,7 +275,9 @@ const Appointment = () => {
           />
         </div>
         <div className="flex gap-1 flex-col flex-1">
-          <label htmlFor="end-date">End Date |Time</label>
+          <label htmlFor="end-date" className="text-[#023e7d]">
+            End Date |Time
+          </label>
           <DatePickerBox
             value={endTime}
             onChange={(selctedTime) => setEndTime(selctedTime)}
@@ -268,7 +286,9 @@ const Appointment = () => {
         </div>
       </div>
       <div className="mt-5">
-        <Label htmlFor="medicalHistory">Medical History</Label>
+        <Label htmlFor="medicalHistory" className="text-[#023e7d]">
+          Medical History
+        </Label>
         {medicalHistory.map((item, index) => (
           <Card key={index} className="p-4 mb-4 bg-gray-100">
             <div className="grid grid-cols-1 gap-4">
@@ -305,7 +325,9 @@ const Appointment = () => {
         ))}
       </div>
       <div className="mt-5">
-        <Label htmlFor="medications">Medications</Label>
+        <Label htmlFor="medications" className="text-[#023e7d]">
+          Medications
+        </Label>
         {medications.map((item, index) => (
           <Card key={index} className="p-4 mb-4 bg-gray-100">
             <div className="grid grid-cols-1 gap-4">
@@ -351,7 +373,7 @@ const Appointment = () => {
                   ))}
                   </div>
                   <div>
-                  <Label htmlFor="allergies">Allergies</Label>
+                  <Label htmlFor="allergies" className="text-[#023e7d]">Allergies</Label>
                   {allergies.map((item, index) => (
                   <Card key={index} className="p-4 mb-4 bg-gray-100">
                   <div className="grid grid-cols-1 gap-4">
@@ -397,7 +419,7 @@ const Appointment = () => {
         </Button>
         <Button
           type="submit"
-          className="w-full bg-blue-500 text-white hover:bg-blue-600"
+          className="w-full  text-white bg-[#023e7d] hover:bg-[#023e7d]/90"
         >
           Submit
         </Button>
@@ -407,8 +429,8 @@ const Appointment = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto py-6">
-        <h1 className="text-3xl font-semibold pb-2 border-b-2 mb-10">
+      <div className="container mx-auto">
+        <h1 className="text-3xl font-semibold pb-2 border-b-2 mb-10 text-[#023e7d]">
           Book Appointment
         </h1>
         <Card className="p-6 bg-white">

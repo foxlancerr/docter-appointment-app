@@ -26,10 +26,10 @@ function HomeHero() {
   });
   return (
     <section
-      className="w-full h-[290px] max-sm:h-[250px] rounded-[20px] max-sm:rounded p-8 max-sm:p-5 flex items-start justify-between  bg-cover bg-left shadow shadow-black/60 relative overflow-hidden"
+      className="w-full h-[290px] max-sm:h-[250px] rounded-[20px] max-sm:rounded p-8 max-sm:p-5 flex items-start justify-between  bg-cover bg-left shadow shadow-[#023e7d]/30 relative overflow-hidden"
       style={{ backgroundImage: `url(${BgHeroImage})` }}
     >
-      <div className=" absolute top-0 left-0 w-full h-full bg-black/70 z-1"></div>
+      <div className=" absolute top-0 left-0 w-full h-full bg-[#023e7d]/30 z-1"></div>
 
       <h1 className="text-white text-2xl md:text-3xl z-10">
         <span className="font-bold text-4xl"> Consult</span> Top Doctors Online{" "}
