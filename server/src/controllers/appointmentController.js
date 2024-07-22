@@ -1,5 +1,9 @@
 import Appointment from "../model/appointment.model.js";
 
+import Patient from "../model/patient.model.js";
+import Notification from "../model/notification.model.js"; // Import Notification model
+import { getPatientById } from "./patientController.js";
+
 // @desc    Check if doctor is available
 // @route   GET /api/v1/appointments/check-availability
 // @access  Public
@@ -45,7 +49,7 @@ export const checkAvailability = async (req, res) => {
 // @access  Public
 export const createAppointment = async (req, res) => {
   try {
-    console.log("frontend data:",req.body)
+    console.log("frontend data:",req.body.patientId)
     const { patientId, doctorId, startTime, endTime } = req.body;
 
     // Convert startTime and endTime to Date objects
@@ -72,9 +76,30 @@ export const createAppointment = async (req, res) => {
       startTime,
       endTime,
     });
-
+    
     await newAppointment.save();
 
+    console.log(patientId)
+    // find paients
+     let currentPatient = await getPatientById(patientId);
+     console.log(currentPatient)
+
+
+    // Doctor wala 
+    const Doctornotification =  new Notification({
+        message:`new appointment by`  ,
+        user:doctorId
+    })
+    console.log("",)
+    //
+    const notification = new Notification({
+      message:`Your request for appointment `  ,
+      user:patientId
+  })
+  await Doctornotification.save();
+  await notification.save();
+  
+  console.log("",)
     res.status(201).json({
       message: "Appointment created successfully",
       success: true,
