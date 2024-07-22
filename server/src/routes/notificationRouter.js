@@ -8,7 +8,7 @@ const notificationRouter = express.Router();
 
 
 
-notificationRouter.get("/]get-notification/:userId", async (req, res) => {
+notificationRouter.get("/get-notification/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
 
