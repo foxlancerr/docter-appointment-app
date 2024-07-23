@@ -22,7 +22,7 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link to="/about" className="hover:text-gray-300">
+              <Link to="/about-us" className="hover:text-gray-300">
                 About
               </Link>
             </li>
