@@ -27,10 +27,10 @@ const FeatureFooter = [
 function FeatureSection() {
   return (
     <div className="py-24">
-      <h1 className="text-3xl font-bold text-center mb-6 text-black">
+      <h1 className="text-3xl font-bold text-center mb-6 text-[#023e7d]">
         Why Doctorz?
       </h1>
-      <div className="bottom-footer py-16 px-5 bg-black">
+      <div className="bottom-footer py-16 px-5 bg-[#023e7d]">
         <div className="flex justify-center items-center flex-wrap gap-10">
           {FeatureFooter.map((feature) => (
             <div className="flex gap-4 items-center" key={feature.id}>

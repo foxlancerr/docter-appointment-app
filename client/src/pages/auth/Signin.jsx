@@ -57,7 +57,7 @@ const Signin = () => {
 
   // console.log(formInfo);
   return (
-    <div className="flex justify-center items-center bg-blue-500 h-screen">
+    <div className="flex justify-center items-center bg-[#023e7d] h-screen">
       <div className="w-[60%] md:h-[80vh] gradiant-blue-r rounded-[10px]  flex overflow-hidden drop-shadow-lg shadow-blue">
         {/* left side */}
         <div className="w-full px-8 py-5 md:w-[60%] hidden md:flex flex-col gap-2">
@@ -76,10 +76,10 @@ const Signin = () => {
 
         {/* right side */}
         <div className=" w-full  bg-white px-8 py-5 h-full">
-          <h1 className="font-extrabold text-2xl gradiant-blue-l text-gradiant">
+          <h1 className="font-extrabold text-2xl gradiant-blue-l text-[#023e7d]">
             Docterz
           </h1>
-          <h1 className="md:mt-[60px] mt-[30px] font-NunitoSans text-2xl font-extrabold text-center gradiant-blue-l text-gradiant">
+          <h1 className="md:mt-[60px] mt-[30px] font-NunitoSans text-2xl font-extrabold text-center gradiant-blue-l text-[#023e7d]">
             Hey! lets signin
           </h1>
           <form id="sign-in-form" className="mt-5">
@@ -103,7 +103,7 @@ const Signin = () => {
               />
             </div>
             <button
-              className="px-5 py-2 bg-blue-500 mt-4 rounded-lg w-full font-bold text-xl text-white"
+              className="px-5 py-2 bg-[#023e7d] hover:bg-[#023e7d]/90 mt-4 rounded-lg w-full font-bold text-xl text-white"
               onClick={(e) => {
                 handleSubmit(e);
               }}
@@ -116,7 +116,7 @@ const Signin = () => {
               If no account
             </p>
             <Link
-              className="font-semibold text-[1rem] text-blue-900 underline"
+              className="font-semibold text-[1rem] text-[#023e7d] underline"
               to="/signup"
             >
               signup
@@ -126,7 +126,7 @@ const Signin = () => {
             <p className="text-[12px] font-semibold text-gray-500">
               by signup, you accept to
             </p>
-            <h3 className="font-bold text-[12px] text-blue-900">
+            <h3 className="font-bold text-[12px] text-[#023e7d]">
               Terms & Condition
             </h3>
           </div>

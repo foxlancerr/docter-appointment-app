@@ -5,12 +5,12 @@ function Header() {
   return (
     <>
       <nav className="px-5 py-1 text-sm bg-red-600 flex justify-center items-center text-white font-semibold">
-        <p>
+        <p className="text-center">
           Buy medicines for Rs. 2000 or more and get flat Rs. 200 off on your
           first order by using promo "Welcome200"
         </p>
       </nav>
-      <nav className="bg-blue-100 text-black px-5 py-3">
+      <nav className="bg-[#023e7d] text-white px-5 py-3">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-2xl font-bold">
             <Link to="/">Doctorz</Link>
@@ -22,7 +22,7 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link to="/about" className="hover:text-gray-300">
+              <Link to="/about-us" className="hover:text-gray-300">
                 About
               </Link>
             </li>

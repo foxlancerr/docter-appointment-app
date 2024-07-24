@@ -38,7 +38,7 @@ export const userSideBarLinks = [
   },
   {
     label: "Appointments",
-    route: "/appointments",
+    route: "/dashboard/patient/appointment",
     icon: FaCalendarAlt,
   },
   {

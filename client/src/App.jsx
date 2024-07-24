@@ -13,6 +13,11 @@ import Signup from "./pages/auth/Signup";
 import { ProtectedRoutes, PublicRoutes } from "./routes";
 import { Home } from "./pages/auth";
 import ApplyDocters from "./pages/ApplyDocters";
+import DoctorDetail from "./components/shared/DoctorDetail";
+import Appointment from "./pages/Appointment";
+import DashboardDoctorDetail from "./components/dashboard/DashboardDoctorDetail";
+import DashboardDoctorList from "./components/dashboard/DashboardDoctorList";
+import About from "./pages/about/About";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -40,6 +45,21 @@ const App = () => {
         ></Route>
         <Route path="/contact-us" element={<ContactUs></ContactUs>}></Route>
         <Route path="/services" element={<ServicesList></ServicesList>}></Route>
+        <Route path="/about-us" element={<About></About>}></Route>
+        <Route path="/doctors/:id" element={<DoctorDetail />}></Route>
+        <Route path="/dashboard/doctors/:id" element={<DashboardDoctorDetail />}></Route>
+        <Route
+          path="/dashboard/patient/appointment/:doctorId"
+          element={<DashboardDoctorDetail />}
+        ></Route>
+        <Route
+          path="/dashboard/patient/appointment/"
+          element={<DashboardDoctorList />}
+        ></Route>
+        <Route
+          path="/patient/appointment/:doctorId"
+          element={<Appointment />}
+        ></Route>
         <Route
           path="/signin"
           element={

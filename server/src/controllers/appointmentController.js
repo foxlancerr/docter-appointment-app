@@ -1,15 +1,22 @@
-import Appointment from "../model/appointment.model.js"
+import Appointment from "../model/appointment.model.js";
+
+import Patient from "../model/patient.model.js";
+import Notification from "../model/notification.model.js"; // Import Notification model
+import { getPatientById } from "./patientController.js";
 
 // @desc    Check if doctor is available
 // @route   GET /api/v1/appointments/check-availability
 // @access  Public
 export const checkAvailability = async (req, res) => {
+  console.log(req.query)
   try {
     const { doctorId, startTime, endTime } = req.query;
 
     // Convert startTime and endTime to Date objects
     const start = new Date(startTime);
-    const end = new Date(endTime);
+    const end = endTime
+      ? new Date(endTime)
+      : new Date(start.getTime() + 30 * 60000);
 
     // Check if any existing appointments overlap with the requested time
     const overlappingAppointment = await Appointment.findOne({
@@ -42,6 +49,7 @@ export const checkAvailability = async (req, res) => {
 // @access  Public
 export const createAppointment = async (req, res) => {
   try {
+    console.log("frontend data:",req.body.patientId)
     const { patientId, doctorId, startTime, endTime } = req.body;
 
     // Convert startTime and endTime to Date objects
@@ -68,15 +76,37 @@ export const createAppointment = async (req, res) => {
       startTime,
       endTime,
     });
-
+    
     await newAppointment.save();
 
+    console.log(patientId)
+    // find paients
+     let currentPatient = await getPatientById(patientId);
+     console.log(currentPatient)
+
+
+    // Doctor wala 
+    const Doctornotification =  new Notification({
+        message:`new appointment by`  ,
+        user:doctorId
+    })
+    console.log("",)
+    //
+    const notification = new Notification({
+      message:`Your request for appointment `  ,
+      user:patientId
+  })
+  await Doctornotification.save();
+  await notification.save();
+  
+  console.log("",)
     res.status(201).json({
       message: "Appointment created successfully",
       success: true,
       data: newAppointment,
     });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({
       message: "Error creating appointment",
       success: false,

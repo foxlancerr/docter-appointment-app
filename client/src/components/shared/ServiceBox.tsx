@@ -18,7 +18,7 @@ const ServiceBox = ({
   buttonColor,
 }) => {
   return (
-    <div className="col-span-1 mt-16">
+    <div className="col-span-1 mt-">
       <Link to={href} className="line-height-0  ">
         <div
           className={`flex flex-col items-start justify-start p-5 rounded-md relative h-[150px] ${bgColor} overflow-hidden`}
@@ -85,7 +85,7 @@ const services = [
 
 const ServicesGrid = () => {
   return (
-    <div className="container mx-auto p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="container mx-auto py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {services.reverse().map((service, index) => (
         <ServiceBox key={index} {...service} />
       ))}
