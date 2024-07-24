@@ -1,5 +1,5 @@
 import express from "express";
-import User from "../model/user.model.js";
+// import User from "../model/user.model.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import jwt from "jsonwebtoken";
 import Notification from "../model/notification.model.js"; // Import Notification model
