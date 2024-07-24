@@ -1,13 +1,14 @@
 import Layout from "@/components/dashboard/DashboardLayout";
+import HomeCardV1 from "@/components/dashboard/HomeCardV1";
 import HomeFlipList from "@/components/dashboard/HomeFlipList";
 import HomeHero from "@/components/dashboard/HomeHero";
 import FaqAccordion from "@/components/landing-page/faqs";
+import BasicTable from "@/components/shared/BasicTable";
 import { GlobalContext } from "@/context/GlobalContext";
 import { logInUser } from "@/store/features/userInfo/userInfoSlice";
 import { getItemFromLocalStorage } from "@/utils/webLocalStorage";
 import { useContext, useEffect } from "react";
 import { useDispatch } from "react-redux";
-
 
 const Home = () => {
   const { loguserInfo, setLoad } = useContext(GlobalContext);
@@ -37,8 +38,10 @@ const Home = () => {
     // <h1>hii</h1>
     <Layout>
       <HomeHero></HomeHero>
-       <HomeFlipList></HomeFlipList> 
-     </Layout>
+      <HomeCardV1></HomeCardV1>
+      <BasicTable></BasicTable>
+      {/* <HomeFlipList></HomeFlipList>  */}
+    </Layout>
   );
 };
 
