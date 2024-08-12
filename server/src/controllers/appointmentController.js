@@ -8,7 +8,7 @@ import { getPatientById } from "./patientController.js";
 // @route   GET /api/v1/appointments/check-availability
 // @access  Public
 export const checkAvailability = async (req, res) => {
-  console.log(req.query)
+  console.log(req.query);
   try {
     const { doctorId, startTime, endTime } = req.query;
 
@@ -49,7 +49,7 @@ export const checkAvailability = async (req, res) => {
 // @access  Public
 export const createAppointment = async (req, res) => {
   try {
-    console.log("frontend data:",req.body.patientId)
+    console.log("frontend data:", req.body.patientId);
     const { patientId, doctorId, startTime, endTime } = req.body;
 
     // Convert startTime and endTime to Date objects
@@ -76,30 +76,29 @@ export const createAppointment = async (req, res) => {
       startTime,
       endTime,
     });
-    
+
     await newAppointment.save();
 
-    console.log(patientId)
+    console.log("patientId >>>>>>>>>>", patientId);
     // find paients
-     let currentPatient = await getPatientById(patientId);
-     console.log(currentPatient)
+    let currentPatient = await Patient.findById({ _id: patientId });
+    console.log(currentPatient);
 
-
-    // Doctor wala 
-    const Doctornotification =  new Notification({
-        message:`new appointment by`  ,
-        user:doctorId
-    })
-    console.log("",)
+    // Doctor wala
+    const Doctornotification = new Notification({
+      message: `new appointment by`,
+      user: doctorId,
+    });
+    console.log("");
     //
     const notification = new Notification({
-      message:`Your request for appointment `  ,
-      user:patientId
-  })
-  await Doctornotification.save();
-  await notification.save();
-  
-  console.log("",)
+      message: `Your request for appointment `,
+      user: patientId,
+    });
+    await Doctornotification.save();
+    await notification.save();
+
+    console.log("");
     res.status(201).json({
       message: "Appointment created successfully",
       success: true,

@@ -1,88 +1,3 @@
-// import {
-//   Table,
-//   TableBody,
-//   TableCaption,
-//   TableCell,
-//   TableFooter,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from "@/components/ui/table";
-// import { BsThreeDotsVertical } from "react-icons/bs";
-
-// const invoices = [
-//   {
-//     invoice: "INV001",
-//     paymentStatus: "Paid",
-//     totalAmount: "$250.00",
-//     paymentMethod: "Credit Card",
-//   },
-//   {
-//     invoice: "INV002",
-//     paymentStatus: "Pending",
-//     totalAmount: "$150.00",
-//     paymentMethod: "PayPal",
-//   },
-//   {
-//     invoice: "INV003",
-//     paymentStatus: "Unpaid",
-//     totalAmount: "$350.00",
-//     paymentMethod: "Bank Transfer",
-//   },
-//   {
-//     invoice: "INV004",
-//     paymentStatus: "Paid",
-//     totalAmount: "$450.00",
-//     paymentMethod: "Credit Card",
-//   },
-//   {
-//     invoice: "INV005",
-//     paymentStatus: "Paid",
-//     totalAmount: "$550.00",
-//     paymentMethod: "PayPal",
-//   },
-//   {
-//     invoice: "INV006",
-//     paymentStatus: "Pending",
-//     totalAmount: "$200.00",
-//     paymentMethod: "Bank Transfer",
-//   },
-//   {
-//     invoice: "INV007",
-//     paymentStatus: "Unpaid",
-//     totalAmount: "$300.00",
-//     paymentMethod: "Credit Card",
-//   },
-// ];
-
-// const tableHeaderContent = ["Name", "Gender", "Desease", "Time", "Action"];
-// export default function BasicTable() {
-//   return (
-//     <Table>
-//       <TableHeader className="bg-[#015A78]/80 text-white text-xl rounded-full">
-//         <TableRow className="">
-//           {tableHeaderContent.map((item, index) => {
-//             return <TableHead key={item + index} className="font-bold py-5">{item}</TableHead>;
-//           })}
-//         </TableRow>
-//       </TableHeader>
-//       <TableBody>
-//         {invoices.map((invoice) => (
-//           <TableRow key={invoice.invoice}>
-//             <TableCell>{invoice.invoice}</TableCell>
-//             <TableCell>{invoice.paymentStatus}</TableCell>
-//             <TableCell>{invoice.paymentMethod}</TableCell>
-//             <TableCell>{invoice.totalAmount}</TableCell>
-//             <TableCell className="text-2xl text-black/70 flex flex-end">
-//               <BsThreeDotsVertical></BsThreeDotsVertical>
-//             </TableCell>
-//           </TableRow>
-//         ))}
-//       </TableBody>
-//     </Table>
-//   );
-// }
-
 import {
   Table,
   TableBody,
@@ -92,6 +7,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 const tableBodyContent = [
   {
@@ -175,6 +93,7 @@ const tableHeaderContent = ["Name", "Gender", "Desease", "Time", "Action"];
 export default function BasicTable() {
   return (
     <div className="overflow-x-auto py-10">
+      <h1 className="text-3xl font-bold mb-4 text-[#015A78]">Latest Patient</h1>
       <Table className="min-w-full divide-y divide-gray-200 shadow-md">
         <TableHeader className="bg-[#015A78]/80 text-white">
           <TableRow>
@@ -193,7 +112,10 @@ export default function BasicTable() {
         </TableHeader>
         <TableBody className="bg-white divide-y divide-gray-200">
           {tableBodyContent.map((list, index) => (
-            <TableRow key={list.name} className="hover:bg-gray-100 items-center">
+            <TableRow
+              key={list.name}
+              className="hover:bg-gray-100 items-center"
+            >
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 {list.name}
               </TableCell>
@@ -213,8 +135,27 @@ export default function BasicTable() {
                 {list.time}
               </TableCell>
 
-              <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end items-center">
-                <BsThreeDotsVertical />
+              <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end gap-2 text-2xl items-center">
+                {/* <span className="cursor-pointer">
+
+                <BsThreeDotsVertical></BsThreeDotsVertical>
+                </span> */}
+
+                <Popover className="relative">
+                  <PopoverTrigger asChild>
+                    <span className="cursor-pointer">
+                      <BsThreeDotsVertical />
+                    </span>
+                  </PopoverTrigger>
+                  <PopoverContent className="flex bg-white w-max flex-col gap-2 absolute right-2 top-0">
+                    <span className="cursor-pointer flex items-center gap-2 px-3">
+                      <span>View</span>
+                    </span>
+                    <span className=" cursor-pointer flex items-center gap-2 px-3">
+                      <span>Delete</span>
+                    </span>
+                  </PopoverContent>
+                </Popover>
               </TableCell>
             </TableRow>
           ))}
