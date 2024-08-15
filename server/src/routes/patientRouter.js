@@ -12,6 +12,7 @@ import {
   userAuthenticateBasedOnAccessToken,
   userRegister,
   userSignIn,
+  verifyEmail,
 } from "../controllers/patientController.js";
 const patientRouter = express.Router();
 
@@ -27,6 +28,12 @@ export default patientRouter;
 // @route   POST http://localhost:3000/api/v1/patients/register
 // @access  Public
 patientRouter.post("/register", userRegister);
+
+// @desc    Email verification
+// @route   GET http://localhost:3000/api/v1/patients/verify-email/:token
+// @access  Public
+patientRouter.get("/verify-email/:token", verifyEmail);
+
 
 // @desc    User Signin
 // @route   POST http://localhost:3000/api/v1/patients/signin

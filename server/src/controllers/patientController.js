@@ -1,6 +1,10 @@
 import Patient from "../model/patient.model.js";
 import jwt from "jsonwebtoken";
 import { createAppointment } from "./appointmentController.js";
+import { generateVerificationToken } from "../utils/generateToken.js";
+import { verifyEmailTemplate } from "../view/EmailTemplate.js";
+import { sendEmail } from "../utils/email.js";
+import { verificationSuccessTemplate } from "../view/VerificationTemplate.js";
 
 // @desc    User Registration
 // @route   POST http://localhost:3000/api/v1/patients/register
@@ -16,26 +20,80 @@ export const userRegister = async (req, res) => {
         .json({ message: "All fields are required", success: false });
     }
 
-    // check if the user already exist or not
-    const existUser = await Patient.findOne({ email: email });
+    // Check if the user already exists
+    const existUser = await Patient.findOne({ email });
     if (existUser) {
       return res
-        .status(404)
-        .json({ message: "user already register", success: false });
+        .status(409)
+        .json({ message: "User already registered", success: false });
     }
 
-    await Patient.create({
+    // Generate verification token
+    const verificationToken = generateVerificationToken();
+    console.log(verificationToken);
+
+    // Generate verification URL
+    const verificationUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/patients/verify-email/${verificationToken}`;
+    console.log(verificationUrl);
+
+    // Create new user with unverified status
+    const newUser = await Patient.create({
       username,
       email,
       password,
+      isVerified: false,
+      verificationToken,
+    });
+
+    // Send verification email
+    const message = verifyEmailTemplate(username, verificationUrl);
+    console.log(message);
+    const emailSended = await sendEmail({
+      email: newUser.email,
+      subject: "Verify Your Email",
+      message,
     });
 
     return res.status(201).json({
-      message: `${username} are successfully registered`,
+      message: `${username}, you have successfully registered. Please check your email to verify your account.`,
       success: true,
     });
   } catch (error) {
     console.error("Error creating user:", error.message);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+// @desc    User Signin
+// @route   POST http://localhost:3000/api/v1/patients/verify-email/:token
+// @access  Public
+export const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.params;
+    console.log(token);
+
+    // Find the user by verification token
+    const user = await Patient.findOne({ verificationToken: token });
+    console.log(user);
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Invalid or expired token", success: false });
+    }
+
+    // Mark the user as verified and remove the token
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    await user.save();
+
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    return res.status(201).send(verificationSuccessTemplate(user.username,`${baseUrl}/signin`,`${baseUrl}/signup`));
+
+  } catch (error) {
+    console.error("Error verifying email:", error.message);
     res.status(500).json({ message: "Server error", success: false });
   }
 };
@@ -62,21 +120,32 @@ export const userSignIn = async (req, res) => {
         .json({ message: "User not found in database", success: false });
     }
 
+    // Check if the user's email is verified
+    if (!user.isVerified) {
+      return res.status(403).json({
+        message: "Please verify your email before logging in",
+        success: false,
+      });
+    }
+
     // Validate password
     const isPasswordValid = await user.isPasswordCorrect(password);
     if (!isPasswordValid) {
       return res
         .status(401)
-        .json({ message: "User not found in database", success: false });
+        .json({ message: "Invalid credentials", success: false });
     }
 
     // Generate JWT token for authenticated user
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
-    res
-      .status(200)
-      .json({ message: "User logged in successfully", token, success: true });
+
+    res.status(200).json({
+      message: "User logged in successfully",
+      token,
+      success: true,
+    });
   } catch (error) {
     console.error("Error during signin:", error.message);
     res.status(500).json({ message: "Server error", success: false });
