@@ -7,73 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const tableBodyContent = [
-  {
-    name: "John Doe",
-    gender: "Male",
-    disease: "Flu",
-    time: "10:00 AM",
-  },
-  {
-    name: "Jane Smith",
-    gender: "Female",
-    disease: "Cold",
-    time: "10:30 AM",
-  },
-  {
-    name: "Michael Brown",
-    gender: "Male",
-    disease: "Asthma",
-    time: "11:00 AM",
-  },
-  {
-    name: "Emily Johnson",
-    gender: "Female",
-    disease: "Diabetes",
-    time: "11:30 AM",
-  },
-  {
-    name: "David Wilson",
-    gender: "Male",
-    disease: "Hypertension",
-    time: "12:00 PM",
-  },
-  {
-    name: "Sarah Lee",
-    gender: "Female",
-    disease: "Arthritis",
-    time: "12:30 PM",
-  },
-  {
-    name: "James Miller",
-    gender: "Male",
-    disease: "Flu",
-    time: "1:00 PM",
-  },
-  {
-    name: "Patricia Davis",
-    gender: "Female",
-    disease: "Migraine",
-    time: "1:30 PM",
-  },
-  {
-    name: "Robert Martinez",
-    gender: "Male",
-    disease: "Allergies",
-    time: "2:00 PM",
-  },
-  {
-    name: "Linda Anderson",
-    gender: "Female",
-    disease: "Anemia",
-    time: "2:30 PM",
-  },
-];
-
+// Helper function to get cell styles based on the index
 const getCellStyle = (index) => {
   switch (index % 4) {
     case 0:
@@ -89,11 +28,62 @@ const getCellStyle = (index) => {
   }
 };
 
-const tableHeaderContent = ["Name", "Gender", "Desease", "Time", "Action"];
+const tableHeaderContent = [
+  "#",
+  "Name",
+  "Gender",
+  "Disease",
+  "Appointment Date",
+  "Contact",
+  "Time",
+  "Action",
+];
+
 export default function BasicTable() {
+  const navigate = useNavigate();
+  const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/v1/patients"
+        ); // Adjust the URL as needed
+
+        if (!Array.isArray(response.data.data)) {
+          throw new Error("Invalid data format: Expected an array.");
+        }
+
+        setPatients(response.data.data);
+      } catch (error) {
+        setError(error.response?.data?.message || error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatients();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">Error: {error}</div>;
+  }
+
+  if (!patients.length) {
+    return <div>No patients found.</div>;
+  }
+
   return (
     <div className="overflow-x-auto py-10">
-      <h1 className="text-3xl font-bold mb-4 text-[#015A78]">Latest Patient</h1>
+      <h1 className="text-3xl font-bold mb-4 text-[#015A78]">
+        Latest Patients
+      </h1>
       <Table className="min-w-full divide-y divide-gray-200 shadow-md">
         <TableHeader className="bg-[#015A78]/80 text-white">
           <TableRow>
@@ -101,7 +91,7 @@ export default function BasicTable() {
               <TableHead
                 key={item + index}
                 className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
-                  index == tableHeaderContent.length - 1 &&
+                  index === tableHeaderContent.length - 1 &&
                   "flex items-center justify-end"
                 }`}
               >
@@ -111,16 +101,19 @@ export default function BasicTable() {
           </TableRow>
         </TableHeader>
         <TableBody className="bg-white divide-y divide-gray-200">
-          {tableBodyContent.map((list, index) => (
+          {patients?.map((patient, index) => (
             <TableRow
-              key={list.name}
+              key={patient.id} // Assuming `id` is a unique identifier for each patient
               className="hover:bg-gray-100 items-center"
             >
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {list.name}
+                {index + 1}
               </TableCell>
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {list.gender}
+                {patient.name}
+              </TableCell>
+              <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {patient.gender}
               </TableCell>
               <TableCell className="">
                 <p
@@ -128,19 +121,25 @@ export default function BasicTable() {
                     index
                   )} text-center`}
                 >
-                  {list.disease}
+                  {patient?.allergies[0]?.allergen}
                 </p>
               </TableCell>
-              <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {list.time}
+              <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {patient.appointmentDate &&
+                !isNaN(new Date(patient.appointmentDate).getTime())
+                  ? new Date(patient.appointmentDate).toLocaleDateString()
+                  : "10:40AM"}
               </TableCell>
 
+              <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {patient?.emergencyContact?.phone}{" "}
+                {/* Assuming there's a field for the patient's contact information */}
+              </TableCell>
+              <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {patient.time}{" "}
+                {/* Assuming `time` represents the appointment time */}
+              </TableCell>
               <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end gap-2 text-2xl items-center">
-                {/* <span className="cursor-pointer">
-
-                <BsThreeDotsVertical></BsThreeDotsVertical>
-                </span> */}
-
                 <Popover className="relative">
                   <PopoverTrigger asChild>
                     <span className="cursor-pointer">
@@ -148,7 +147,12 @@ export default function BasicTable() {
                     </span>
                   </PopoverTrigger>
                   <PopoverContent className="flex bg-white w-max flex-col gap-2 absolute right-2 top-0">
-                    <span className="cursor-pointer flex items-center gap-2 px-3">
+                    <span
+                      className="cursor-pointer flex items-center gap-2 px-3"
+                      onClick={() => {
+                        navigate(`/patient-detail/${patient._id}`);
+                      }}
+                    >
                       <span>View</span>
                     </span>
                     <span className=" cursor-pointer flex items-center gap-2 px-3">

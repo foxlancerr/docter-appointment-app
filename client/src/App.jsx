@@ -18,6 +18,7 @@ import Appointment from "./pages/Appointment";
 import DashboardDoctorDetail from "./components/dashboard/DashboardDoctorDetail";
 import DashboardDoctorList from "./components/dashboard/DashboardDoctorList";
 import About from "./pages/about/About";
+import PatientDetail from "./components/shared/patientDetail";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -82,6 +83,14 @@ const App = () => {
           element={
             // <ProtectedRoutes>
             <Home></Home>
+            // </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/patient-detail/:id"
+          element={
+            // <ProtectedRoutes>
+            <PatientDetail></PatientDetail>
             // </ProtectedRoutes>
           }
         ></Route>
