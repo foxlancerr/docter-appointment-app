@@ -65,12 +65,6 @@ export const doctorSideBarLinks = [
     icon: FaCalendarAlt,
   },
   {
-    label: "Messages",
-    route: "/messages",
-    icon: FaEnvelope,
-  },
-
-  {
     label: "Profile",
     route: "/profile",
     icon: FaUser,
@@ -99,20 +93,11 @@ export const adminSideBarLinks = [
     icon: FaCalendarAlt,
   },
   {
-    label: "Messages",
-    route: "/admin/messages",
-    icon: FaEnvelope,
-  },
-  {
     label: "Settings",
     route: "/admin/settings",
     icon: FaCog,
   },
-  {
-    label: "Admin Panel",
-    route: "/admin/panel",
-    icon: FaTools,
-  },
+  
 ];
 
 export const homeCardLinks = [

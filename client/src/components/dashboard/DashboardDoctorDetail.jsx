@@ -15,20 +15,21 @@ import AppointmentCard from "../shared/bookAppointmentCard";
 import { fetchDoctorById } from "@/utils/api-calls";
 
 function DashboardDoctorDetail() {
-  const { id } = useParams();
+  const { doctorId } = useParams();
   const [doctorDetail, setDoctorDetail] = useState({});
   //   const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual authentication check
 
-  console.log(doctorDetail);
+  console.log("id >>>>>>>>>>", doctorId)
+  console.log("doctor details >>>>>>>>>>", doctorDetail)
   useEffect(() => {
-    fetchDoctorById(id)
+    fetchDoctorById(doctorId)
       .then((response) => {
         setDoctorDetail(response.data);
       })
       .catch((err) => {
         console.error(err);
       });
-  }, [id]);
+  }, [doctorId]);
 
   return (
     <Layout>

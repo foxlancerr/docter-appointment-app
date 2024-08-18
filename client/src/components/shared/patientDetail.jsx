@@ -65,112 +65,210 @@ function PatientDetail() {
 
   return (
     <Layout>
-      <div className="container mx-auto p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Main Content */}
-          <div className="space-y-6">
-            <Card className="shadow-lg p-6 bg-white">
-              <CardHeader>
-                <CardTitle className="text-2xl font-semibold text-[#023e7d]">{patientDetail.name}</CardTitle>
-                <CardDescription className="text-gray-600">
-                  {patientDetail.gender}, {new Date(patientDetail.dateOfBirth).toLocaleDateString()}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="text-gray-700">
-                  <p><strong>Email:</strong> {patientDetail.email}</p>
-                  <p><strong>Phone:</strong> {patientDetail.phone}</p>
-                </div>
-                <div className="text-gray-700">
-                  <p><strong>Address:</strong> {patientDetail.address?.street}, {patientDetail.address?.city}, {patientDetail.address?.state}, {patientDetail.address?.zip}, {patientDetail.address?.country}</p>
-                </div>
-              </CardContent>
-            </Card>
+      <div className="container mx-auto p-3">
+        {/* Main Content */}
+        <div className="grid grid-cols-2 gap-6">
+          <Card className="shadow-lg p-6 bg-white">
+            <div>
+              <CardTitle className="text-2xl font-semibold text-[#023e7d]">
+                {patientDetail.name}
+              </CardTitle>
+            </div>
+            <div className="mt-3">
+              <div className="text-gray-700 text-sm">
+                <p>
+                  <strong>Gender:</strong> {patientDetail.gender}
+                </p>
+                <p>
+                  <strong>DOB:</strong>{" "}
+                  {new Date(patientDetail.dateOfBirth).toLocaleDateString()}
+                </p>
+                <p>
+                  <strong>Email:</strong> {patientDetail.email}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {patientDetail.phone}
+                </p>
+                <p>
+                  <strong>Email:</strong> {patientDetail.email}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {patientDetail.phone}
+                </p>
+              </div>
+              <div className="text-gray-700">
+                <p>
+                  <strong>Address:</strong> {patientDetail.address?.street},{" "}
+                  {patientDetail.address?.city}, {patientDetail.address?.state},{" "}
+                  {patientDetail.address?.zip}, {patientDetail.address?.country}
+                </p>
+              </div>
+            </div>
+          </Card>
 
-            <Card className="shadow-lg p-6 bg-white">
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-[#023e7d]">Medical History</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc list-inside space-y-4">
-                  {patientDetail.medicalHistory?.map((history, index) => (
-                    <li key={index} className="text-gray-700">
-                      <p><strong>Condition:</strong> {history.condition}</p>
-                      <p><strong>Diagnosis Date:</strong> {new Date(history.diagnosisDate).toLocaleDateString()}</p>
-                      <p><strong>Treatment:</strong> {history.treatment}</p>
-                      <p><strong>Status:</strong> {history.currentStatus}</p>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+          <Card className="shadow-lg p-6 bg-white">
+            <div className="mb-3">
+              <CardTitle className="text-xl font-semibold text-[#023e7d]">
+                Medical History
+              </CardTitle>
+            </div>
+            <div>
+              <ul className="space-y-4">
+                {patientDetail.medicalHistory?.map((history, index) => (
+                  <li key={index} className="text-gray-700 text-sm">
+                    <p>
+                      <strong>Condition:</strong> {history.condition}
+                    </p>
+                    <p>
+                      <strong>Diagnosis Date:</strong>{" "}
+                      {new Date(history.diagnosisDate).toLocaleDateString()}
+                    </p>
+                    <p>
+                      <strong>Treatment:</strong> {history.treatment}
+                    </p>
+                    <p>
+                      <strong>Status:</strong> {history.currentStatus}
+                    </p>
 
-            <Card className="shadow-lg p-6 bg-white">
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-[#023e7d]">Medications</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc list-inside space-y-4">
-                  {patientDetail.medications?.map((medication, index) => (
-                    <li key={index} className="text-gray-700">
-                      <p><strong>Name:</strong> {medication.name}</p>
-                      <p><strong>Dosage:</strong> {medication.dosage}</p>
-                      <p><strong>Frequency:</strong> {medication.frequency}</p>
-                      <p><strong>Start Date:</strong> {new Date(medication.startDate).toLocaleDateString()}</p>
-                      <p><strong>End Date:</strong> {medication.endDate ? new Date(medication.endDate).toLocaleDateString() : "Ongoing"}</p>
-                      <p><strong>Prescribing Doctor:</strong> {medication.prescribingDoctor}</p>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+                    {index !== 1 && patientDetail.medicalHistory.length > 1 && (
+                      <hr className="mt-3" />
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Card>
 
-            <Card className="shadow-lg p-6 bg-white">
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-[#023e7d]">Allergies</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc list-inside space-y-4">
-                  {patientDetail.allergies?.map((allergy, index) => (
-                    <li key={index} className="text-gray-700">
-                      <p><strong>Allergen:</strong> {allergy.allergen}</p>
-                      <p><strong>Reaction:</strong> {allergy.reaction}</p>
-                      <p><strong>Severity:</strong> {allergy.severity}</p>
-                      <p><strong>First Observed:</strong> {new Date(allergy.firstObserved).toLocaleDateString()}</p>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+          <Card className="shadow-lg p-6 bg-white">
+            <div className="mb-3">
+              <CardTitle className="text-xl font-semibold text-[#023e7d]">
+                Medications
+              </CardTitle>
+            </div>
+            <div>
+              <ul className="space-y-4 text-sm">
+                {patientDetail.medications?.map((medication, index) => (
+                  <li key={index} className="text-gray-700">
+                    <p>
+                      <strong>Name:</strong> {medication.name}
+                    </p>
+                    <p>
+                      <strong>Dosage:</strong> {medication.dosage}
+                    </p>
+                    <p>
+                      <strong>Frequency:</strong> {medication.frequency}
+                    </p>
+                    <p>
+                      <strong>Start Date:</strong>{" "}
+                      {new Date(medication.startDate).toLocaleDateString()}
+                    </p>
+                    <p>
+                      <strong>End Date:</strong>{" "}
+                      {medication.endDate
+                        ? new Date(medication.endDate).toLocaleDateString()
+                        : "Ongoing"}
+                    </p>
+                    <p>
+                      <strong>Prescribing Doctor:</strong>{" "}
+                      {medication.prescribingDoctor}
+                    </p>
 
-            <Card className="shadow-lg p-6 bg-white">
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-[#023e7d]">Vital Signs</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-gray-700"><strong>Blood Pressure:</strong> {patientDetail.vitalSigns?.bloodPressure?.systolic}/{patientDetail.vitalSigns?.bloodPressure?.diastolic} mmHg</p>
-                <p className="text-gray-700"><strong>Heart Rate:</strong> {patientDetail.vitalSigns?.heartRate} bpm</p>
-                <p className="text-gray-700"><strong>Temperature:</strong> {patientDetail.vitalSigns?.temperature} °F</p>
-                <p className="text-gray-700"><strong>Weight:</strong> {patientDetail.vitalSigns?.weight} kg</p>
-                <p className="text-gray-700"><strong>Height:</strong> {patientDetail.vitalSigns?.height} cm</p>
-              </CardContent>
-            </Card>
+                    {index !== 1 && patientDetail.medications.length > 1 && (
+                      <hr className="mt-3" />
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Card>
 
-            <Card className="shadow-lg p-6 bg-white">
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-[#023e7d]">Emergency Contact</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-gray-700"><strong>Name:</strong> {patientDetail.emergencyContact?.name}</p>
-                <p className="text-gray-700"><strong>Relationship:</strong> {patientDetail.emergencyContact?.relationship}</p>
-                <p className="text-gray-700"><strong>Phone:</strong> {patientDetail.emergencyContact?.phone}</p>
-                <p className="text-gray-700"><strong>Email:</strong> {patientDetail.emergencyContact?.email}</p>
-              </CardContent>
-            </Card>
-          </div>
+          <Card className="shadow-lg p-6 bg-white">
+            <div className="mb-3">
+              <CardTitle className="text-xl font-semibold text-[#023e7d]">
+                Allergies
+              </CardTitle>
+            </div>
+            <div>
+              <ul className="space-y-4 text-sm">
+                {patientDetail.allergies?.map((allergy, index) => (
+                  <li key={index} className="text-gray-700">
+                    <p>
+                      <strong>Allergen:</strong> {allergy.allergen}
+                    </p>
+                    <p>
+                      <strong>Reaction:</strong> {allergy.reaction}
+                    </p>
+                    <p>
+                      <strong>Severity:</strong> {allergy.severity}
+                    </p>
+                    <p>
+                      <strong>First Observed:</strong>{" "}
+                      {new Date(allergy.firstObserved).toLocaleDateString()}
+                    </p>
+                    {index !== 1 && patientDetail.allergies.length > 1 && (
+                      <hr className="mt-3" />
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Card>
 
-          {/* Sidebar (if needed) */}
-          <div className="hidden md:block">
+          <Card className="shadow-lg p-6 bg-white">
+            <div className="mb-3">
+              <CardTitle className="text-xl font-semibold text-[#023e7d]">
+                Vital Signs
+              </CardTitle>
+            </div>
+            <div className="text-sm">
+              <p className="text-gray-700">
+                <strong>Blood Pressure:</strong>{" "}
+                {patientDetail.vitalSigns?.bloodPressure?.systolic}/
+                {patientDetail.vitalSigns?.bloodPressure?.diastolic} mmHg
+              </p>
+              <p className="text-gray-700">
+                <strong>Heart Rate:</strong>{" "}
+                {patientDetail.vitalSigns?.heartRate} bpm
+              </p>
+              <p className="text-gray-700">
+                <strong>Temperature:</strong>{" "}
+                {patientDetail.vitalSigns?.temperature} °F
+              </p>
+              <p className="text-gray-700">
+                <strong>Weight:</strong> {patientDetail.vitalSigns?.weight} kg
+              </p>
+              <p className="text-gray-700">
+                <strong>Height:</strong> {patientDetail.vitalSigns?.height} cm
+              </p>
+            </div>
+          </Card>
+
+          <Card className="shadow-lg p-6 bg-white">
+            <div className="mb-3">
+              <CardTitle className="text-xl font-semibold text-[#023e7d]">
+                Emergency Contact
+              </CardTitle>
+            </div>
+            <div className="text-sm">
+              <p className="text-gray-700">
+                <strong>Name:</strong> {patientDetail.emergencyContact?.name}
+              </p>
+              <p className="text-gray-700">
+                <strong>Relationship:</strong>{" "}
+                {patientDetail.emergencyContact?.relationship}
+              </p>
+              <p className="text-gray-700">
+                <strong>Phone:</strong> {patientDetail.emergencyContact?.phone}
+              </p>
+              <p className="text-gray-700">
+                <strong>Email:</strong> {patientDetail.emergencyContact?.email}
+              </p>
+            </div>
+          </Card>
+        </div>
+
+        {/* Sidebar (if needed) */}
+        {/* <div className="hidden md:block">
             <Card className="shadow-lg p-6 bg-white">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-[#023e7d]">Additional Information</CardTitle>
@@ -179,8 +277,7 @@ function PatientDetail() {
                 <p className="text-gray-700">Here you can include any additional information or notes relevant to the patient.</p>
               </CardContent>
             </Card>
-          </div>
-        </div>
+          </div> */}
       </div>
     </Layout>
   );

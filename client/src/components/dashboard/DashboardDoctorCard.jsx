@@ -18,7 +18,7 @@ function DashboardDoctorCard({ doctor }) {
   async function bookAppointment() {
     const token = JSON.parse(localStorage.getItem("token"));
     if (token) {
-      navigate(`/dashboard/patient/appointment/${doctor._id}}`);
+      navigate(`/dashboard/patient/appointment/${doctor._id}`);
       toast("Redirecting to appointment-page");
     } else {
       navigate("/signin");

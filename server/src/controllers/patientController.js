@@ -3,7 +3,10 @@ import jwt from "jsonwebtoken";
 import { createAppointment } from "./appointmentController.js";
 import { generateVerificationToken } from "../utils/generateToken.js";
 import { verifyEmailTemplate } from "../view/EmailTemplate.js";
-import { sendEmail } from "../utils/email.js";
+import {
+  sendEmailToKnowUserQuery,
+  sendEmailToVerifyUser,
+} from "../utils/email.js";
 import { verificationSuccessTemplate } from "../view/VerificationTemplate.js";
 
 // @desc    User Registration
@@ -50,7 +53,7 @@ export const userRegister = async (req, res) => {
     // Send verification email
     const message = verifyEmailTemplate(username, verificationUrl);
     console.log(message);
-    const emailSended = await sendEmail({
+    const emailSended = await sendEmailToVerifyUser({
       email: newUser.email,
       subject: "Verify Your Email",
       message,
@@ -89,9 +92,40 @@ export const verifyEmail = async (req, res) => {
     user.verificationToken = undefined;
     await user.save();
 
-    const baseUrl = `${req.protocol}://${req.get('host')}`;
-    return res.status(201).send(verificationSuccessTemplate(user.username,`${baseUrl}/signin`,`${baseUrl}/signup`));
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
+    return res
+      .status(201)
+      .send(
+        verificationSuccessTemplate(
+          user.username,
+          `${baseUrl}/signin`,
+          `${baseUrl}/signup`
+        )
+      );
+  } catch (error) {
+    console.error("Error verifying email:", error.message);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};
 
+// @desc    User Signin
+// @route   POST http://localhost:3000/api/v1/patients/contact-us
+// @access  Public
+export const userQueryEmail = async (req, res) => {
+  try {
+    console.log(req.body)
+    const result = await sendEmailToKnowUserQuery(req.body);
+    if (result.success) {
+      return res.status(200).json({
+        message: result.message,
+        success: result.success,
+      });
+    } else {
+      return res.status(500).json({
+        message: result.message,
+        success: result.success,
+      });
+    }
   } catch (error) {
     console.error("Error verifying email:", error.message);
     res.status(500).json({ message: "Server error", success: false });

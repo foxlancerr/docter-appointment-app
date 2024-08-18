@@ -15,14 +15,9 @@ function DoctorCard({ doctor }) {
   };
 
   async function bookAppointment() {
-    const token = JSON.parse(localStorage.getItem("token"));
-    if (token) {
-      navigate(`/dashboard/patient/appointment/${doctor._id}}`);
-      toast("Redirecting to appointment-page");
-    } else {
-      navigate("/signin");
-      toast("Redirecting to Signin Page");
-    }
+    console.log(doctor._id);
+    navigate(`/dashboard/patient/appointment/${doctor._id}`);
+    toast("Redirecting to appointment-page");
   }
   return (
     <Card className="p-5 bg-white shadow-lg rounded-lg">
