@@ -1,16 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import MarqueeNav from "./MarqueeNav/index";
 
 function Header() {
+
   return (
     <>
-      <nav className="px-5 py-1 text-sm bg-red-600 flex justify-center items-center text-white font-semibold">
+      {/* <nav className="px-5 py-1 text-sm bg-red-600 flex justify-center items-center text-white font-semibold">
         <p className="text-center">
           Buy medicines for Rs. 2000 or more and get flat Rs. 200 off on your
           first order by using promo "Welcome200"
         </p>
-      </nav>
-      <nav className="bg-[#023e7d] text-white px-5 py-3">
+      </nav> */}
+
+      <MarqueeNav></MarqueeNav>
+      <nav className="bg-[#023e7d] text-white px-5 py-3 sticky top-0">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-2xl font-bold">
             <Link to="/">Doctorz</Link>
@@ -38,8 +42,13 @@ function Header() {
             </li>
           </ul>
           <div className="flex gap-2">
-            <Link to="/signin" className="">Sign In</Link>|
-            <Link to="/signup" className="">Sign Up</Link>
+            <Link to="/signin" className="">
+              Sign In
+            </Link>
+            |
+            <Link to="/signup" className="">
+              Sign Up
+            </Link>
           </div>
         </div>
       </nav>

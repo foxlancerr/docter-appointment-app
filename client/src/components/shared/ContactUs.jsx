@@ -1,7 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import HomeLayout from "../HomeLayout";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ContactUs = () => {
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/patients/contact-us",
+        { email, subject, message },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const result = response.data;
+
+      if (result.success) {
+        setEmail("");
+        setMessage("");
+        setSubject("");
+        toast.success(result.message);
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error(result.message);
+    }
+  };
   return (
     <HomeLayout>
       <section>
@@ -13,7 +46,7 @@ const ContactUs = () => {
             Got any issue? Want to reach us? Let us know.
           </p>
 
-          <form action="#" className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -24,6 +57,8 @@ const ContactUs = () => {
               <input
                 type="email"
                 id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="example@tmail.com"
                 className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
               />
@@ -38,6 +73,8 @@ const ContactUs = () => {
               <input
                 type="text"
                 id="subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
                 placeholder="Let us know how we can help you?"
                 className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
               />
@@ -52,6 +89,8 @@ const ContactUs = () => {
               <textarea
                 id="message"
                 rows="10"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 placeholder="Leave a Message..."
                 className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
               ></textarea>

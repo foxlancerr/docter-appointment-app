@@ -10,6 +10,7 @@ import {
   getPatientById,
   updatePatientById,
   userAuthenticateBasedOnAccessToken,
+  userQueryEmail,
   userRegister,
   userSignIn,
   verifyEmail,
@@ -34,6 +35,10 @@ patientRouter.post("/register", userRegister);
 // @access  Public
 patientRouter.get("/verify-email/:token", verifyEmail);
 
+// @desc    Email verification
+// @route   POST http://localhost:3000/api/v1/patients/contact-us
+// @access  Public
+patientRouter.post("/contact-us", userQueryEmail);
 
 // @desc    User Signin
 // @route   POST http://localhost:3000/api/v1/patients/signin
