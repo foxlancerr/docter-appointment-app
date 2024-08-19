@@ -19,6 +19,7 @@ import DashboardDoctorDetail from "./components/dashboard/DashboardDoctorDetail"
 import DashboardDoctorList from "./components/dashboard/DashboardDoctorList";
 import About from "./pages/about/About";
 import PatientDetail from "./components/shared/patientDetail";
+import Patient from "./pages/Patient";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -52,6 +53,10 @@ const App = () => {
         <Route
           path="/dashboard/patient/appointment/:doctorId"
           element={<DashboardDoctorDetail />}
+        ></Route>
+        <Route
+          path="/dashboard/patients"
+          element={<Patient />}
         ></Route>
         <Route
           path="/dashboard/patient/appointment/"

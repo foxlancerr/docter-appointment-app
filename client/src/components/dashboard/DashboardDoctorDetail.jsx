@@ -33,7 +33,7 @@ function DashboardDoctorDetail() {
 
   return (
     <Layout>
-      <div className="container mx-auto p-5 flex justify-between flex-col-reverse sm:flex-row gap-5">
+      <div className="container mx-10 flex justify-between flex-col-reverse sm:flex-row gap-5">
         {/* Main Content */}
         <div className="sm:w-[65%]">
           {" "}

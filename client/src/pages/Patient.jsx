@@ -4,11 +4,12 @@ import Table from "../components/Table";
 import MeetingCard from "../components/dashboard/MeetingCard";
 import HomeCard from "../components/dashboard/HomeCard";
 import { patientHero } from "../constants";
+import BasicTable from "@/components/shared/BasicTable";
 
 function Patient() {
   return (
     <Layout>
-      <section className="grid xl:grid-cols-3 gap-5 max-sm:grid-cols-1 md:grid-cols-2 mb-10">
+      <section className="grid xl:grid-cols-3 gap-10 max-sm:grid-cols-1 md:grid-cols-2 mb-10">
         {patientHero.map((item) => (
           <HomeCard
             key={item.title}
@@ -20,7 +21,7 @@ function Patient() {
           ></HomeCard>
         ))}
       </section>
-      <Table></Table>
+      <BasicTable></BasicTable>
     </Layout>
   );
 }

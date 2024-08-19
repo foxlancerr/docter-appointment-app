@@ -32,9 +32,9 @@ function DoctorDetail() {
 
   return (
     <HomeLayout>
-      <div className="container mx-auto p-5 flex justify-between flex-col-reverse sm:flex-row gap-5">
+      <div className="container flex mx-10  flex-col-reverse sm:flex-row gap-5">
         {/* Main Content */}
-        <div className="sm:w-[65%]">
+        <div className="sm:w-[60%]">
           {" "}
           {/* Adjust right padding to make space for the sidebar */}
           <Card className="mb-5">

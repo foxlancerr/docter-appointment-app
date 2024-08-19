@@ -2,7 +2,7 @@ import React from "react";
 import "./style.css";
 const MarqueeNav = () => {
   return (
-    <nav className="px-5 py-1  text-sm bg-red-600 flex justify-center items-center text-white font-semibold">
+    <nav className="px-10 py-1  text-sm bg-red-600 flex justify-center items-center text-white font-semibold">
       <div className="marquee-container w-full">
         <div className="marquee-content">
           🗓️ Book your appointment now and get personalized care! 💙 Schedule

@@ -28,7 +28,7 @@ function DashboardDoctorCard({ doctor }) {
   return (
     <Card className="p-5 bg-white shadow-lg rounded-lg">
       <div className="flex flex-wrap justify-between items-start w-full">
-        <div className="flex gap-3 w-full sm:w-1/3 lg:w-1/4">
+        <div className="flex gap-3 sm:w-1/3 lg:w-1/4">
           <img
             src={doctorDemoImage}
             alt="doctor"

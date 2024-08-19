@@ -30,7 +30,7 @@ function Navbar() {
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
       ></MobileNavbar>
-      <nav className="flex justify-between fixed z-30 w-full items-center bg-[#023e7d] text-white px-6 py-4 lg:px-10">
+      <nav className="flex justify-between fixed z-30 w-full items-center bg-[#023e7d] text-white px-10 py-4 lg:px-10">
         <div className="" id="top_nav_right_side">
           <h1 className="font-extrabold text-3xl gradiant-blue-l text-gradiant">
             Docterz
