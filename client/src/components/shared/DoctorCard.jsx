@@ -8,45 +8,47 @@ import toast from "react-hot-toast";
 
 function DoctorCard({ doctor }) {
   const navigate = useNavigate();
-  console.log(doctor);
 
   const handleViewProfile = () => {
     navigate(`/doctors/${doctor._id}`);
   };
 
   async function bookAppointment() {
-    console.log(doctor._id);
     navigate(`/dashboard/patient/appointment/${doctor._id}`);
-    toast("Redirecting to appointment-page");
+    toast("Redirecting to appointment page...");
   }
+
   return (
-    <Card className="p-5 bg-white shadow-lg rounded-lg">
-      <div className="flex flex-wrap justify-between items-start w-full">
-        <div className="flex gap-3 w-full sm:w-1/3 lg:w-1/4">
+    <Card className="p-5 bg-white shadow-lg rounded-lg w-full">
+      <div className="flex flex-col md:flex-row gap-4 items-start w-full">
+        {/* Doctor Image */}
+        <div className="flex-shrink-0 w-20 h-20 md:w-24 md:h-24">
           <img
             src={doctorDemoImage}
             alt="doctor"
-            className="object-cover w-20 h-20 rounded-full"
+            className="object-cover w-full h-full rounded-full"
           />
         </div>
 
-        <div className="flex flex-col gap-3 justify-between w-full sm:w-2/3 lg:w-3/4">
-          <div className="flex-grow">
-            <div className="flex items-start gap-3">
-              <h2 className="text-2xl font-bold text-[#023e7d]">
+        {/* Doctor Information */}
+        <div className="flex-grow flex flex-col gap-3 justify-between w-full">
+          <div>
+            <div className="flex items-center gap-3">
+              <h2 className="text-xl md:text-2xl font-bold text-[#023e7d]">
                 {doctor.name}
               </h2>
-              <div className="flex gap-2 items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-                <p className="text-xs font-semibold">PMC Verified</p>
-                <GoVerified className="text-lg" />
+              <div className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+                <p className="text-xs md:text-sm font-semibold">PMC Verified</p>
+                <GoVerified className="text-sm md:text-lg" />
               </div>
             </div>
-
-            <p className="text-sm text-gray-600 mt-2">{doctor.specialty}</p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm md:text-base text-gray-600 mt-2">
+              {doctor.specialty}
+            </p>
+            <p className="text-sm md:text-base text-gray-600">
               Experience: {doctor.yearsExperience} Year(s)
             </p>
-            <div className="flex gap-2 items-center text-sm mt-2">
+            <div className="flex items-center text-sm mt-2">
               <div className="flex text-yellow-500 text-lg">
                 {[...Array(doctor.reviews > 5 ? 5 : doctor.reviews)].map(
                   (_, index) => (
@@ -60,15 +62,16 @@ function DoctorCard({ doctor }) {
             </div>
           </div>
 
-          <div className="gap-3 flex">
+          {/* Action Buttons */}
+          <div className="flex gap-3 mt-4">
             <button
-              className="px-4 py-2 border-2 rounded-full border-[#023e7d] text-[#023e7d] hover:bg-[#023e7d]/90 hover:text-white transition"
+              className="px-4 py-2 border-2 rounded-full border-[#023e7d] text-[#023e7d] hover:bg-[#023e7d]/90 hover:text-white transition w-full md:w-auto"
               onClick={bookAppointment}
             >
               Book Appointment
             </button>
             <button
-              className="px-4 py-2 border-2 rounded-full border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white transition"
+              className="px-4 py-2 border-2 rounded-full border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white transition w-full md:w-auto"
               onClick={handleViewProfile}
             >
               View Profile

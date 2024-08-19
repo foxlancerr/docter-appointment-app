@@ -56,7 +56,7 @@ export const doctorSideBarLinks = [
   },
   {
     label: "Patients",
-    route: "/patients",
+    route: "/dashboard/patients",
     icon: FaUserInjured,
   },
   {

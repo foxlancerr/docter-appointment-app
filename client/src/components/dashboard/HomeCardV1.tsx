@@ -4,8 +4,8 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import { TbReportMoney } from "react-icons/tb";
 function HomeCardV1() {
   return (
-    <div className="grid grid-cols-3 gap-10 my-10">
-      <div className="flex items-center  w-full bg-[#015A78] rounded-[40px]">
+    <div className="grid grid-cols-3 gap-10 my-10 ">
+      <div className="flex items-center  w-full bg-[#015A78] rounded-[40px] hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
         <div className="flex gap-5 ml-10 py-16 items-center">
           <span className="text-4xl p-5 bg-white rounded-full">
             <MdBookmarkAdded className="text-[#A6207D]"></MdBookmarkAdded>
@@ -16,7 +16,7 @@ function HomeCardV1() {
           </div>
         </div>
       </div>
-      <div className="flex items-center  w-full bg-[#015A78] rounded-[40px]">
+      <div className="flex items-center  w-full bg-[#015A78] rounded-[40px] hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
         <div className="flex gap-5 ml-10 py-16 items-center">
           <span className="text-4xl p-5 bg-white rounded-full text-[#A6207D]">
             <HiOutlineUserGroup></HiOutlineUserGroup>
@@ -27,7 +27,7 @@ function HomeCardV1() {
           </div>
         </div>
       </div>
-      <div className="flex items-center  w-full bg-[#015A78] rounded-[40px]">
+      <div className="flex items-center  w-full bg-[#015A78] rounded-[40px] hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
         <div className="flex gap-5 ml-10 py-16 items-center">
           <span className="text-4xl p-5 bg-white rounded-full text-[#A6207D]">
             <TbReportMoney></TbReportMoney>

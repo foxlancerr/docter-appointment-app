@@ -46,7 +46,7 @@ function DashboardDoctorList() {
         <h1 className="text-3xl font-semibold pb-2 border-b-2 mb-10 text-[#023e7d]">
         Top Specialists
         </h1>
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-5 gap-x-5 mb-5">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-5 gap-x-5 mb-5 w-max">
           {currentDoctors.map((item, index) => (
             <DashboardDoctorCard
               doctor={item}

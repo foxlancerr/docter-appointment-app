@@ -11,6 +11,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Input } from "@/components/ui/input"; // Importing ShadCN Input component
 
 // Helper function to get cell styles based on the index
 const getCellStyle = (index) => {
@@ -44,18 +46,35 @@ export default function BasicTable() {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // Single search term state
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/api/v1/patients/${id}`
+      );
+      if (response.status === 200) {
+        toast.success("Patient deleted successfully");
+        setPatients((prevPatients) =>
+          prevPatients.filter((patient) => patient._id !== id)
+        );
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchPatients = async () => {
       try {
         const response = await axios.get(
           "http://localhost:3000/api/v1/patients"
-        ); // Adjust the URL as needed
-
+        );
         if (!Array.isArray(response.data.data)) {
           throw new Error("Invalid data format: Expected an array.");
         }
-
         setPatients(response.data.data);
       } catch (error) {
         setError(error.response?.data?.message || error.message);
@@ -66,6 +85,11 @@ export default function BasicTable() {
 
     fetchPatients();
   }, []);
+
+  const filteredPatients = patients.filter((patient) =>
+    patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (patient?.allergies[0]?.allergen || "").toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (loading) {
     return <div>Loading...</div>;
@@ -84,6 +108,15 @@ export default function BasicTable() {
       <h1 className="text-3xl font-bold mb-4 text-[#015A78]">
         Latest Patients
       </h1>
+      <div className="flex justify-between mb-4 float-right w-[300px]">
+        <Input
+          type="text"
+          placeholder="Search by Name or Disease"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 w-full  text-black bg-white border border-gray-300 rounded focus:outline-none focus:border-[#015A78]"
+        />
+      </div>
       <Table className="min-w-full divide-y divide-gray-200 shadow-md">
         <TableHeader className="bg-[#015A78]/80 text-white">
           <TableRow>
@@ -101,16 +134,26 @@ export default function BasicTable() {
           </TableRow>
         </TableHeader>
         <TableBody className="bg-white divide-y divide-gray-200">
-          {patients?.map((patient, index) => (
+          {filteredPatients?.map((patient, index) => (
             <TableRow
-              key={patient.id} // Assuming `id` is a unique identifier for each patient
+              key={patient.id + index}
               className="hover:bg-gray-100 items-center"
             >
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 {index + 1}
               </TableCell>
-              <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {patient.name}
+              <TableCell className="px-6 py-4 flex gap-3 items-center whitespace-nowrap text-sm font-medium text-gray-900">
+                <img
+                  src={patient?.profileImg}
+                  className="w-10 h-10 rounded-full bg-red-200"
+                  alt="Image1"
+                />
+                <div>
+                  <h1 className="font-bold text-black-300 text-sm">
+                    {patient.name}
+                  </h1>
+                  <p>{patient.phone}</p>
+                </div>
               </TableCell>
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 {patient.gender}
@@ -132,12 +175,10 @@ export default function BasicTable() {
               </TableCell>
 
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {patient?.emergencyContact?.phone}{" "}
-                {/* Assuming there's a field for the patient's contact information */}
+                {patient?.emergencyContact?.phone}
               </TableCell>
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {patient.time}{" "}
-                {/* Assuming `time` represents the appointment time */}
+                {patient.time}
               </TableCell>
               <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end gap-2 text-2xl items-center">
                 <Popover className="relative">
@@ -156,7 +197,9 @@ export default function BasicTable() {
                       <span>View</span>
                     </span>
                     <span className=" cursor-pointer flex items-center gap-2 px-3">
-                      <span>Delete</span>
+                      <span onClick={() => handleDelete(patient._id)}>
+                        Delete
+                      </span>
                     </span>
                   </PopoverContent>
                 </Popover>

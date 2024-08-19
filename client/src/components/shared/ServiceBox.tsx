@@ -85,7 +85,7 @@ const services = [
 
 const ServicesGrid = () => {
   return (
-    <div className="container mx-auto py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="container mx-auto p-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {services.reverse().map((service, index) => (
         <ServiceBox key={index} {...service} />
       ))}
