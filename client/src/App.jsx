@@ -37,27 +37,23 @@ const App = () => {
       {load && <Loader></Loader>}
 
       <Routes>
-        <Route
-          path="/"
-          element={
-            // <PublicRoutes>
-            <HomePage></HomePage>
-            // </PublicRoutes>
-          }
-        ></Route>
+        {/* public routes */}
+        <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/contact-us" element={<ContactUs></ContactUs>}></Route>
         <Route path="/services" element={<ServicesList></ServicesList>}></Route>
         <Route path="/about-us" element={<About></About>}></Route>
         <Route path="/doctors/:id" element={<DoctorDetail />}></Route>
-        <Route path="/dashboard/doctors/:doctorId" element={<DashboardDoctorDetail />}></Route>
+
+        {/* private page */}
+        <Route
+          path="/dashboard/doctors/:doctorId"
+          element={<DashboardDoctorDetail />}
+        ></Route>
         <Route
           path="/dashboard/patient/appointment/:doctorId"
           element={<DashboardDoctorDetail />}
         ></Route>
-        <Route
-          path="/dashboard/patients"
-          element={<Patient />}
-        ></Route>
+        <Route path="/dashboard/patients" element={<Patient />}></Route>
         <Route
           path="/dashboard/patient/appointment/"
           element={<DashboardDoctorList />}

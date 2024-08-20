@@ -87,8 +87,8 @@ export default function BasicTable() {
   }, []);
 
   const filteredPatients = patients.filter((patient) =>
-    patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (patient?.allergies[0]?.allergen || "").toLowerCase().includes(searchTerm.toLowerCase())
+    patient?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+    (patient?.allergies[0]?.allergen || "").toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
 
   if (loading) {
