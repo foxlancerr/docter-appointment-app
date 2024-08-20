@@ -170,11 +170,13 @@ export const userSignIn = async (req, res) => {
         .json({ message: "Invalid credentials", success: false });
     }
 
+
     // Generate JWT token for authenticated user
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
 
+    console.log(token)
     res.status(200).json({
       message: "User logged in successfully",
       token,
