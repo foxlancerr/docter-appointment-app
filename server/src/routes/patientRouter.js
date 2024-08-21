@@ -15,6 +15,7 @@ import {
   userSignIn,
   verifyEmail,
 } from "../controllers/patientController.js";
+import UploadFile from "../middleware/multerFileUpload.js";
 const patientRouter = express.Router();
 
 patientRouter.post("/", createPatient);
@@ -28,7 +29,11 @@ export default patientRouter;
 // @desc    User Registration
 // @route   POST http://localhost:3000/api/v1/patients/register
 // @access  Public
-patientRouter.post("/register", userRegister);
+patientRouter.post(
+  "/register",
+  UploadFile.single("file"),
+  userRegister
+);
 
 // @desc    Email verification
 // @route   GET http://localhost:3000/api/v1/patients/verify-email/:token

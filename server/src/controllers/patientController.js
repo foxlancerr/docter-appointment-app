@@ -8,6 +8,7 @@ import {
   sendEmailToVerifyUser,
 } from "../utils/email.js";
 import { verificationSuccessTemplate } from "../view/VerificationTemplate.js";
+import uploadToCloudinary from "../utils/cloudnaryConfig.js";
 
 // @desc    User Registration
 // @route   POST http://localhost:3000/api/v1/patients/register
@@ -15,6 +16,11 @@ import { verificationSuccessTemplate } from "../view/VerificationTemplate.js";
 export const userRegister = async (req, res) => {
   try {
     const { username, password, email } = req.body;
+    let profileImageUrl = null;
+    if (req.file) {
+      // Upload image to Cloudinary
+      profileImageUrl = await uploadToCloudinary(req.file.path);
+    }
 
     // Validate required fields
     if (!username || !email || !password) {
@@ -33,13 +39,11 @@ export const userRegister = async (req, res) => {
 
     // Generate verification token
     const verificationToken = generateVerificationToken();
-    console.log(verificationToken);
 
     // Generate verification URL
     const verificationUrl = `${req.protocol}://${req.get(
       "host"
     )}/api/v1/patients/verify-email/${verificationToken}`;
-    console.log(verificationUrl);
 
     // Create new user with unverified status
     const newUser = await Patient.create({
@@ -47,12 +51,12 @@ export const userRegister = async (req, res) => {
       email,
       password,
       isVerified: false,
+      profileImage: profileImageUrl,
       verificationToken,
     });
 
     // Send verification email
     const message = verifyEmailTemplate(username, verificationUrl);
-    console.log(message);
     const emailSended = await sendEmailToVerifyUser({
       email: newUser.email,
       subject: "Verify Your Email",
@@ -75,11 +79,9 @@ export const userRegister = async (req, res) => {
 export const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
-    console.log(token);
 
     // Find the user by verification token
     const user = await Patient.findOne({ verificationToken: token });
-    console.log(user);
 
     if (!user) {
       return res
@@ -113,7 +115,6 @@ export const verifyEmail = async (req, res) => {
 // @access  Public
 export const userQueryEmail = async (req, res) => {
   try {
-    console.log(req.body)
     const result = await sendEmailToKnowUserQuery(req.body);
     if (result.success) {
       return res.status(200).json({
@@ -170,13 +171,11 @@ export const userSignIn = async (req, res) => {
         .json({ message: "Invalid credentials", success: false });
     }
 
-
     // Generate JWT token for authenticated user
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
 
-    console.log(token)
     res.status(200).json({
       message: "User logged in successfully",
       token,
@@ -218,7 +217,6 @@ export const userAuthenticateBasedOnAccessToken = async (req, res) => {
 // @access  Public
 export const createPatient = async (req, res) => {
   try {
-    console.log("frontend data >>>>>>>>>>>", req.body);
     const {
       name,
       email,

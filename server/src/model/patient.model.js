@@ -13,6 +13,7 @@ const patientSchema = new mongoose.Schema(
       trim: true,
       index: true,
     },
+    profileImage: String,
     email: {
       type: String,
       unique: true,
