@@ -144,8 +144,8 @@ export default function BasicTable() {
               </TableCell>
               <TableCell className="px-6 py-4 flex gap-3 items-center whitespace-nowrap text-sm font-medium text-gray-900">
                 <img
-                  src={patient?.profileImg}
-                  className="w-10 h-10 rounded-full bg-red-200"
+                  src={patient?.profileImage}
+                  className="w-10 h-10 rounded-full"
                   alt="Image1"
                 />
                 <div>

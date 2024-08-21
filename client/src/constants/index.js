@@ -66,7 +66,7 @@ export const doctorSideBarLinks = [
   },
   {
     label: "Profile",
-    route: "/profile",
+    route: "/dashboard/doctor-profile/",
     icon: FaUser,
   },
 ];
@@ -97,7 +97,6 @@ export const adminSideBarLinks = [
     route: "/admin/settings",
     icon: FaCog,
   },
-  
 ];
 
 export const homeCardLinks = [
