@@ -20,6 +20,7 @@ import DashboardDoctorList from "./components/dashboard/DashboardDoctorList";
 import About from "./pages/about/About";
 import PatientDetail from "./components/shared/patientDetail";
 import Patient from "./pages/Patient";
+import DoctorProfilePage from "./components/dashboard/Profile/doctorProfile";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -45,54 +46,86 @@ const App = () => {
         <Route path="/doctors/:id" element={<DoctorDetail />}></Route>
 
         {/* private page */}
+
         <Route
           path="/dashboard/doctors/:doctorId"
-          element={<DashboardDoctorDetail />}
+          element={
+            <ProtectedRoutes>
+              <DashboardDoctorDetail />
+            </ProtectedRoutes>
+          }
         ></Route>
         <Route
           path="/dashboard/patient/appointment/:doctorId"
-          element={<DashboardDoctorDetail />}
+          element={
+            <ProtectedRoutes>
+              <DashboardDoctorDetail />
+            </ProtectedRoutes>
+          }
         ></Route>
-        <Route path="/dashboard/patients" element={<Patient />}></Route>
+        <Route
+          path="/dashboard/patients"
+          element={
+            <ProtectedRoutes>
+              <Patient />
+            </ProtectedRoutes>
+          }
+        ></Route>
         <Route
           path="/dashboard/patient/appointment/"
-          element={<DashboardDoctorList />}
+          element={
+            <ProtectedRoutes>
+              <DashboardDoctorList />
+            </ProtectedRoutes>
+          }
         ></Route>
         <Route
           path="/patient/appointment/:doctorId"
-          element={<Appointment />}
+          element={
+            <ProtectedRoutes>
+              <Appointment />
+            </ProtectedRoutes>
+          }
         ></Route>
         <Route
           path="/signin"
           element={
-            // <PublicRoutes>
-            <Signin></Signin>
-            // </PublicRoutes>
+            <PublicRoutes>
+              <Signin></Signin>
+            </PublicRoutes>
           }
         ></Route>
         <Route
           path="/signup"
           element={
-            // <PublicRoutes>
-            <Signup></Signup>
-            // </PublicRoutes>
+            <PublicRoutes>
+              <Signup></Signup>
+            </PublicRoutes>
           }
         ></Route>
 
         <Route
           path="/dashboard"
           element={
-            // <ProtectedRoutes>
-            <Home></Home>
-            // </ProtectedRoutes>
+            <ProtectedRoutes>
+              <Home></Home>
+            </ProtectedRoutes>
           }
         ></Route>
         <Route
           path="/patient-detail/:id"
           element={
-            // <ProtectedRoutes>
-            <PatientDetail></PatientDetail>
-            // </ProtectedRoutes>
+            <ProtectedRoutes>
+              <PatientDetail></PatientDetail>
+            </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/dashboard/doctor-profile/:id"
+          element={
+            <ProtectedRoutes>
+              <DoctorProfilePage></DoctorProfilePage>
+            </ProtectedRoutes>
           }
         ></Route>
 

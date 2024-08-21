@@ -11,7 +11,7 @@ import {
 import HomeLayout from "../HomeLayout";
 import Layout from "../dashboard/DashboardLayout";
 
-function PatientDetail() {
+function PatientDetailComponent() {
   const { id } = useParams();
   const [patientDetail, setPatientDetail] = useState({});
   const [loading, setLoading] = useState(true);
@@ -69,39 +69,50 @@ function PatientDetail() {
         {/* Main Content */}
         <div className="grid grid-cols-2 gap-6">
           <Card className="shadow-lg p-6 bg-white">
-            <div>
-              <CardTitle className="text-2xl font-semibold text-[#023e7d]">
-                {patientDetail.name}
-              </CardTitle>
+            <div className="w-24 h-24 mx-auto rounded-full border-2 border-gray-500 overflow-hidden object-cover object-center">
+              <img
+                src={patientDetail?.profileImage}
+                alt=""
+                className="w-full"
+              />
             </div>
-            <div className="mt-3">
-              <div className="text-gray-700 text-sm">
-                <p>
-                  <strong>Gender:</strong> {patientDetail.gender}
-                </p>
-                <p>
-                  <strong>DOB:</strong>{" "}
-                  {new Date(patientDetail.dateOfBirth).toLocaleDateString()}
-                </p>
-                <p>
-                  <strong>Email:</strong> {patientDetail.email}
-                </p>
-                <p>
-                  <strong>Phone:</strong> {patientDetail.phone}
-                </p>
-                <p>
-                  <strong>Email:</strong> {patientDetail.email}
-                </p>
-                <p>
-                  <strong>Phone:</strong> {patientDetail.phone}
-                </p>
+            <div>
+              <div>
+                <CardTitle className="text-2xl font-semibold text-[#023e7d]">
+                  {patientDetail?.name}
+                </CardTitle>
               </div>
-              <div className="text-gray-700">
-                <p>
-                  <strong>Address:</strong> {patientDetail.address?.street},{" "}
-                  {patientDetail.address?.city}, {patientDetail.address?.state},{" "}
-                  {patientDetail.address?.zip}, {patientDetail.address?.country}
-                </p>
+              <div className="mt-3">
+                <div className="text-gray-700 text-sm">
+                  <p>
+                    <strong>Gender:</strong> {patientDetail?.gender}
+                  </p>
+                  <p>
+                    <strong>DOB:</strong>{" "}
+                    {new Date(patientDetail?.dateOfBirth).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {patientDetail?.email}
+                  </p>
+                  <p>
+                    <strong>Phone:</strong> {patientDetail?.phone}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {patientDetail?.email}
+                  </p>
+                  <p>
+                    <strong>Phone:</strong> {patientDetail?.phone}
+                  </p>
+                </div>
+                <div className="text-gray-700">
+                  <p>
+                    <strong>Address:</strong> {patientDetail?.address?.street},{" "}
+                    {patientDetail?.address?.city},{" "}
+                    {patientDetail?.address?.state},{" "}
+                    {patientDetail?.address?.zip},{" "}
+                    {patientDetail?.address?.country}
+                  </p>
+                </div>
               </div>
             </div>
           </Card>
@@ -114,7 +125,7 @@ function PatientDetail() {
             </div>
             <div>
               <ul className="space-y-4">
-                {patientDetail.medicalHistory?.map((history, index) => (
+                {patientDetail?.medicalHistory?.map((history, index) => (
                   <li key={index} className="text-gray-700 text-sm">
                     <p>
                       <strong>Condition:</strong> {history.condition}
@@ -130,9 +141,10 @@ function PatientDetail() {
                       <strong>Status:</strong> {history.currentStatus}
                     </p>
 
-                    {index !== 1 && patientDetail.medicalHistory.length > 1 && (
-                      <hr className="mt-3" />
-                    )}
+                    {index !== 1 &&
+                      patientDetail?.medicalHistory.length > 1 && (
+                        <hr className="mt-3" />
+                      )}
                   </li>
                 ))}
               </ul>
@@ -147,7 +159,7 @@ function PatientDetail() {
             </div>
             <div>
               <ul className="space-y-4 text-sm">
-                {patientDetail.medications?.map((medication, index) => (
+                {patientDetail?.medications?.map((medication, index) => (
                   <li key={index} className="text-gray-700">
                     <p>
                       <strong>Name:</strong> {medication.name}
@@ -173,7 +185,7 @@ function PatientDetail() {
                       {medication.prescribingDoctor}
                     </p>
 
-                    {index !== 1 && patientDetail.medications.length > 1 && (
+                    {index !== 1 && patientDetail?.medications.length > 1 && (
                       <hr className="mt-3" />
                     )}
                   </li>
@@ -190,7 +202,7 @@ function PatientDetail() {
             </div>
             <div>
               <ul className="space-y-4 text-sm">
-                {patientDetail.allergies?.map((allergy, index) => (
+                {patientDetail?.allergies?.map((allergy, index) => (
                   <li key={index} className="text-gray-700">
                     <p>
                       <strong>Allergen:</strong> {allergy.allergen}
@@ -205,7 +217,7 @@ function PatientDetail() {
                       <strong>First Observed:</strong>{" "}
                       {new Date(allergy.firstObserved).toLocaleDateString()}
                     </p>
-                    {index !== 1 && patientDetail.allergies.length > 1 && (
+                    {index !== 1 && patientDetail?.allergies.length > 1 && (
                       <hr className="mt-3" />
                     )}
                   </li>
@@ -223,22 +235,22 @@ function PatientDetail() {
             <div className="text-sm">
               <p className="text-gray-700">
                 <strong>Blood Pressure:</strong>{" "}
-                {patientDetail.vitalSigns?.bloodPressure?.systolic}/
-                {patientDetail.vitalSigns?.bloodPressure?.diastolic} mmHg
+                {patientDetail?.vitalSigns?.bloodPressure?.systolic}/
+                {patientDetail?.vitalSigns?.bloodPressure?.diastolic} mmHg
               </p>
               <p className="text-gray-700">
                 <strong>Heart Rate:</strong>{" "}
-                {patientDetail.vitalSigns?.heartRate} bpm
+                {patientDetail?.vitalSigns?.heartRate} bpm
               </p>
               <p className="text-gray-700">
                 <strong>Temperature:</strong>{" "}
-                {patientDetail.vitalSigns?.temperature} °F
+                {patientDetail?.vitalSigns?.temperature} °F
               </p>
               <p className="text-gray-700">
-                <strong>Weight:</strong> {patientDetail.vitalSigns?.weight} kg
+                <strong>Weight:</strong> {patientDetail?.vitalSigns?.weight} kg
               </p>
               <p className="text-gray-700">
-                <strong>Height:</strong> {patientDetail.vitalSigns?.height} cm
+                <strong>Height:</strong> {patientDetail?.vitalSigns?.height} cm
               </p>
             </div>
           </Card>
@@ -251,17 +263,17 @@ function PatientDetail() {
             </div>
             <div className="text-sm">
               <p className="text-gray-700">
-                <strong>Name:</strong> {patientDetail.emergencyContact?.name}
+                <strong>Name:</strong> {patientDetail?.emergencyContact?.name}
               </p>
               <p className="text-gray-700">
                 <strong>Relationship:</strong>{" "}
-                {patientDetail.emergencyContact?.relationship}
+                {patientDetail?.emergencyContact?.relationship}
               </p>
               <p className="text-gray-700">
-                <strong>Phone:</strong> {patientDetail.emergencyContact?.phone}
+                <strong>Phone:</strong> {patientDetail?.emergencyContact?.phone}
               </p>
               <p className="text-gray-700">
-                <strong>Email:</strong> {patientDetail.emergencyContact?.email}
+                <strong>Email:</strong> {patientDetail?.emergencyContact?.email}
               </p>
             </div>
           </Card>
@@ -283,4 +295,4 @@ function PatientDetail() {
   );
 }
 
-export default PatientDetail;
+export default PatientDetailComponent;
