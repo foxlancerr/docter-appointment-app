@@ -5,6 +5,7 @@ import adminRouter from "./routes/adminRouter.js";
 import doctorRouter from "./routes/doctorRouter.js";
 import notificationRouter from "./routes/notificationRouter.js";
 import appointmentRouter from "./routes/appointmentRouter.js";
+import authRouter from "./routes/authRouter.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/api/v1/doctor", doctorRouter);
 app.use("/api/v1/appointments", appointmentRouter);
 // app.use("/api/v1/admins", adminRouter);
 app.use("/api/v1/patients", patientRouter);
+app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/notification", notificationRouter);
 
 app.get("/", (req, res) => {

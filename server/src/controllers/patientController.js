@@ -188,7 +188,7 @@ export const userSignIn = async (req, res) => {
 };
 
 // @desc    Get User Info by ID
-// @route   POST http://localhost:3000/api/v1/patients/get-user-info-by-id
+// @route   POST http://localhost:3000/api/v1/auth/get-user-info-by-id
 // @access  Private (requires authentication)
 export const userAuthenticateBasedOnAccessToken = async (req, res) => {
   try {

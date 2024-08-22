@@ -16,7 +16,7 @@ const Signin = () => {
     try {
       setLoad(true);
       const response = await fetch(
-        "http://localhost:3000/api/v1/patients/signin",
+        "http://localhost:3000/api/v1/auth/signin",
         {
           method: "POST", // or 'PUT'
           headers: {

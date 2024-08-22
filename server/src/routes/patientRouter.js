@@ -29,11 +29,7 @@ export default patientRouter;
 // @desc    User Registration
 // @route   POST http://localhost:3000/api/v1/patients/register
 // @access  Public
-patientRouter.post(
-  "/register",
-  UploadFile.single("file"),
-  userRegister
-);
+patientRouter.post("/register", UploadFile.single("file"), userRegister);
 
 // @desc    Email verification
 // @route   GET http://localhost:3000/api/v1/patients/verify-email/:token
@@ -51,7 +47,7 @@ patientRouter.post("/contact-us", userQueryEmail);
 patientRouter.post("/signin", userSignIn);
 
 // @desc    Get User Info by ID
-// @route   POST http://localhost:3000/api/v1/patients/get-user-info-by-id
+// @route   POST http://localhost:3000/api/v1/auth/get-user-info-by-id
 // @access  Private (requires authentication)
 patientRouter.post(
   "/get-user-info-by-id",
