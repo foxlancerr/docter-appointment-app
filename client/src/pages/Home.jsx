@@ -17,7 +17,7 @@ const Home = () => {
   // this useEffect authenticate the user based on the token, is the user is authentic or not
   useEffect(() => {
     setLoad(true);
-    fetch("http://localhost:3000/api/v1/patients/get-user-info-by-id", {
+    fetch("http://localhost:3000/api/v1/auth/get-user-info-by-id", {
       method: "POST",
       headers: {
         Authorization: "bearer " + getItemFromLocalStorage("token"),
