@@ -30,8 +30,8 @@ function DoctorList() {
       });
   }, []);
 
-  const filteredDoctors = doctorList.filter((doctor) =>
-    doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredDoctors = doctorList?.filter((doctor) =>
+    doctor?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
 
   const handlePageChange = (page) => {
