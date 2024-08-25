@@ -1,0 +1,321 @@
+{
+    "List_of_doctors": [
+        {
+            "name": "Dr. Arit Parkash",
+            "verified": true,
+            "reviews": 0,
+            "specialty": "Pediatric Gastroenterologist",
+            "yearsExperience": 16,
+            "about": "Professor Dr. Arit Parkash is a competent and experienced child specialist, with 16 years of work experience in Paediatric Medicine and 10 years of experience in Paediatric Gastroenterology, Hepatology and Nutrition as sub-speciality. Dr. Parkash performs both, Upper and Lower Gastrointestinal Endoscopies in children.",
+            "services": [
+                "Paediatrician & Child Specialist",
+                "Paediatric Gastroenterologist",
+                "Hepatologists",
+                "Nutrition Specialist"
+            ],
+            "education": [
+                "M.B.B.S - Liaquat University Jamshoro",
+                "F.C.P.S - College of Physicians & Surgeons Pakistan"
+            ],
+            "specializations": [
+                "Pediatric Gastroenterologist"
+            ],
+            "languages": [
+                "Urdu",
+                "English"
+            ],
+            "experience": [
+                {
+                    "yearStart": 2008,
+                    "position": "Paediatric Gastroenterologist",
+                    "hospital": "Dr. Ziauddin Hospital (Clifton)"
+                }
+            ],
+            "otherLocations": [
+                "Shifaam Peads Neurology and Wellness Place",
+                "Zulekha comforts, Main Shaheed-e-Millat Rd, CP & Berar CHS, Karachi"
+            ],
+            "fees": 2500,
+            "daysAvailable": [
+                "Friday"
+            ]
+        },
+        {
+            "name": "Dr. Ahmed Khan",
+            "verified": true,
+            "reviews": 5,
+            "specialty": "Cardiologist",
+            "yearsExperience": 20,
+            "about": "Dr. Ahmed Khan is an experienced cardiologist with over 20 years in the field. He specializes in treating heart diseases and performing cardiac procedures.",
+            "services": [
+                "Cardiac Consultation",
+                "Echocardiography",
+                "Stress Test"
+            ],
+            "education": [
+                "M.B.B.S - Aga Khan University",
+                "F.C.P.S - College of Physicians & Surgeons Pakistan"
+            ],
+            "specializations": [
+                "Cardiologist"
+            ],
+            "languages": [
+                "Urdu",
+                "English"
+            ],
+            "experience": [
+                {
+                    "yearStart": 2003,
+                    "position": "Consultant Cardiologist",
+                    "hospital": "Aga Khan University Hospital"
+                }
+            ],
+            "otherLocations": [
+                "National Institute of Cardiovascular Diseases (NICVD)"
+            ],
+            "fees": 3000,
+            "daysAvailable": [
+                "Monday",
+                "Wednesday",
+                "Friday"
+            ]
+        },
+        {
+            "name": "Dr. Sara Ali",
+            "verified": true,
+            "reviews": 10,
+            "specialty": "Dermatologist",
+            "yearsExperience": 12,
+            "about": "Dr. Sara Ali is a highly qualified dermatologist with expertise in treating skin disorders and cosmetic dermatology.",
+            "services": [
+                "Skin Consultation",
+                "Laser Treatment",
+                "Chemical Peels"
+            ],
+            "education": [
+                "M.B.B.S - Dow University of Health Sciences",
+                "D.Derm - College of Physicians & Surgeons Pakistan"
+            ],
+            "specializations": [
+                "Dermatologist"
+            ],
+            "languages": [
+                "Urdu",
+                "English"
+            ],
+            "experience": [
+                {
+                    "yearStart": 2012,
+                    "position": "Consultant Dermatologist",
+                    "hospital": "Dermatology Clinic Karachi"
+                }
+            ],
+            "otherLocations": [
+                "Skin Health Clinic"
+            ],
+            "fees": 2000,
+            "daysAvailable": [
+                "Tuesday",
+                "Thursday"
+            ]
+        },
+        {
+            "name": "Dr. Bilal Asif",
+            "verified": true,
+            "reviews": 8,
+            "specialty": "Orthopedic Surgeon",
+            "yearsExperience": 15,
+            "about": "Dr. Bilal Asif is a skilled orthopedic surgeon with a focus on sports injuries, joint replacements, and trauma surgery.",
+            "services": [
+                "Orthopedic Consultation",
+                "Joint Replacement",
+                "Fracture Treatment"
+            ],
+            "education": [
+                "M.B.B.S - King Edward Medical University",
+                "F.C.P.S - College of Physicians & Surgeons Pakistan"
+            ],
+            "specializations": [
+                "Orthopedic Surgeon"
+            ],
+            "languages": [
+                "Urdu",
+                "English"
+            ],
+            "experience": [
+                {
+                    "yearStart": 2009,
+                    "position": "Orthopedic Surgeon",
+                    "hospital": "Pakistan Institute of Medical Sciences (PIMS)"
+                }
+            ],
+            "otherLocations": [
+                "Orthopedic Care Clinic"
+            ],
+            "fees": 3500,
+            "daysAvailable": [
+                "Monday",
+                "Wednesday",
+                "Friday"
+            ]
+        },
+        {
+            "name": "Dr. Nadia Javed",
+            "verified": true,
+            "reviews": 15,
+            "specialty": "Gynecologist",
+            "yearsExperience": 18,
+            "about": "Dr. Nadia Javed is an experienced gynecologist specializing in women's health, obstetrics, and reproductive medicine.",
+            "services": [
+                "Gynecological Consultation",
+                "Obstetrics",
+                "Infertility Treatment"
+            ],
+            "education": [
+                "M.B.B.S - Fatima Jinnah Medical University",
+                "F.C.P.S - College of Physicians & Surgeons Pakistan"
+            ],
+            "specializations": [
+                "Gynecologist"
+            ],
+            "languages": [
+                "Urdu",
+                "English"
+            ],
+            "experience": [
+                {
+                    "yearStart": 2006,
+                    "position": "Consultant Gynecologist",
+                    "hospital": "Lady Reading Hospital"
+                }
+            ],
+            "otherLocations": [
+                "Women's Health Clinic"
+            ],
+            "fees": 2500,
+            "daysAvailable": [
+                "Tuesday",
+                "Thursday",
+                "Saturday"
+            ]
+        },
+        {
+            "name": "Dr. Ali Raza",
+            "verified": true,
+            "reviews": 12,
+            "specialty": "Neurologist",
+            "yearsExperience": 14,
+            "about": "Dr. Ali Raza is a neurologist with expertise in treating neurological disorders including stroke, epilepsy, and multiple sclerosis.",
+            "services": [
+                "Neurological Consultation",
+                "EEG",
+                "Stroke Management"
+            ],
+            "education": [
+                "M.B.B.S - Allama Iqbal Medical College",
+                "F.C.P.S - College of Physicians & Surgeons Pakistan"
+            ],
+            "specializations": [
+                "Neurologist"
+            ],
+            "languages": [
+                "Urdu",
+                "English"
+            ],
+            "experience": [
+                {
+                    "yearStart": 2010,
+                    "position": "Consultant Neurologist",
+                    "hospital": "Jinnah Postgraduate Medical Centre (JPMC)"
+                }
+            ],
+            "otherLocations": [
+                "Neurology Specialist Clinic"
+            ],
+            "fees": 3000,
+            "daysAvailable": [
+                "Monday",
+                "Wednesday",
+                "Friday"
+            ]
+        },
+        {
+            "name": "Dr. Farah Kamal",
+            "verified": true,
+            "reviews": 6,
+            "specialty": "Endocrinologist",
+            "yearsExperience": 11,
+            "about": "Dr. Farah Kamal is an endocrinologist specializing in hormonal disorders including diabetes, thyroid disorders, and metabolic syndromes.",
+            "services": [
+                "Endocrine Consultation",
+                "Diabetes Management",
+                "Thyroid Treatment"
+            ],
+            "education": [
+                "M.B.B.S - Quaid-e-Azam Medical College",
+                "F.C.P.S - College of Physicians & Surgeons Pakistan"
+            ],
+            "specializations": [
+                "Endocrinologist"
+            ],
+            "languages": [
+                "Urdu",
+                "English"
+            ],
+            "experience": [
+                {
+                    "yearStart": 2013,
+                    "position": "Consultant Endocrinologist",
+                    "hospital": "Services Hospital Lahore"
+                }
+            ],
+            "otherLocations": [
+                "Hormone Health Clinic"
+            ],
+            "fees": 2500,
+            "daysAvailable": [
+                "Tuesday",
+                "Thursday"
+            ]
+        },
+        {
+            "name": "Dr. Hassan Mahmood",
+            "verified": true,
+            "reviews": 9,
+            "specialty": "Urologist",
+            "yearsExperience": 13,
+            "about": "Dr. Hassan Mahmood is a urologist with expertise in urinary tract disorders, kidney stones, and urological surgeries.",
+            "services": [
+                "Urological Consultation",
+                "Kidney Stone Treatment",
+                "Urological Surgery"
+            ],
+            "education": [
+                "M.B.B.S - Nishtar Medical University",
+                "F.C.P.S - College of Physicians & Surgeons Pakistan"
+            ],
+            "specializations": [
+                "Urologist"
+            ],
+            "languages": [
+                "Urdu",
+                "English"
+            ],
+            "experience": [
+                {
+                    "yearStart": 2011,
+                    "position": "Consultant Urologist",
+                    "hospital": "Sheikh Zayed Hospital"
+                }
+            ],
+            "otherLocations": [
+                "Urology Care Clinic"
+            ],
+            "fees": 2800,
+            "daysAvailable": [
+                "Monday",
+                "Wednesday"
+            ]
+        }
+    ]
+}

@@ -1,11 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import FrontImage from "../../assets/front-image.png";
 import toast from "react-hot-toast";
-import { GlobalContext } from "../context/GlobalContext";
+import { FrontImageSignUp } from "@/../assets/index.js";
+import { GlobalContext } from "@/context/GlobalContext";
+import { FaUpload } from "react-icons/fa6";
+import axios from "axios";
+import { validateEmail, validateForm } from "@/utils/formValidation";
 
 const Signup = () => {
-  const [formInfo, setFormInfo] = useState({});
+  const [imagePreview, setImagePreview] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
 
   const { setLoad } = useContext(GlobalContext);
   const navigate = useNavigate();
@@ -13,18 +20,12 @@ const Signup = () => {
   const fetchData = async (data) => {
     try {
       setLoad(true);
-      const response = await fetch(
-        "http://localhost:3000/api/v1/users/register",
-        {
-          method: "POST", // or 'PUT'
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/patients/register",
+        data
       );
 
-      const result = await response.json();
+      const result = await response.data;
       setLoad(false);
 
       if (!result?.success) {
@@ -43,25 +44,56 @@ const Signup = () => {
   // form data is collected here
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = new FormData(document.getElementById("sign-up-form"));
-    const formData = {};
-    for (let [key, value] of form) {
-      formData[key] = value;
-    }
 
-    setFormInfo(formData);
+    console.log(password)
+    const formData = new FormData();
+    // Validate form
+    const { usernameError, emailError, passwordError } = validateForm(
+      username,
+      email,
+      password
+    );
+
+    // if (usernameError) {
+    //   toast.error(usernameError);
+    //   return;
+    // }
+    // if (emailError) {
+    //   toast.error(emailError);
+    //   return;
+    // }
+    // if (passwordError) {
+    //   toast.error(passwordError);
+    //   return;
+    // }
+    formData.append("username", username);
+    formData.append("email", email);
+    formData.append("password", password);
+
+    if (uploadedImage) {
+      formData.append("file", uploadedImage);
+    }
     fetchData(formData);
   };
 
-  console.log(formInfo);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setUploadedImage(file); // Set the image file
+
+    // Create a preview URL
+    const previewURL = URL.createObjectURL(file);
+    setImagePreview(previewURL);
+  };
+
+  console.log(uploadedImage);
   return (
-    <div className="flex justify-center items-center gradiant-blue-l h-screen">
+    <div className="flex justify-center items-center bg-[#023e7d] h-screen">
       <div className="w-[60%] h-[80vh] gradiant-blue-r rounded-[10px]  flex overflow-hidden drop-shadow-lg shadow-blue">
         {/* left side */}
         <div className=" px-8 py-5 md:w-[60%] h-full hidden md:flex flex-col gap-2">
           <div className="w-[300px] bg-red-9">
             <img
-              src={FrontImage}
+              src={FrontImageSignUp}
               alt="frontImage"
               className="w-[100%] object-cover"
             />
@@ -74,18 +106,36 @@ const Signup = () => {
 
         {/* right side */}
         <div className="md:w-[40%] w-full bg-white px-8 py-5">
-          <h1 className="font-extrabold text-2xl gradiant-blue-l text-gradiant">
-            Docterz
-          </h1>
-          <h1 className="mt-[40px] font-NunitoSans text-2xl font-extrabold text-center gradiant-blue-l text-gradiant">
+          <h1 className="font-extrabold text-2xl text-[#023e7d]">Docterz</h1>
+          <h1 className="mt-[40px] font-NunitoSans text-2xl font-extrabold text-center text-[#023e7d] text-gradiant">
             Welcome! lets <br /> signup
           </h1>
           <form id="sign-up-form" className="mt-5">
+            <div className="relative flex items-center justify-center">
+              <img
+                src={imagePreview || "placeholder-image-url"} // Fallback placeholder if no image selected
+                alt="Selected Image"
+                className="w-[80px] h-[80px] object-cover rounded-full border-2 border-black p-1"
+              />
+              <span className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity cursor-pointer z-10">
+                <FaUpload className="text-white text-xl" />
+                <input
+                  type="file"
+                  name="profileImage"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+              </span>
+            </div>
+
             <div className="mt-4">
               <input
                 type="text"
                 placeholder="username"
                 name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
               />
@@ -94,6 +144,8 @@ const Signup = () => {
               <input
                 type="email"
                 placeholder="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 name="email"
                 required
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
@@ -102,6 +154,8 @@ const Signup = () => {
             <div className="mt-4">
               <input
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="password"
                 name="password"
                 autoComplete="true"
@@ -109,8 +163,9 @@ const Signup = () => {
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
               />
             </div>
+
             <button
-              className="px-5 py-2 gradiant-blue-l mt-4 rounded-lg w-full font-bold text-xl text-white"
+              className="px-5 py-2 bg-[#023e7d] hover:bg-[#023e7d]/90 mt-4 rounded-lg w-full font-bold text-xl text-white"
               onClick={(e) => {
                 handleSubmit(e);
               }}
@@ -123,7 +178,7 @@ const Signup = () => {
               If already account
             </p>
             <Link
-              className="font-semibold text-[1rem] text-blue-900 underline"
+              className="font-semibold text-[1rem] text-[#023e7d] underline"
               to="/signin"
             >
               signin
@@ -133,7 +188,7 @@ const Signup = () => {
             <p className="text-[12px] font-semibold text-gray-500">
               by signin, you accept to
             </p>
-            <h3 className="font-bold text-[12px] text-blue-900">
+            <h3 className="font-bold text-[12px] text-[#023e7d]">
               Terms & Condition
             </h3>
           </div>
