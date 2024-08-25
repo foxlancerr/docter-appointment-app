@@ -21,6 +21,7 @@ import About from "./pages/about/About";
 import PatientDetail from "./components/shared/patientDetail";
 import Patient from "./pages/Patient";
 import DoctorProfilePage from "./components/dashboard/Profile/doctorProfile";
+import AfterSignInForm from "./pages/auth/AfterSignin";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -126,6 +127,14 @@ const App = () => {
             <ProtectedRoutes>
               <DoctorProfilePage></DoctorProfilePage>
             </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/dashboard/basic-info"
+          element={
+            <AfterSignInForm>
+              <DoctorProfilePage></DoctorProfilePage>
+            </AfterSignInForm>
           }
         ></Route>
 

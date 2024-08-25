@@ -5,26 +5,22 @@ import toast from "react-hot-toast";
 import { GlobalContext } from "@/context/GlobalContext";
 import { setItemInLocalStorage } from "@/utils/webLocalStorage";
 
-
 const Signin = () => {
   const [formInfo, setFormInfo] = useState({});
   const { setLoad } = useContext(GlobalContext);
   const navigate = useNavigate();
 
   const fetchData = async (data) => {
-    console.log(data)
+    console.log(data);
     try {
       setLoad(true);
-      const response = await fetch(
-        "http://localhost:3000/api/v1/auth/signin",
-        {
-          method: "POST", // or 'PUT'
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("http://localhost:3000/api/v1/auth/signin", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       const result = await response.json();
       setLoad(false);
@@ -34,7 +30,7 @@ const Signin = () => {
         toast.success(result.message);
         toast("Redirecting to Home Page");
         setItemInLocalStorage("token", result.token);
-        navigate("/dashboard");
+        navigate("/dashboard/basic-info");
       }
     } catch (err) {
       console.log(err.message);
