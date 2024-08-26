@@ -1,6 +1,7 @@
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware.js";
 import {
+  afterSiginBasicInfoForm,
   userAuthenticateBasedOnAccessToken,
   userRegister,
   userSignIn,
@@ -32,5 +33,9 @@ authRouter.post(
   authMiddleware,
   userAuthenticateBasedOnAccessToken
 );
+// @desc    Get User Info by ID
+// @route   POST http://localhost:3000/api/v1/auth/basic-info/:id
+// @access  Private (requires authentication)
+authRouter.post("/basic-info/:id", afterSiginBasicInfoForm);
 
 export default authRouter;

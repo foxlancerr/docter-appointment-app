@@ -6,6 +6,15 @@ import { GlobalContext } from "@/context/GlobalContext";
 import { FaUpload } from "react-icons/fa6";
 import axios from "axios";
 import { validateEmail, validateForm } from "@/utils/formValidation";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const Signup = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -13,6 +22,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [userType, setUserType] = useState("");
 
   const { setLoad } = useContext(GlobalContext);
   const navigate = useNavigate();
@@ -69,6 +79,7 @@ const Signup = () => {
     formData.append("username", username);
     formData.append("email", email);
     formData.append("password", password);
+    formData.append("userType", userType);
 
     if (uploadedImage) {
       formData.append("file", uploadedImage);
@@ -83,6 +94,10 @@ const Signup = () => {
     // Create a preview URL
     const previewURL = URL.createObjectURL(file);
     setImagePreview(previewURL);
+  };
+
+  const handleSelectChange = (value) => {
+    setUserType(value); // Update state with selected value
   };
 
   console.log(uploadedImage);
@@ -107,7 +122,7 @@ const Signup = () => {
         {/* right side */}
         <div className="md:w-[40%] w-full bg-white px-8 py-5">
           <h1 className="font-extrabold text-2xl text-[#023e7d]">Docterz</h1>
-          <h1 className="mt-[40px] font-NunitoSans text-2xl font-extrabold text-center text-[#023e7d] text-gradiant">
+          <h1 className="font-NunitoSans text-2xl font-extrabold text-center text-[#023e7d] text-gradiant">
             Welcome! lets <br /> signup
           </h1>
           <form id="sign-up-form" className="mt-5">
@@ -129,7 +144,7 @@ const Signup = () => {
               </span>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-2">
               <input
                 type="text"
                 placeholder="username"
@@ -140,7 +155,7 @@ const Signup = () => {
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
               />
             </div>
-            <div className="mt-4">
+            <div className="mt-2">
               <input
                 type="email"
                 placeholder="email"
@@ -151,7 +166,7 @@ const Signup = () => {
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
               />
             </div>
-            <div className="mt-4">
+            <div className="my-2">
               <input
                 type="password"
                 value={password}
@@ -163,6 +178,17 @@ const Signup = () => {
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
               />
             </div>
+            <Select className="" onValueChange={handleSelectChange} defaultValue={userType}>
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder="Select User Type" />
+      </SelectTrigger>
+      <SelectContent className="bg-white">
+        <SelectGroup className="" >
+          <SelectItem value="admin">Admin</SelectItem>
+          <SelectItem value="patient">User</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
 
             <button
               className="px-5 py-2 bg-[#023e7d] hover:bg-[#023e7d]/90 mt-4 rounded-lg w-full font-bold text-xl text-white"

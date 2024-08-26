@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import Layout from "../DashboardLayout";
 
 function DoctorProfilePage() {
-  console.log(called)
   const { id } = useParams();
   const [doctorDetail, setDoctorDetail] = useState({});
   const [appointments, setAppointments] = useState([]);

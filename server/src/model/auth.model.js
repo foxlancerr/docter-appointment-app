@@ -3,6 +3,21 @@ import bcrypt from "bcrypt";
 
 const authSchema = new mongoose.Schema(
   {
+    adminId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Admin',
+      default: null
+    },
+    patientId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Patient',
+      default: null
+    },
+    doctorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Doctor',
+      default: null
+    },
     username: {
       type: String,
       unique: true,
@@ -21,6 +36,9 @@ const authSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    isProfileComplete:{
+      type:Boolean
+    },
     appointments: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -34,7 +52,7 @@ const authSchema = new mongoose.Schema(
       required: true,
     },
 
-    isEmailVerified: String,
+    isEmailVerified: Boolean,
     emailVerificationToken: String,
   },
   {

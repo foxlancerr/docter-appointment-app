@@ -9,11 +9,11 @@ import {
   getAllPatients,
   getPatientById,
   updatePatientById,
-  userAuthenticateBasedOnAccessToken,
+  // userAuthenticateBasedOnAccessToken,
   userQueryEmail,
-  userRegister,
-  userSignIn,
-  verifyEmail,
+  // userRegister,
+  // userSignIn,
+  // verifyEmail,
 } from "../controllers/patientController.js";
 import UploadFile from "../middleware/multerFileUpload.js";
 const patientRouter = express.Router();
@@ -29,31 +29,31 @@ export default patientRouter;
 // @desc    User Registration
 // @route   POST http://localhost:3000/api/v1/patients/register
 // @access  Public
-patientRouter.post("/register", UploadFile.single("file"), userRegister);
+// patientRouter.post("/register", UploadFile.single("file"), userRegister);
 
 // @desc    Email verification
 // @route   GET http://localhost:3000/api/v1/patients/verify-email/:token
 // @access  Public
-patientRouter.get("/verify-email/:token", verifyEmail);
+// patientRouter.get("/verify-email/:token", verifyEmail);
 
 // @desc    Email verification
 // @route   POST http://localhost:3000/api/v1/patients/contact-us
 // @access  Public
-patientRouter.post("/contact-us", userQueryEmail);
+// patientRouter.post("/contact-us", userQueryEmail);
 
 // @desc    User Signin
 // @route   POST http://localhost:3000/api/v1/patients/signin
 // @access  Public
-patientRouter.post("/signin", userSignIn);
+// patientRouter.post("/signin", userSignIn);
 
 // @desc    Get User Info by ID
 // @route   POST http://localhost:3000/api/v1/auth/get-user-info-by-id
 // @access  Private (requires authentication)
-patientRouter.post(
-  "/get-user-info-by-id",
-  authMiddleware,
-  userAuthenticateBasedOnAccessToken
-);
+// patientRouter.post(
+//   "/get-user-info-by-id",
+//   authMiddleware,
+//   userAuthenticateBasedOnAccessToken
+// );
 
 // // @desc    Apply for doctor account
 // // @route   POST http://localhost:3000/api/v1/users/apply-as-doctor

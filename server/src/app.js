@@ -7,6 +7,7 @@ import notificationRouter from "./routes/notificationRouter.js";
 import appointmentRouter from "./routes/appointmentRouter.js";
 import authRouter from "./routes/authRouter.js";
 
+
 const app = express();
 
 app.use(cors());

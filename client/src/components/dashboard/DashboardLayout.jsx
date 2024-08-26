@@ -6,25 +6,7 @@ import { getItemFromLocalStorage } from "@/utils/webLocalStorage";
 import Navbar from "./Navbar";
 import Aside from "./Aside";
 
-
 function Layout({ children }) {
-  const dispatch = useDispatch();
-  // this useEffect authenticate the user based on the token, is the user is authentic or not
-  useEffect(() => {
-    fetch("http://localhost:3000/api/v1/auth/get-user-info-by-id", {
-      method: "POST",
-      headers: {
-        Authorization: "bearer " + getItemFromLocalStorage("token"),
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        dispatch(logInUser(result.data));
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
   return (
     <main className="relative">
       <Navbar></Navbar>

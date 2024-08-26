@@ -1,4 +1,3 @@
-import Auth from "../model/auth.model.js";
 import Doctor from "../model/docter.model.js";
 
 // @desc    Get All Doctors
@@ -15,51 +14,6 @@ export const getAllDoctors = async (req, res) => {
     res
       .status(500)
       .json({ message: "Server error", success: false, error: error });
-  }
-};
-// @desc    Get All Doctors
-// @route   POST http://localhost:3000/api/v1/doctor/basic-info/:id
-// @access  Public
-export const afterSiginBasicInfoForm = async (req, res) => {
-  const { id } = req.params;
-  console.log(id);
-  const { lastname, firstname, phone, address, description } = req.body;
-
-  try {
-    // Check if the authId corresponds to a verified doctor
-    const auth = await Auth.findById(id);
-    console.log(auth);
-
-    if (!auth || !auth.isEmailVerified || auth.userType !== "doctor") {
-      return res
-        .status(400)
-        .json({ message: "Invalid user or user not verified", success: false });
-    }
-
-    // Create Doctor profile
-    const doctor = new Doctor({
-      authId: auth._id,
-      lastName: lastname,
-      firstName: firstname,
-      phone,
-      address,
-      description,
-    });
-    await doctor.save();
-
-    res.status(201).json({
-      message: "Doctor profile completed successfully!",
-      doctor,
-      success: true,
-    });
-  } catch (error) {
-    console.error("Error during profile completion:", error);
-    res
-      .status(500)
-      .json({
-        error: "An error occurred while completing the profile",
-        success: false,
-      });
   }
 };
 
