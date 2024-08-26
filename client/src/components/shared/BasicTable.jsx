@@ -168,17 +168,19 @@ export default function BasicTable() {
                 </p>
               </TableCell>
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {patient.appointmentDate &&
+                10-8-2024 
+                {/* {patient.appointmentDate &&
                 !isNaN(new Date(patient.appointmentDate).getTime())
                   ? new Date(patient.appointmentDate).toLocaleDateString()
-                  : "10:40AM"}
+                  : "10:40AM"} */}
               </TableCell>
 
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 {patient?.emergencyContact?.phone}
               </TableCell>
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {patient.time}
+                10.30 AM
+                {/* {patient.time} */}
               </TableCell>
               <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end gap-2 text-2xl items-center">
                 <Popover className="relative">
