@@ -1,14 +1,19 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Avator1 } from "../../../assets/index";
 import { IoClose, IoNotifications } from "react-icons/io5";
 import MobileNavbar from "./MobileNavbar";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
+import profileDummyImage from "../../../assets/images/avatar-1.jpeg";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { logOutUser } from "@/store/features/userInfo/userInfoSlice";
+
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useSelector((state) => state?.userInfo?.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   let navigateToNotificationsRoute;
   if (user?.userType == 'admin') {
     navigateToNotificationsRoute = "/admin-notifications";
@@ -17,11 +22,11 @@ function Navbar() {
   } else {
     navigateToNotificationsRoute = "/patient-notifications";
   }
-  const [profileShow, setProfileShow] = useState(false);
 
   const handleLogout = () => {
     localStorage.clear();
     navigate("/signin");
+    dispatch(logOutUser())
   };
 
   return (
@@ -46,14 +51,7 @@ function Navbar() {
               {user?.unseenNotifications?.length}
             </div>
           </Link>
-          <img
-            src={Avator1}
-            alt="avotor1"
-            width={60}
-            height={60}
-            className="rounded-full cursor-pointer"
-            onClick={() => setProfileShow(!profileShow)}
-          />
+         
           <div className=" text-black">
             <HiMenuAlt3
               onClick={() => {
@@ -62,17 +60,42 @@ function Navbar() {
               className="text-4xl sm:hidden"
             ></HiMenuAlt3>
           </div>
-          {profileShow && (
-            <div className="absolute right-0 -bottom-[130px] bg-white text-[#023e7d]  h-auto flex flex-col gap-2 p-6 rounded-[10px]">
-              <h1 className="text-xl">{user?.username}</h1>
-              <h1 className="text-xl">{user?.email}</h1>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="w-[40px] h-[40px] rounded-full p-0 border-none shadow-none focus:outline-none">
+                  <img
+                    src={user?.profileImage || profileDummyImage} 
+                    alt="profile-image"
+                    className="w-full h-full object-cover rounded-full bg-white"
+                  />
+                </button>
+              </DropdownMenuTrigger>
 
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 text-white px-4 py-2 rounded"
-              >
-                Logout
-              </button>
+              <DropdownMenuContent className="bg-white shadow-lg mt-3 px-3 py-2">
+                <DropdownMenuItem>
+                  {user?.username || "Username"}
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  {user?.email || "Email"}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="cursor-pointer bg-red-500 text-white px-3 py-2 rounded"
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex gap-2">
+              <Link to="/signin" className="">
+                Sign In
+              </Link>
+              |
+              <Link to="/signup" className="">
+                Sign Up
+              </Link>
             </div>
           )}
 

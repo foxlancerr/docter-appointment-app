@@ -3,16 +3,19 @@ import bcrypt from "bcrypt";
 
 const patientSchema = new mongoose.Schema(
   {
-    name: {
+    firstname: {
       type: String,
       trim: true,
     },
     username: {
       type: String,
-      unique: true,
       trim: true,
-      index: true,
     },
+    lastname: {
+      type: String,
+      trim: true,
+    },
+
     profileImage: String,
     email: {
       type: String,

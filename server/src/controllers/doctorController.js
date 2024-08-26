@@ -28,6 +28,7 @@ export const getDoctorById = async (req, res) => {
     }
     res.status(200).json({
       data: doctor,
+
       success: true,
     });
   } catch (error) {

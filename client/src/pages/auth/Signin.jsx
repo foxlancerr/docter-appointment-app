@@ -3,28 +3,28 @@ import { Link, useNavigate } from "react-router-dom";
 import { FrontImageSignUp } from "@/../assets/index.js";
 import toast from "react-hot-toast";
 import { GlobalContext } from "@/context/GlobalContext";
-import { setItemInLocalStorage } from "@/utils/webLocalStorage";
+import { getItemFromLocalStorage, setItemInLocalStorage } from "@/utils/webLocalStorage";
+import axios from "axios";
+
+
 
 
 const Signin = () => {
   const [formInfo, setFormInfo] = useState({});
   const { setLoad } = useContext(GlobalContext);
+  
   const navigate = useNavigate();
 
   const fetchData = async (data) => {
-    console.log(data)
     try {
       setLoad(true);
-      const response = await fetch(
-        "http://localhost:3000/api/v1/patients/signin",
-        {
-          method: "POST", // or 'PUT'
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("http://localhost:3000/api/v1/auth/signin", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       const result = await response.json();
       setLoad(false);
@@ -34,7 +34,22 @@ const Signin = () => {
         toast.success(result.message);
         toast("Redirecting to Home Page");
         setItemInLocalStorage("token", result.token);
-        navigate("/dashboard");
+         // Check if the profile is complete
+         const response = await axios.post(
+          "http://localhost:3000/api/v1/auth/get-user-info-by-id",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${getItemFromLocalStorage("token")}`,
+            },
+          }
+        );
+        if(response?.data?.data?.isProfileComplete){
+          navigate("/dashboard");
+        }else{
+          navigate(`/dashboard/basic-info`)
+        }
+       
       }
     } catch (err) {
       console.log(err.message);
@@ -83,7 +98,7 @@ const Signin = () => {
             Hey! lets signin
           </h1>
           <form id="sign-in-form" className="mt-5">
-            <div className="mt-4">
+            <div className="mt-2">
               <input
                 type="email"
                 placeholder="email"
@@ -92,7 +107,7 @@ const Signin = () => {
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
               />
             </div>
-            <div className="mt-4">
+            <div className="mt-2">
               <input
                 type="password"
                 name="password"
@@ -102,6 +117,7 @@ const Signin = () => {
                 className="px-3 py-2 border-none outline-none bg-slate-100 text-gray w-full rounded-lg"
               />
             </div>
+            
             <button
               className="px-5 py-2 bg-[#023e7d] hover:bg-[#023e7d]/90 mt-4 rounded-lg w-full font-bold text-xl text-white"
               onClick={(e) => {

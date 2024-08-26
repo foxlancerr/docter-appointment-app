@@ -74,7 +74,7 @@ export const doctorSideBarLinks = [
 export const adminSideBarLinks = [
   {
     label: "Dashboard",
-    route: "/admin/dashboard",
+    route: "/dashboard",
     icon: FaTachometerAlt,
   },
   {

@@ -1,0 +1,326 @@
+import Auth from "../model/auth.model.js";
+import jwt from "jsonwebtoken";
+import { generateVerificationToken } from "../utils/generateToken.js";
+import { verifyEmailTemplate } from "../view/EmailTemplate.js";
+import { sendEmailToVerifyUser } from "../utils/email.js";
+import { verificationSuccessTemplate } from "../view/VerificationTemplate.js";
+import uploadToCloudinary from "../utils/cloudnaryConfig.js";
+import Admin from "../model/admin.model.js";
+import Patient from "../model/patient.model.js";
+
+// @desc    User Registration
+// @route   POST http://localhost:3000/api/v1/auth/register
+// @access  Public
+export const userRegister = async (req, res) => {
+  try {
+    const { username, password, email,userType } = req.body;
+    let profileImageUrl = null;
+    if (req.file) {
+      // Upload image to Cloudinary
+      profileImageUrl = await uploadToCloudinary(req.file.path);
+    }
+
+    // Validate required fields
+    if (!username || !email || !password || !userType) {
+      return res
+        .status(400)
+        .json({ message: "All fields are required", success: false });
+    }
+
+    // Check if the user already exists
+    const existUser = await Auth.findOne({ email });
+    if (existUser) {
+      return res
+        .status(409)
+        .json({ message: "User already registered", success: false });
+    }
+
+    // Generate verification token
+    const verificationToken = generateVerificationToken();
+
+    // Generate verification URL
+    // const verificationUrl = `${req.protocol}://${req.get(
+    //   "host"
+    // )}/api/v1/auth/verify-email/${verificationToken}`;
+
+     // Initialize variables for the references
+     let adminId = null;
+     let patientId = null;
+     let doctorId = null;
+ 
+     console.log(req.body)
+     // Create a new document in the respective model based on userType
+     if (userType === 'admin') {
+       const newAdmin = await Admin.create({ /* any initial admin-specific fields */ });
+       adminId = newAdmin._id;
+     } else if (userType === 'patient') {
+       const newPatient = await Patient.create({ /* any initial patient-specific fields */ });
+       patientId = newPatient._id;
+     }else {
+       return res
+         .status(400)
+         .json({ message: "Invalid user type", success: false });
+     }
+ 
+     // Create new Auth user with appropriate references
+     const newUser = await Auth.create({
+       username,
+       email,
+       password,
+       userType,
+       isEmailVerified: false,
+       profileImage: profileImageUrl,
+       emailVerificationToken: verificationToken,
+       adminId,
+       patientId,
+       doctorId,
+     });
+
+    // // Create new user with unverified status
+    // const newUser = await Auth.create({
+    //   username,
+    //   email,
+    //   password,
+    //   userType,
+    //   isEmailVerified: false,
+    //   profileImage: profileImageUrl,
+    //   emailVerificationToken: verificationToken,
+    // });
+
+    // Send verification email
+    // const message = verifyEmailTemplate(username, verificationUrl);
+    // const emailSended = await sendEmailToVerifyUser({
+    //   email: newUser.email,
+    //   subject: "Verify Your Email",
+    //   message,
+    // });
+
+    return res.status(201).json({
+      message: `${username}, you have successfully registered. Please check your email to verify your account.`,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error creating user:", error.message);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+// @desc    User Signin
+// @route   POST http://localhost:3000/api/v1/auth/signin
+// @access  Public
+export const userSignIn = async (req, res) => {
+  console.log(req.body)
+  const { email, password } = req.body;
+
+  try {
+    // Validate if email and password are provided
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required", success: false });
+    }
+
+    // Find user by email
+    const user = await Auth.findOne({ email });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found in database", success: false });
+    }
+
+    console.log(user)
+    // Check if the user's email is verified
+    if (!user.isEmailVerified) {
+      return res.status(403).json({
+        message: "Please verify your email before logging in",
+        success: false,
+      });
+    }
+
+    // Validate password
+    const isPasswordValid = await user.isPasswordCorrect(password);
+    if (!isPasswordValid) {
+      return res
+        .status(401)
+        .json({ message: "Invalid credentials", success: false });
+    }
+
+    // Generate JWT token for authenticated user
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+      expiresIn: "1d",
+    });
+
+    res.status(200).json({
+      message: "User logged in successfully",
+      token,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error during signin:", error.message);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+// @desc    User Signin
+// @route   POST http://localhost:3000/api/v1/auth/verify-email/:token
+// @access  Public
+export const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    // Find the user by verification token
+    const user = await Auth.findOne({ emailVerificationToken: token });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Invalid or expired token", success: false });
+    }
+
+    // Mark the user as verified and remove the token
+    user.isEmailVerified = true;
+    user.emailVerificationToken = undefined;
+    await user.save();
+
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
+    return res
+      .status(201)
+      .send(
+        verificationSuccessTemplate(
+          user.username,
+          `${baseUrl}/signin`,
+          `${baseUrl}/signup`
+        )
+      );
+  } catch (error) {
+    console.error("Error verifying email:", error.message);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+
+// @desc    Get User Info by ID
+// @route   POST http://localhost:3000/api/v1/auth/get-user-info-by-id
+// @access  Private (requires authentication)
+export const userAuthenticateBasedOnAccessToken = async (req, res) => {
+  try {
+    // Fetch user information by user ID (assuming `req.userId` is set by your authentication middleware)
+    const user = await Auth.findById(req.userId).select("-password");
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
+    }
+
+    res.status(200).json({ message: "User found", success: true, data: user });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+
+// @desc    complete admin/patient profile
+// @route   POST http://localhost:3000/api/v1/auth/basic-info/:id
+// @access  Public
+export const afterSiginBasicInfoForm = async (req, res) => {
+  const { id } = req.params;
+  console.log("after signin", req.body)
+  const { lastname, firstname, phone, address, description,dateOfBirth,permissionLevel } = req.body;
+
+  try {
+    // Check if the authId corresponds to a verified doctor
+    const auth = await Auth.findById(id);
+    if (!auth || !auth.isEmailVerified) {
+      return res
+        .status(400)
+        .json({ message: "Invalid user or user not verified", success: false });
+    }
+
+    console.log(auth)
+    // Create Doctor profile
+    if(auth.userType == "admin"){
+      console.log(auth.adminId)
+      if(auth.adminId ){
+        const existingAdmin = await Admin.findByIdAndUpdate({_id:auth.adminId},{
+           lastname,
+           firstname,
+          phone,
+          address,
+          description,
+          permissionLevel,
+        },{ new: true, runValidators: true })
+        await existingAdmin.save()
+        auth.isProfileComplete = true;
+        return res.status(201).json({
+          message: "Admin profile completed successfully!",
+          existingAdmin,
+          success: true,
+        });
+      }else{
+        const admin = new Admin({
+          lastname,
+           firstname,
+          phone,
+          address,
+          description,
+          permissionLevel,
+        });
+        await admin.save();
+        auth.isProfileComplete = true;
+      await auth.save()
+        return res.status(201).json({
+          message: "Admin profile completed successfully!",
+          admin,
+          success: true,
+        });
+      }
+      
+    }else if(auth.userType == "patient"){
+      if(auth.patientId){
+        const existingPatient = await Patient.findByIdAndUpdate({_id:auth.patientId},{
+          lastname,
+           firstname,
+          phone,
+          address,
+          description,
+          dateOfBirth,
+        },{ new: true, runValidators: true })
+        await existingPatient.save()
+        auth.isProfileComplete = true;
+        return res.status(201).json({
+          message: "Patient profile completed successfully!",
+          existingPatient,
+          success: true,
+        });
+      }else{
+        const patient = new Patient({
+          lastname,
+           firstname,
+          phone,
+          address,
+          dateOfBirth,
+          description,
+        });
+        await patient.save();
+        auth.isProfileComplete = true;
+        await auth.save()
+       return res.status(201).json({
+          message: "Patient profile completed successfully!",
+          patient,
+          success: true,
+        });
+      }
+     
+    }  
+  } catch (error) {
+    console.error("Error during profile completion:", error);
+    res
+      .status(500)
+      .json({
+        error: "An error occurred while completing the profile",
+        success: false,
+      });
+  }
+};

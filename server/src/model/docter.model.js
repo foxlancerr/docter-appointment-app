@@ -1,27 +1,36 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const experienceSchema = new mongoose.Schema({
-  yearStart: { type: Number, required: true },
+  yearStart: { type: Number },
   yearEnd: { type: Number, default: null },
-  position: { type: String, required: true },
-  hospital: { type: String, required: true },
+  position: { type: String },
+  hospital: { type: String },
 });
 
 const doctorSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  verified: { type: Boolean, default: true },
+  authId: {
+    type: Schema.Types.ObjectId,
+    ref: "Auth",
+    required: true,
+  },
+  firstName: { type: String },
+  lastName: { type: String },
+  phone: { type: String },
+  description: { type: String },
+  address: { type: String },
+  verified: { type: Boolean, default: false },
   reviews: { type: Number, default: 0 },
-  specialty: { type: String, required: true },
-  yearsExperience: { type: Number, required: true },
-  about: { type: String, required: true },
-  services: { type: [String], required: true },
-  education: { type: [String], required: true },
-  specializations: { type: [String], required: true },
-  languages: { type: [String], required: true },
-  experience: { type: [experienceSchema], required: true },
+  specialty: { type: String },
+  yearsExperience: { type: Number },
+  about: { type: String },
+  services: { type: [String] },
+  education: { type: [String] },
+  specializations: { type: [String] },
+  languages: { type: [String] },
+  experience: { type: [experienceSchema] },
   otherLocations: { type: [String], default: [] },
-  fees: { type: Number, required: true },
-  daysAvailable: { type: [String], required: true },
+  fees: { type: Number },
+  daysAvailable: { type: [String] },
 });
 
 const Doctor = mongoose.model("Doctor", doctorSchema);

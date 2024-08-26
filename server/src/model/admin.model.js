@@ -1,9 +1,31 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import User from "./user.model.js";
 
 const adminSchema = new mongoose.Schema(
   {
+    firstname: {
+      type: String,
+    },
+    lastname: {
+      type: String,
+    },
+    phone: {
+      type: String,
+      unique: true,
+    },
+    hireDate: {
+      type: Date,
+    },
+    department: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    permissionLevel: {
+      type: String,
+      enum: ["view", "access"],
+      default: "view",
+    },
     isDoctor: {
       type: Boolean,
       default: false,
@@ -18,5 +40,5 @@ const adminSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Admin = mongoose.model("admin", adminSchema);
+const Admin = mongoose.model("Admin", adminSchema);
 export default Admin;

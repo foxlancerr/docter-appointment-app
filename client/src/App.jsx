@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 // import { Signin, Signup, Home } from "./pages";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -21,6 +21,11 @@ import About from "./pages/about/About";
 import PatientDetail from "./components/shared/patientDetail";
 import Patient from "./pages/Patient";
 import DoctorProfilePage from "./components/dashboard/Profile/doctorProfile";
+import AfterSignInForm from "./pages/auth/AfterSignin";
+import { useDispatch } from "react-redux";
+import { getItemFromLocalStorage } from "./utils/webLocalStorage";
+import { logInUser } from "./store/features/userInfo/userInfoSlice";
+import axios from "axios";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -30,8 +35,35 @@ import DoctorProfilePage from "./components/dashboard/Profile/doctorProfile";
 // import HomePage from "./components/landing-page";
 // import ContactUs from "./components/shared/ContactUs";
 
+
+
 const App = () => {
+  const dispatch = useDispatch();
   const { load } = useContext(GlobalContext);
+
+// this useEffect authenticate the user based on the token, is the user is authentic or not
+useEffect(() => {
+  const fetchUserInfo = async () => {
+  
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/auth/get-user-info-by-id",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLocalStorage("token")}`,
+          },
+        }
+      );
+
+      // Check if the response is successful
+      if (response?.data?.success) {
+        dispatch(logInUser(response.data.data));
+      }
+      
+  }
+
+  fetchUserInfo();
+}, [dispatch]);
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
@@ -126,6 +158,14 @@ const App = () => {
             <ProtectedRoutes>
               <DoctorProfilePage></DoctorProfilePage>
             </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/dashboard/basic-info"
+          element={
+            <AfterSignInForm>
+              <DoctorProfilePage></DoctorProfilePage>
+            </AfterSignInForm>
           }
         ></Route>
 

@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "./landing-page/Header";
 import Footer from "./landing-page/Footer";
+import Header from "./landing-page/Header/index";
 
 function HomeLayout({ children }) {
   return (
