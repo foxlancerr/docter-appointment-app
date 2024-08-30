@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { GlobalContext } from "@/context/GlobalContext";
 import { getItemFromLocalStorage, setItemInLocalStorage } from "@/utils/webLocalStorage";
 import axios from "axios";
+import { BACKEND_API_URL } from "@/constants";
 
 
 
@@ -18,7 +19,7 @@ const Signin = () => {
   const fetchData = async (data) => {
     try {
       setLoad(true);
-      const response = await fetch("http://localhost:3000/api/v1/auth/signin", {
+      const response = await fetch(`${BACKEND_API_URL}/api/v1/auth/signin`, {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +37,7 @@ const Signin = () => {
         setItemInLocalStorage("token", result.token);
          // Check if the profile is complete
          const response = await axios.post(
-          "http://localhost:3000/api/v1/auth/get-user-info-by-id",
+          `${BACKEND_API_URL}/api/v1/auth/get-user-info-by-id`,
           {},
           {
             headers: {

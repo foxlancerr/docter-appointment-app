@@ -6,28 +6,13 @@ const patientSchema = new mongoose.Schema(
     firstname: {
       type: String,
       trim: true,
-    },
-    username: {
-      type: String,
-      trim: true,
-    },
+    },   
     lastname: {
       type: String,
       trim: true,
     },
-
     profileImage: String,
-    email: {
-      type: String,
-      unique: true,
-      trim: true,
-      lowercase: true,
-      index: true,
-    },
-    password: {
-      type: String,
-      trim: true,
-    },
+ 
     phone: {
       type: String,
       trim: true,
@@ -94,32 +79,27 @@ const patientSchema = new mongoose.Schema(
       phone: String,
       email: String,
     },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-    verificationToken: String,
   },
   {
     timestamps: true,
   }
 );
 
-// Hash the password before saving the user
-patientSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  try {
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
+// // Hash the password before saving the user
+// patientSchema.pre("save", async function (next) {
+//   if (!this.isModified("password")) return next();
+//   try {
+//     this.password = await bcrypt.hash(this.password, 10);
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
-// Method to compare input password with the stored hashed password
-patientSchema.methods.isPasswordCorrect = async function (password) {
-  return await bcrypt.compare(password, this.password);
-};
+// // Method to compare input password with the stored hashed password
+// patientSchema.methods.isPasswordCorrect = async function (password) {
+//   return await bcrypt.compare(password, this.password);
+// };
 
 const Patient = mongoose.model("Patient", patientSchema);
 

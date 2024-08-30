@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/dashboard/DashboardLayout";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { BACKEND_API_URL } from "@/constants";
 
 function AdminNotification() {
   const user = useSelector((state) => state?.userInfo?.user);
@@ -22,7 +23,7 @@ function AdminNotification() {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/api/v1/notification/get-notification/${user._id}`
+          `${BACKEND_API_URL}/api/v1/notification/get-notification/${user._id}`
         );
 
         const result = await response.json();

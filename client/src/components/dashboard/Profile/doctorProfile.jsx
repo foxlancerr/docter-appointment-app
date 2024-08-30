@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Layout from "../DashboardLayout";
+import { BACKEND_API_URL } from "@/constants";
 
 function DoctorProfilePage() {
   const { id } = useParams();
@@ -13,7 +14,7 @@ function DoctorProfilePage() {
     const fetchDoctorDetail = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/doctors/${id}`
+          `${BACKEND_API_URL}/api/v1/doctors/${id}`
         ); // Replace with actual API endpoint
         if (response.data.data) {
           setDoctorDetail(response.data.data);

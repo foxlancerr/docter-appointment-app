@@ -1,10 +1,12 @@
-const url = "http://localhost:3000";
 // called doctors controller APIs
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+import { BACKEND_API_URL } from "@/constants";
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 export const fetchDoctorList = async () => {
   try {
-    const response = await fetch(`${url}/api/v1/doctor`);
+    const response = await fetch(`${BACKEND_API_URL}/api/v1/doctor`);
     if (!response.ok) {
       throw new Error("Failed to fetch doctors");
     }

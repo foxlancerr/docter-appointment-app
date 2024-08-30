@@ -15,22 +15,30 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import HomeLayout from "@/components/HomeLayout";
+import { BACKEND_API_URL } from "@/constants";
 
 function AfterSignInForm() {
   const navigate = useNavigate();
   const loginUser = useSelector((state) => state?.userInfo?.user);
+
   console.log(loginUser)
   const [dateOfBirth, setDateOfBirth] = useState(null);
   const [permissionLevel, setPermissionLevel] = useState("");
+  const [genderType, setGenderType] = useState("");
+
 
   const handleSelectChange = (value) => {
+    if(loginUser.userType == 'admin'){
     setPermissionLevel(value); // Update state with selected value
+    }else{
+      setGenderType(value)
+    }
   };
 
   const fetchData = async (data) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/auth/basic-info/${loginUser._id}`, // Assuming `loginUser` is available
+        `${BACKEND_API_URL}/api/v1/auth/basic-info/${loginUser._id}`, // Assuming `loginUser` is available
         {
           method: "POST",
           headers: {
@@ -61,7 +69,9 @@ function AfterSignInForm() {
       form.append('permissionLevel',permissionLevel)
     }else {
       form.append('dateOfBirth',dateOfBirth)
+
     }
+    form.append('gender',genderType)
     
     const formData = {};
     for (let [key, value] of form.entries()) {
@@ -88,6 +98,18 @@ function AfterSignInForm() {
             />
           </div>
         </div>
+        <Select className="" onValueChange={handleSelectChange} defaultValue={genderType}>
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder="Select User Type" />
+      </SelectTrigger>
+      <SelectContent className="bg-white">
+        <SelectGroup className="" >
+          <SelectItem value="Male">Male</SelectItem>
+          <SelectItem value="Female">Female</SelectItem>
+          <SelectItem value="Other">Other</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
     </div>
   );
 

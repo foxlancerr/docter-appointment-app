@@ -26,6 +26,7 @@ import { useDispatch } from "react-redux";
 import { getItemFromLocalStorage } from "./utils/webLocalStorage";
 import { logInUser } from "./store/features/userInfo/userInfoSlice";
 import axios from "axios";
+import { BACKEND_API_URL } from "./constants";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -46,7 +47,7 @@ useEffect(() => {
   const fetchUserInfo = async () => {
   
       const response = await axios.post(
-        "http://localhost:3000/api/v1/auth/get-user-info-by-id",
+        `${BACKEND_API_URL}/api/v1/auth/get-user-info-by-id`,
         {},
         {
           headers: {
@@ -141,6 +142,14 @@ useEffect(() => {
           element={
             <ProtectedRoutes>
               <Home></Home>
+            </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/after-sign-test"
+          element={
+            <ProtectedRoutes>
+              <AfterSignInForm></AfterSignInForm>
             </ProtectedRoutes>
           }
         ></Route>

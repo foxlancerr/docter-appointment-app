@@ -2,6 +2,7 @@ import express from "express";
 import authMiddleware from "../middleware/authMiddleware.js";
 import {
   afterSiginBasicInfoForm,
+  isAdminVerifiedUser,
   userAuthenticateBasedOnAccessToken,
   userRegister,
   userSignIn,
@@ -37,5 +38,10 @@ authRouter.post(
 // @route   POST http://localhost:3000/api/v1/auth/basic-info/:id
 // @access  Private (requires authentication)
 authRouter.post("/basic-info/:id", afterSiginBasicInfoForm);
+
+// @desc    Get User Info by ID
+// @route   POST http://localhost:3000/api/v1/auth/approve/:id
+// @access  Private (requires authentication)
+authRouter.patch("/approve/:id", isAdminVerifiedUser);
 
 export default authRouter;

@@ -24,7 +24,6 @@ const authSchema = new mongoose.Schema(
       trim: true,
       index: true,
     },
-    profileImage: String,
     email: {
       type: String,
       unique: true,
@@ -37,7 +36,12 @@ const authSchema = new mongoose.Schema(
       trim: true,
     },
     isProfileComplete:{
-      type:Boolean
+      type:Boolean,
+      default:false
+    },
+    isAdminVerifyTheUser: {
+      type: Boolean,
+      default: false,
     },
     appointments: [
       {
@@ -52,8 +56,14 @@ const authSchema = new mongoose.Schema(
       required: true,
     },
 
-    isEmailVerified: Boolean,
+    isEmailVerified:{
+      type:Boolean,
+      default:false
+    },
     emailVerificationToken: String,
+    profileImage:{
+      type:String
+    }
   },
   {
     timestamps: true,
