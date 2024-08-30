@@ -211,3 +211,5 @@ export const patientList = [
     colorStatus: true,
   },
 ];
+
+export const BACKEND_API_URL = 'https://docter-appointment-app-backend.vercel.app'

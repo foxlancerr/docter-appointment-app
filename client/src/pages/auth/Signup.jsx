@@ -31,7 +31,7 @@ const Signup = () => {
     try {
       setLoad(true);
       const response = await axios.post(
-        "http://localhost:3000/api/v1/auth/register",
+        `${BACKEND_API_URL}/api/v1/auth/register`,
         data
       );
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import HomeLayout from "../HomeLayout";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { BACKEND_API_URL } from "@/constants";
 
 const ContactUs = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +12,7 @@ const ContactUs = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/v1/patients/contact-us",
+        `${BACKEND_API_URL}/api/v1/patients/contact-us`,
         { email, subject, message },
         {
           headers: {

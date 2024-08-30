@@ -5,13 +5,14 @@ import toast from "react-hot-toast";
 import { setItemInLocalStorage } from "../utils/webLocalStorage";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { BACKEND_API_URL } from "@/constants";
 
 function ApplyDoctors() {
   const loginUser = useSelector((state) => state?.userInfo?.user);
   const fetchData = async (data) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/v1/doctor/apply",
+        `${BACKEND_API_URL}/api/v1/doctor/apply`,
         {
           method: "POST",
           headers: {

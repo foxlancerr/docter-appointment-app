@@ -3,7 +3,11 @@ import HomeCardV1 from "@/components/dashboard/HomeCardV1";
 import HomeFlipList from "@/components/dashboard/HomeFlipList";
 import HomeHero from "@/components/dashboard/HomeHero";
 import FaqAccordion from "@/components/landing-page/faqs";
-import BasicTable from "@/components/shared/BasicTable";
+import DoctorTable from "@/components/shared/DoctorTable";
+import PatientTable from "@/components/shared/PatientTable";
+import { DefaultTabs } from "@/components/shared/Tabs";
+import UserTable from "@/components/shared/UserTable";
+import { BACKEND_API_URL } from "@/constants";
 import { GlobalContext } from "@/context/GlobalContext";
 import { logInUser } from "@/store/features/userInfo/userInfoSlice";
 import { getItemFromLocalStorage } from "@/utils/webLocalStorage";
@@ -17,7 +21,7 @@ const Home = () => {
   // this useEffect authenticate the user based on the token, is the user is authentic or not
   useEffect(() => {
     setLoad(true);
-    fetch("http://localhost:3000/api/v1/auth/get-user-info-by-id", {
+    fetch(`${BACKEND_API_URL}/api/v1/auth/get-user-info-by-id`, {
       method: "POST",
       headers: {
         Authorization: "bearer " + getItemFromLocalStorage("token"),
@@ -34,12 +38,18 @@ const Home = () => {
       });
   }, []);
 
+  const tabsData = [
+    { label: 'Users', component: UserTable },
+    { label: 'Patients', component: PatientTable },
+    { label: 'Doctors', component: DoctorTable },
+  ];
   return (
     // <h1>hii</h1>
     <Layout>
       <HomeHero></HomeHero>
       <HomeCardV1></HomeCardV1>
-      <BasicTable></BasicTable>
+      <DefaultTabs tabsData={tabsData}></DefaultTabs>
+      {/* <BasicTable></BasicTable> */}
       {/* <HomeFlipList></HomeFlipList>  */}
     </Layout>
   );

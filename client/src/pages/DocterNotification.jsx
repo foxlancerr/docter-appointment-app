@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/dashboard/DashboardLayout";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { BACKEND_API_URL } from "@/constants";
 
 function DoctorNotification() {
   const user = useSelector((state) => state?.userInfo?.user);
@@ -18,7 +19,7 @@ function DoctorNotification() {
     const fetchNotifications = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/v1/notification/get-notifications/${user._id}`
+          `${BACKEND_API_URL}/api/v1/notification/get-notifications/${user._id}`
         );
 
         const result = await response.json();
@@ -81,7 +82,7 @@ function DoctorNotification() {
   const handleApprove = async (doctorId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/doctor/approve/${doctorId}`,
+        `${BACKEND_API_URL}/api/v1/doctor/approve/${doctorId}`,
         {
           method: "PUT",
           headers: {
@@ -107,7 +108,7 @@ function DoctorNotification() {
   const handleReject = async (doctorId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/doctor/reject/${doctorId}`,
+        `${BACKEND_API_URL}/api/v1/doctor/reject/${doctorId}`,
         {
           method: "PUT",
           headers: {
@@ -133,7 +134,7 @@ function DoctorNotification() {
   const markAsSeen = async (notificationId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/notification/seen/${notificationId}`,
+        `${BACKEND_API_URL}/api/v1/notification/seen/${notificationId}`,
         {
           method: "PUT",
           headers: {

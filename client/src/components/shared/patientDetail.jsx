@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import HomeLayout from "../HomeLayout";
 import Layout from "../dashboard/DashboardLayout";
+import { BACKEND_API_URL } from "@/constants";
 
 function PatientDetailComponent() {
   const { id } = useParams();
@@ -21,7 +22,7 @@ function PatientDetailComponent() {
     const fetchPatientDetail = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/patients/${id}`
+          `${BACKEND_API_URL}/api/v1/patients/${id}`
         ); // Adjust the URL as needed
 
         if (response.data.data) {

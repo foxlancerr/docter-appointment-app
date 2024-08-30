@@ -9,6 +9,7 @@ import {
 } from "../utils/email.js";
 import { verificationSuccessTemplate } from "../view/VerificationTemplate.js";
 import uploadToCloudinary from "../utils/cloudnaryConfig.js";
+import Auth from "../model/auth.model.js";
 
 // @desc    User Registration
 // @route   POST http://localhost:3000/api/v1/patients/register
@@ -278,11 +279,31 @@ export const createPatient = async (req, res) => {
 // @access  Public
 export const getAllPatients = async (req, res) => {
   try {
-    const patients = await Patient.find();
-    res.status(200).json({
+    const patients = await Patient.find()
+    if(!patients) return    res.status(404).json({
+      message: "Patients retrieved successfully",
+      success: false,
+      data: [],
+    });
+
+     // Use Promise.all to fetch Auth data for all patients concurrently
+     const patientList = await Promise.all(
+      patients.map(async (patient) => {
+        const authData = await Auth.findOne({ patientId: patient._id }).select(
+          "-password"
+        );
+
+        return {
+          ...patient.toObject(), 
+          auth: authData, 
+        };
+      })
+    );
+    console.log(patientList)
+    return res.status(200).json({
       message: "Patients retrieved successfully",
       success: true,
-      data: patients,
+      data: patientList,
     });
   } catch (error) {
     res.status(500).json({

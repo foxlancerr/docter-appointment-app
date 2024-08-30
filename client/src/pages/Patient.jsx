@@ -4,7 +4,7 @@ import Table from "../components/Table";
 import MeetingCard from "../components/dashboard/MeetingCard";
 import HomeCard from "../components/dashboard/HomeCard";
 import { patientHero } from "../constants";
-import BasicTable from "@/components/shared/BasicTable";
+import BasicTable from "@/components/shared/PatientTable";
 
 function Patient() {
   return (

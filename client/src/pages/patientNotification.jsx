@@ -18,7 +18,7 @@ function PatientNotification() {
     const fetchNotifications = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/v1/notification/get-notifications/${user._id}`
+          `${BACKEND_API_URL}/api/v1/notification/get-notifications/${user._id}`
         );
 
         const result = await response.json();
@@ -53,7 +53,7 @@ function PatientNotification() {
   const handleApprove = async (doctorId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/doctor/approve/${doctorId}`,
+        `${BACKEND_API_URL}/api/v1/doctor/approve/${doctorId}`,
         {
           method: "PUT",
           headers: {
@@ -79,7 +79,7 @@ function PatientNotification() {
   const handleReject = async (doctorId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/doctor/reject/${doctorId}`,
+        `${BACKEND_API_URL}/api/v1/doctor/reject/${doctorId}`,
         {
           method: "PUT",
           headers: {
@@ -105,7 +105,7 @@ function PatientNotification() {
   const markAsSeen = async (notificationId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/notification/seen/${notificationId}`,
+        `${BACKEND_API_URL}/api/v1/notification/seen/${notificationId}`,
         {
           method: "PUT",
           headers: {

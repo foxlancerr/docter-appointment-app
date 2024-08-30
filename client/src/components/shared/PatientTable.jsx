@@ -13,8 +13,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Input } from "@/components/ui/input"; // Importing ShadCN Input component
+import dayjs from "dayjs";
+import { DefaultTabs } from "./Tabs";
+import { BACKEND_API_URL } from "@/constants";
 
-// Helper function to get cell styles based on the index
 const getCellStyle = (index) => {
   switch (index % 4) {
     case 0:
@@ -34,14 +36,13 @@ const tableHeaderContent = [
   "#",
   "Name",
   "Gender",
+  "DOB",
   "Disease",
-  "Appointment Date",
-  "Contact",
-  "Time",
+  "Appointment Date/Time",
   "Action",
 ];
 
-export default function BasicTable() {
+export default function PatientTable() {
   const navigate = useNavigate();
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -51,7 +52,7 @@ export default function BasicTable() {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/v1/patients/${id}`
+        `${BACKEND_API_URL}/api/v1/patients/${id}`
       );
       if (response.status === 200) {
         toast.success("Patient deleted successfully");
@@ -70,7 +71,7 @@ export default function BasicTable() {
     const fetchPatients = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/v1/patients"
+          `${BACKEND_API_URL}/api/v1/patients`
         );
         if (!Array.isArray(response.data.data)) {
           throw new Error("Invalid data format: Expected an array.");
@@ -102,7 +103,6 @@ export default function BasicTable() {
   if (!patients.length) {
     return <div>No patients found.</div>;
   }
-
   return (
     <div className="overflow-x-auto py-10">
       <h1 className="text-3xl font-bold mb-4 text-[#015A78]">
@@ -150,13 +150,16 @@ export default function BasicTable() {
                 />
                 <div>
                   <h1 className="font-bold text-black-300 text-sm">
-                    {patient.name}
+                    {patient?.name}
                   </h1>
-                  <p>{patient.phone}</p>
+                  <p>{patient?.phone}</p>
                 </div>
               </TableCell>
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {patient.gender}
+                {patient?.gender}
+              </TableCell>
+              <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {dayjs(patient?.dateOfBirth).format('DD MMM YYYY')}
               </TableCell>
               <TableCell className="">
                 <p
@@ -175,13 +178,8 @@ export default function BasicTable() {
                   : "10:40AM"} */}
               </TableCell>
 
-              <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {patient?.emergencyContact?.phone}
-              </TableCell>
-              <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                10.30 AM
-                {/* {patient.time} */}
-              </TableCell>
+            
+           
               <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end gap-2 text-2xl items-center">
                 <Popover className="relative">
                   <PopoverTrigger asChild>
