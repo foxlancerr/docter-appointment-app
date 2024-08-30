@@ -212,4 +212,5 @@ export const patientList = [
   },
 ];
 
-export const BACKEND_API_URL = 'https://docter-appointment-app-backend.vercel.app'
+// export const BACKEND_API_URL = 'https://docter-appointment-app-backend.vercel.app'
+export const BACKEND_API_URL = 'http://localhost:3000'

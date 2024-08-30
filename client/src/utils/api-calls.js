@@ -19,7 +19,7 @@ export const fetchDoctorList = async () => {
 };
 export const fetchDoctorById = async (id) => {
   try {
-    const response = await fetch(`${url}/api/v1/doctor/${id}`);
+    const response = await fetch(`${BACKEND_API_URL}/api/v1/doctor/${id}`);
     if (!response.ok) {
       throw new Error("Failed to fetch doctors");
     }
@@ -38,7 +38,7 @@ export const checkAvailabilityOfDoctors = async (id) => {
   const startTime = new Date().toISOString();
   try {
     const response = await fetch(
-      `${url}/api/v1/appointments/check-availability?doctorId=${encodeURIComponent(
+      `${BACKEND_API_URL}/api/v1/appointments/check-availability?doctorId=${encodeURIComponent(
         id
       )}&startTime=${encodeURIComponent(startTime)}`
     );
@@ -54,11 +54,6 @@ export const checkAvailabilityOfDoctors = async (id) => {
 };
 export const bookAppointment = async (_data) => {
   const {
-    name,
-    email,
-    phone,
-    dateOfBirth,
-    gender,
     address,
     medicalHistory,
     medications,
@@ -70,7 +65,7 @@ export const bookAppointment = async (_data) => {
     patientId,
   } = _data;
   try {
-    const appointmentResponse = await fetch(`${url}/api/v1/appointments`, {
+    const appointmentResponse = await fetch(`${BACKEND_API_URL}/api/v1/appointments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -94,17 +89,12 @@ export const bookAppointment = async (_data) => {
     }
 
     // If the appointment creation is successful, then create/update the patient
-    const patientResponse = await fetch(`${url}/api/v1/patients`, {
+    const patientResponse = await fetch(`${BACKEND_API_URL}/api/v1/patients`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name,
-        email,
-        phone,
-        dateOfBirth,
-        gender,
         address,
         medicalHistory,
         medications,

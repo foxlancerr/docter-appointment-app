@@ -27,11 +27,6 @@ const Appointment = () => {
   const [step, setStep] = useState(1);
   const [endTime, setEndTime] = useState(null);
   const [startTime, setStartTime] = useState(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState(null);
-  const [gender, setGender] = useState("");
   const [address, setAddress] = useState({
     street: "",
     city: "",
@@ -65,11 +60,6 @@ const Appointment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const appointmentData = {
-      name,
-      email,
-      phone,
-      dateOfBirth,
-      gender,
       address,
       medicalHistory,
       medications,
@@ -92,76 +82,7 @@ const Appointment = () => {
 
   const renderStep1 = () => (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <Label htmlFor="name" className="text-[#023e7d]">
-            Name
-          </Label>
-          <Input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter full name"
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="email" className="text-[#023e7d]">
-            Email
-          </Label>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter email address"
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="phone" className="text-[#023e7d]">
-            Phone
-          </Label>
-          <Input
-            id="phone"
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Enter phone number"
-            required
-          />
-        </div>
-        <div>
-          <div className="flex gap-1 flex-col flex-1">
-            <label htmlFor="start-date" className="text-[#023e7d]">
-              Date of Birth
-            </label>
-            <DatePickerBox
-              value={dateOfBirth}
-              onChange={(selctedDate) => setDateOfBirth(selctedDate)}
-            />
-          </div>
-        </div>
-        <div>
-          <Label htmlFor="gender" className="text-[#023e7d]">
-            Gender
-          </Label>
-          <Select id="gender" value={gender} onValueChange={setGender} required>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select gender" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel className="text-[#023e7d]">Gender</SelectLabel>
-                <SelectItem value="Male">Male</SelectItem>
-                <SelectItem value="Female">Female</SelectItem>
-                <SelectItem value="Other">Other</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      
       <div className="mt-5">
         <Label htmlFor="address" className="text-[#023e7d]">
           Address
