@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { BACKEND_API_URL } from "@/constants";
 
 const Signup = () => {
   const [imagePreview, setImagePreview] = useState(null);
