@@ -8,13 +8,20 @@ const adminSchema = new mongoose.Schema(
     lastname: {
       type: String,
     },
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Other"],
+      default:'Male'
+    },
     phone: {
       type: String,
       unique: true,
     },
     hireDate: {
       type: Date,
+      default:null
     },
+
     department: {
       type: String,
     },

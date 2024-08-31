@@ -12,7 +12,7 @@ const patientSchema = new mongoose.Schema(
       trim: true,
     },
     profileImage: String,
- 
+    adminRef: { type: mongoose.Schema.Types.ObjectId, ref: "Admin", default: null },
     phone: {
       type: String,
       trim: true,
@@ -85,21 +85,6 @@ const patientSchema = new mongoose.Schema(
   }
 );
 
-// // Hash the password before saving the user
-// patientSchema.pre("save", async function (next) {
-//   if (!this.isModified("password")) return next();
-//   try {
-//     this.password = await bcrypt.hash(this.password, 10);
-//     next();
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
-// // Method to compare input password with the stored hashed password
-// patientSchema.methods.isPasswordCorrect = async function (password) {
-//   return await bcrypt.compare(password, this.password);
-// };
 
 const Patient = mongoose.model("Patient", patientSchema);
 

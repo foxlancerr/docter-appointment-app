@@ -6,11 +6,12 @@ import {
   getAllAppointments,
   getAppointmentById,
 } from "../controllers/appointmentController.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const appointmentRouter = express.Router();
 
 appointmentRouter.get("/check-availability", checkAvailability);
-appointmentRouter.post("/", createAppointment);
+appointmentRouter.post("/", authMiddleware,createAppointment);
 appointmentRouter.patch("/:id/update-status", updateAppointmentStatus);
 appointmentRouter.get("/", getAllAppointments);
 appointmentRouter.get("/:id", getAppointmentById);

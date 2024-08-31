@@ -59,6 +59,15 @@ const Appointment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    let currentPatientId = null;
+    if (user.userType === "admin") {
+      // If userType is admin, the admin acts as a patient
+      currentPatientId = user?.adminId
+    } else if (user.userType === "patient") {
+      // If userType is patient, find patient data
+      currentPatientId = user?.patientId;
+    }
     const appointmentData = {
       address,
       medicalHistory,
@@ -68,7 +77,7 @@ const Appointment = () => {
       endTime,
       startTime,
       doctorId,
-      patientId: user?._id,
+      patientId: currentPatientId ,
     };
 
     const response = await bookAppointment(appointmentData);

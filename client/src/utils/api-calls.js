@@ -2,6 +2,7 @@
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 import { BACKEND_API_URL } from "@/constants";
+import { getItemFromLocalStorage } from "./webLocalStorage";
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 export const fetchDoctorList = async () => {
@@ -69,12 +70,18 @@ export const bookAppointment = async (_data) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+          Authorization: `Bearer ${getItemFromLocalStorage("token")}`,
       },
       body: JSON.stringify({
         patientId,
         doctorId,
         startTime,
         endTime,
+        address,
+        medicalHistory,
+        medications,
+        allergies,
+        emergencyContact,
       }),
     });
 
@@ -88,23 +95,24 @@ export const bookAppointment = async (_data) => {
       throw new Error(appointmentData.error || "Error creating appointment");
     }
 
-    // If the appointment creation is successful, then create/update the patient
-    const patientResponse = await fetch(`${BACKEND_API_URL}/api/v1/patients`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        address,
-        medicalHistory,
-        medications,
-        allergies,
-        emergencyContact,
-      }),
-    });
+    
+    // // If the appointment creation is successful, then create/update the patient
+    // const patientResponse = await fetch(`${BACKEND_API_URL}/api/v1/patients`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     address,
+    //     medicalHistory,
+    //     medications,
+    //     allergies,
+    //     emergencyContact,
+    //   }),
+    // });
 
-    const patientData = await patientResponse.json();
-    return patientData;
+    // const patientData = await patientResponse.json();
+    // return patientData;
   } catch (error) {
     console.error("Error fetching doctor list:", error);
     return null;
