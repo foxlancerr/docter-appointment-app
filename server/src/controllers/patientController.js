@@ -219,8 +219,6 @@ export const userQueryEmail = async (req, res) => {
 export const createPatient = async (req, res) => {
   try {
     const {
-      name,
-      email,
       phone,
       dateOfBirth,
       gender,
@@ -247,9 +245,9 @@ export const createPatient = async (req, res) => {
     //     data: patient,
     //   });
     // }
-    const patient = new Patient({
-      name,
-      email,
+    console.log(req.body)
+    
+    const patient = new Patient({ 
       phone,
       dateOfBirth,
       gender,
@@ -260,6 +258,8 @@ export const createPatient = async (req, res) => {
       emergencyContact,
     });
     await patient.save();
+
+    console.log(patient)
     res.status(201).json({
       message: "Record updated & wait unless doctor approved it",
       success: true,
@@ -277,42 +277,94 @@ export const createPatient = async (req, res) => {
 // @desc    Get a list of all patients
 // @route   GET http://localhost:3000/api/v1/patients
 // @access  Public
+// export const getAllPatients = async (req, res) => {
+//   try {
+//     const patients = await Patient.find()
+//     if(!patients) return    res.status(404).json({
+//       message: "Patients retrieved successfully",
+//       success: false,
+//       data: [],
+//     });
+
+//      // Use Promise.all to fetch Auth data for all patients concurrently
+//      const patientList = await Promise.all(
+//       patients.map(async (patient) => {
+//         const authData = await Auth.findOne({
+//           $or: [{ patientId: patient._id }, { adminId: patient.adminRef }],
+//         }).select("-password");
+
+
+//         return {
+//           ...patient.toObject(), 
+//           auth: authData, 
+//         };
+//       })
+//     );
+//     console.log(patientList)
+//     return res.status(200).json({
+//       message: "Patients retrieved successfully",
+//       success: true,
+//       data: patientList,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Error fetching patients",
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// };
+
 export const getAllPatients = async (req, res) => {
   try {
-    const patients = await Patient.find()
-    if(!patients) return    res.status(404).json({
-      message: "Patients retrieved successfully",
-      success: false,
-      data: [],
-    });
+    // Fetch all patients and populate the 'adminRef' field to get admin details
+    const patients = await Patient.find().populate('adminRef', '-password');
 
-     // Use Promise.all to fetch Auth data for all patients concurrently
-     const patientList = await Promise.all(
+    console.log("patient >>>>>>>>>>>>>>>>>>>>", patients);
+
+    if (!patients || patients.length === 0) {
+      return res.status(404).json({
+        message: "No patients found",
+        success: false,
+        data: [],
+      });
+    }
+
+    // Fetch Auth data for all patients or admins acting as patients
+    const patientList = await Promise.all(
       patients.map(async (patient) => {
-        const authData = await Auth.findOne({ patientId: patient._id }).select(
-          "-password"
-        );
+        // Find auth data by either patientId or adminId
+        const authData = await Auth.findOne({
+          $or: [{ patientId: patient._id }, { adminId: patient.adminRef?._id }],
+        }).select("-password");
 
-        return {
-          ...patient.toObject(), 
-          auth: authData, 
+        // Merge patient data with auth and admin data
+        const mergedData = {
+          ...patient.toObject(),
+            ...(authData ? authData.toObject() : {}), // Destructure auth data if available
+            ...(patient.adminRef ? patient.adminRef.toObject() : {}), // Include admin details if available
+          
         };
+        return mergedData;
       })
     );
-    console.log(patientList)
+
     return res.status(200).json({
       message: "Patients retrieved successfully",
       success: true,
       data: patientList,
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("Error fetching patients:", error);
+    return res.status(500).json({
       message: "Error fetching patients",
       success: false,
       error: error.message,
     });
   }
 };
+
+
 // @desc    Get a patient by ID
 // @route   GET http://localhost:3000/api/v1/patients/:id
 // @access  Public

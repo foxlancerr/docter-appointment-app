@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import authMiddleware from "../middleware/authMiddleware.js";
+import {authMiddleware} from "../middleware/authMiddleware.js";
 import Patient from "../model/patient.model.js";
 import {
   createPatient,

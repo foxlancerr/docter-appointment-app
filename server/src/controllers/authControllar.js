@@ -19,6 +19,7 @@ export const userRegister = async (req, res) => {
       // Upload image to Cloudinary
       profileImageUrl = await uploadToCloudinary(req.file.path);
     }
+    console.log("cloudnary Image uploaded >>>>>>>>>>>", profileImageUrl)
 
     // Validate required fields
     if (!username || !email || !password || !userType) {
@@ -224,8 +225,9 @@ export const userAuthenticateBasedOnAccessToken = async (req, res) => {
 // @access  Public
 export const afterSiginBasicInfoForm = async (req, res) => {
   const { id } = req.params;
-  const { lastname, firstname, phone, address, description, dateOfBirth, permissionLevel, gender } = req.body;
+  const { lastname, firstname, phone, address, description, dateOfBirth, permissionLevel, gender,hiredate } = req.body;
 
+  console.log(req.body)
   try {
     // Find the auth document and check if the email is verified
     const auth = await Auth.findById(id);
@@ -237,6 +239,7 @@ export const afterSiginBasicInfoForm = async (req, res) => {
     const updateData = { lastname, firstname, phone, address, description, gender };
     if (dateOfBirth) updateData.dateOfBirth = dateOfBirth;
     if (permissionLevel) updateData.permissionLevel = permissionLevel;
+    if (hiredate) updateData.hireDate = hiredate;
 
     if (auth.userType === "admin") {
       // Update or create admin profile
