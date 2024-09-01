@@ -8,6 +8,7 @@ import uploadToCloudinary from "../utils/cloudnaryConfig.js";
 import Admin from "../model/admin.model.js";
 import Patient from "../model/patient.model.js";
 import Doctor from "../model/docter.model.js";
+import Notification from "../model/notification.model.js";
 
 // @desc    User Registration
 // @route   POST http://localhost:3000/api/v1/auth/register
@@ -81,6 +82,25 @@ export const userRegister = async (req, res) => {
       patientId,
       doctorId,
     });
+
+    // Send notification to the admin
+    const admins = await Auth.find({ userType: "admin" });
+    const adminNotifications = admins.map((admin) => ({
+      message: `New user registered with email: ${newUser.email}`,
+      user: admin._id, // The admin receiving the notification
+      userType: "admin",
+    }));
+
+    // Create a notification for the user confirming their registration
+    const userNotification = new Notification({
+      message: `Successfully created account. Please wait for admin approval.`,
+      user: newUser._id,
+      userType: newUser.userType,
+    });
+
+    // Save all notifications
+    await Notification.insertMany(adminNotifications);
+    await userNotification.save();
 
     // // Create new user with unverified status
     // const newUser = await Auth.create({

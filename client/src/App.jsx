@@ -27,6 +27,7 @@ import { getItemFromLocalStorage } from "./utils/webLocalStorage";
 import { logInUser } from "./store/features/userInfo/userInfoSlice";
 import axios from "axios";
 import { BACKEND_API_URL } from "./constants";
+import NotificationPage from "./components/landing-page/Header/Notification";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -183,6 +184,15 @@ useEffect(() => {
           element={
             <ProtectedRoutes>
               <ApplyDocters></ApplyDocters>
+            </ProtectedRoutes>
+          }
+        ></Route>
+
+           <Route
+          path="/notifications"
+          element={
+            <ProtectedRoutes>
+              <NotificationPage></NotificationPage>
             </ProtectedRoutes>
           }
         ></Route>

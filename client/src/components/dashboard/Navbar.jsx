@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Avator1 } from "../../../assets/index";
 import { IoClose, IoNotifications } from "react-icons/io5";
@@ -8,26 +8,54 @@ import { Link, useNavigate } from "react-router-dom";
 import profileDummyImage from "../../../assets/images/avatar-1.jpeg";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { logOutUser } from "@/store/features/userInfo/userInfoSlice";
+import axios from "axios";
+import { getItemFromLocalStorage } from "@/utils/webLocalStorage";
+import { BACKEND_API_URL } from "@/constants";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useSelector((state) => state?.userInfo?.user);
   const navigate = useNavigate();
   const dispatch = useDispatch()
-  let navigateToNotificationsRoute;
-  if (user?.userType == 'admin') {
-    navigateToNotificationsRoute = "/admin-notifications";
-  } else if (user?.userType == 'doctor') {
-    navigateToNotificationsRoute = "/doctor-notifications";
-  } else {
-    navigateToNotificationsRoute = "/patient-notifications";
-  }
 
   const handleLogout = () => {
     localStorage.clear();
     navigate("/signin");
     dispatch(logOutUser())
   };
+
+  const [notifications, setNotifications] = useState([]);
+
+  // Fetch notifications from the server
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_API_URL}/api/v1/notification/get-notification`,
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLocalStorage("token")}`,
+          },
+        }
+      );
+
+      const result = response.data;
+      if (result.success) {
+        setNotifications(result.data);
+      } else {
+        toast.error("Failed to fetch notifications.");
+        setNotifications([]);
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      toast.error("Failed to fetch notifications.");
+      setNotifications([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
 
   return (
     <>
@@ -43,12 +71,12 @@ function Navbar() {
         </div>
         <div className="flex justify-between items-center gap-7 relative">
           <Link
-            to={navigateToNotificationsRoute}
+            to='/notifications'
             className="relative cursor-pointer"
           >
             <IoNotifications className="text-[3rem]"></IoNotifications>
             <div className="absolute w-[25px] h-[25px] rounded-full bg-red-500 -top-2 right-5 flex justify-center items-center text-white">
-              {user?.unseenNotifications?.length}
+              {notifications.filter(notify => !notify.seen)?.length}
             </div>
           </Link>
          
