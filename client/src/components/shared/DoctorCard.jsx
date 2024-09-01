@@ -7,6 +7,7 @@ import { Card } from "../ui/card";
 import toast from "react-hot-toast";
 
 function DoctorCard({ doctor }) {
+  console.log(doctor)
   const navigate = useNavigate();
 
   const handleViewProfile = () => {
@@ -35,7 +36,7 @@ function DoctorCard({ doctor }) {
           <div>
             <div className="flex items-center gap-3">
               <h2 className="text-xl md:text-2xl font-bold text-[#023e7d]">
-                {doctor.name}
+                {doctor?.firstname } {doctor?.lastname}
               </h2>
               <div className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
                 <p className="text-xs md:text-sm font-semibold">PMC Verified</p>

@@ -86,7 +86,7 @@ export default function UserTable() {
 
  
 
-  console.log(patients)
+  console.log(patients[0])
   const filteredPatients = patients.filter((patient) =>
     patient?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
     (patient?.allergies[0]?.allergen || "")

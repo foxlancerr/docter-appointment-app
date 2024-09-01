@@ -37,7 +37,7 @@ authRouter.post(
 // @desc    Get User Info by ID
 // @route   POST http://localhost:3000/api/v1/auth/basic-info/:id
 // @access  Private (requires authentication)
-authRouter.post("/basic-info/:id", afterSiginBasicInfoForm);
+authRouter.post("/basic-info/:id",authMiddleware,afterSiginBasicInfoForm);
 
 // @desc    Get User Info by ID
 // @route   POST http://localhost:3000/api/v1/auth/approve/:id

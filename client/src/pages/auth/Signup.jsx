@@ -187,6 +187,7 @@ const Signup = () => {
         <SelectGroup className="" >
           <SelectItem value="admin">Admin</SelectItem>
           <SelectItem value="patient">User</SelectItem>
+          <SelectItem value="doctor">Doctor</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

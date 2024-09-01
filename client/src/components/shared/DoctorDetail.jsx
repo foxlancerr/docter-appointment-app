@@ -42,7 +42,7 @@ function DoctorDetail() {
               <div className="flex justify-between items-center">
                 <div>
                   <CardTitle className="text-[#023e7d]">
-                    {doctorDetail.name}
+                    {doctorDetail?.firstname} {doctorDetail?.lastname}
                   </CardTitle>
                   <CardDescription>{doctorDetail.specialty}</CardDescription>
                   <div className="flex items-center mt-2">

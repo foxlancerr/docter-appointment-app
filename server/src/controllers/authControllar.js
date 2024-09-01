@@ -7,19 +7,21 @@ import { verificationSuccessTemplate } from "../view/VerificationTemplate.js";
 import uploadToCloudinary from "../utils/cloudnaryConfig.js";
 import Admin from "../model/admin.model.js";
 import Patient from "../model/patient.model.js";
+import Doctor from "../model/docter.model.js";
 
 // @desc    User Registration
 // @route   POST http://localhost:3000/api/v1/auth/register
 // @access  Public
 export const userRegister = async (req, res) => {
   try {
-    const { username, password, email,userType } = req.body;
+    console.log(req.body);
+    const { username, password, email, userType } = req.body;
     let profileImageUrl = null;
     if (req.file) {
       // Upload image to Cloudinary
       profileImageUrl = await uploadToCloudinary(req.file.path);
     }
-    console.log("cloudnary Image uploaded >>>>>>>>>>>", profileImageUrl)
+    console.log("cloudnary Image uploaded >>>>>>>>>>>", profileImageUrl);
 
     // Validate required fields
     if (!username || !email || !password || !userType) {
@@ -44,38 +46,41 @@ export const userRegister = async (req, res) => {
     //   "host"
     // )}/api/v1/auth/verify-email/${verificationToken}`;
 
-     // Initialize variables for the references
-     let adminId = null;
-     let patientId = null;
-     let doctorId = null;
- 
-     // Create a new document in the respective model based on userType
-     if (userType === 'admin') {
-       const newAdmin = await Admin.create({});
-       adminId = newAdmin._id;
-     } else if (userType === 'patient') {
-       const newPatient = await Patient.create({ /* any initial patient-specific fields */ });
-       patientId = newPatient._id;
-     }else {
-       return res
-         .status(400)
-         .json({ message: "Invalid user type", success: false });
-     }
- 
-     console.log(adminId,patientId,doctorId)
-     // Create new Auth user with appropriate references
-     const newUser = await Auth.create({
-       username,
-       email,
-       password,
-       userType,
-       isEmailVerified: false,
-       profileImage: profileImageUrl,
-       emailVerificationToken: verificationToken,
-       adminId,
-       patientId,
-       doctorId,
-     });
+    // Initialize variables for the references
+    let adminId = null;
+    let patientId = null;
+    let doctorId = null;
+
+    // Create a new document in the respective model based on userType
+    if (userType === "admin") {
+      const newAdmin = await Admin.create({});
+      adminId = newAdmin._id;
+    } else if (userType === "patient") {
+      const newPatient = await Patient.create({
+        /* any initial patient-specific fields */
+      });
+      patientId = newPatient._id;
+    } else {
+      const newDoctor = await Doctor.create({
+        /* any initial patient-specific fields */
+      });
+      doctorId = newDoctor._id;
+    }
+
+    console.log(adminId, patientId, doctorId);
+    // Create new Auth user with appropriate references
+    const newUser = await Auth.create({
+      username,
+      email,
+      password,
+      userType,
+      isEmailVerified: false,
+      profileImage: profileImageUrl,
+      emailVerificationToken: verificationToken,
+      adminId,
+      patientId,
+      doctorId,
+    });
 
     // // Create new user with unverified status
     // const newUser = await Auth.create({
@@ -197,7 +202,6 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
-
 // // @desc    Get User Info by ID
 // // @route   POST http://localhost:3000/api/v1/auth/get-user-info-by-id
 // // @access  Private (requires authentication)
@@ -219,24 +223,55 @@ export const userAuthenticateBasedOnAccessToken = async (req, res) => {
   }
 };
 
-
 // @desc    Complete admin/patient profile
 // @route   POST http://localhost:3000/api/v1/auth/basic-info/:id
 // @access  Public
 export const afterSiginBasicInfoForm = async (req, res) => {
-  const { id } = req.params;
-  const { lastname, firstname, phone, address, description, dateOfBirth, permissionLevel, gender,hiredate } = req.body;
+  // const { id } = req.params;
+  const id = req.userId
+  console.log(id)
+  const {
+    lastname,
+    firstname,
+    phone,
+    address,
+    description,
+    dateOfBirth,
+    permissionLevel,
+    gender,
+    hiredate,
+    verified,
+    reviews,
+    specialty,
+    yearsExperience,
+    about,
+    services,
+    education,
+    specializations,
+    languages,
+    experience,
+    otherLocations,
+    fees,
+    daysAvailable,
+  } = req.body;
 
-  console.log(req.body)
   try {
     // Find the auth document and check if the email is verified
     const auth = await Auth.findById(id);
     if (!auth || !auth.isEmailVerified) {
-      return res.status(400).json({ message: "Invalid user or user not verified", success: false });
+      return res
+        .status(400)
+        .json({ message: "Invalid user or user not verified", success: false });
     }
 
     // Define update data object
-    const updateData = { lastname, firstname, phone, address, description, gender };
+    let updateData = {
+      lastname,
+      firstname,
+      phone,
+      address,
+      gender,
+    };
     if (dateOfBirth) updateData.dateOfBirth = dateOfBirth;
     if (permissionLevel) updateData.permissionLevel = permissionLevel;
     if (hiredate) updateData.hireDate = hiredate;
@@ -244,7 +279,10 @@ export const afterSiginBasicInfoForm = async (req, res) => {
     if (auth.userType === "admin") {
       // Update or create admin profile
       const admin = auth.adminId
-        ? await Admin.findByIdAndUpdate(auth.adminId, updateData, { new: true, runValidators: true })
+        ? await Admin.findByIdAndUpdate(auth.adminId, updateData, {
+            new: true,
+            runValidators: true,
+          })
         : await new Admin(updateData).save();
 
       // Update auth to mark profile as complete
@@ -256,12 +294,15 @@ export const afterSiginBasicInfoForm = async (req, res) => {
         admin,
         success: true,
       });
-      
     } else if (auth.userType === "patient") {
       // Update or create patient profile
       const patient = auth.patientId
-        ? await Patient.findByIdAndUpdate(auth.patientId, updateData, { new: true, runValidators: true })
-        : await new Patient(updateData).save();
+      ? await Patient.findByIdAndUpdate(auth.patientId, {...updateData, auth:req.userId}, {
+        new: true,
+        runValidators: true,
+      })
+      : await new Patient({...updateData, auth:req.userId}).save();
+      console.log("patient updated data", auth.patientId,updateData,"------", patient)
 
       // Update auth to mark profile as complete
       auth.isProfileComplete = true;
@@ -272,11 +313,40 @@ export const afterSiginBasicInfoForm = async (req, res) => {
         patient,
         success: true,
       });
-      
     } else {
-      return res.status(400).json({ message: "Invalid user type", success: false });
-    }
+      // Update or create Doctor profile
+      if (yearsExperience) updateData.yearsExperience = yearsExperience;
+      if (specialty) updateData.specialty = specialty;
+      if (reviews) updateData.reviews = reviews;
+      if (verified) updateData.verified = verified;
+      if (about) updateData.about = about;
+      if (services) updateData.services = services;
+      if (education) updateData.education = education;
+      if (specializations) updateData.specializations = specializations;
+      if (languages) updateData.languages = languages;
+      if (experience) updateData.experience = experience;
+      if (otherLocations) updateData.otherLocations = otherLocations;
+      if (fees) updateData.fees = fees;
+      if (daysAvailable) updateData.daysAvailable = daysAvailable;
+      console.log(auth.doctorId)
+      const doctor = auth.doctorId
+        ? await Doctor.findByIdAndUpdate(auth.doctorId, {...updateData, auth:req.userId}, {
+            new: true,
+            runValidators: true,
+          })
+        : await new Doctor({...updateData, auth:req.userId}).save();
 
+        console.log("updated data >>>>>>>>>>>>>>>",updateData)
+      // Update auth to mark profile as complete
+      auth.isProfileComplete = true;
+      await auth.save();
+
+      return res.status(201).json({
+        message: "Doctor profile completed successfully!",
+        data: doctor,
+        success: true,
+      });
+    }
   } catch (error) {
     console.error("Error during profile completion:", error);
     res.status(500).json({
@@ -285,6 +355,9 @@ export const afterSiginBasicInfoForm = async (req, res) => {
     });
   }
 };
+
+
+
 
 
 
@@ -344,7 +417,7 @@ export const afterSiginBasicInfoForm = async (req, res) => {
 //           success: true,
 //         });
 //       }
-      
+
 //     }else if(auth.userType == "patient"){
 //       if(auth.patientId){
 //         const existingPatient = await Patient.findByIdAndUpdate({_id:auth.patientId},{
@@ -382,8 +455,8 @@ export const afterSiginBasicInfoForm = async (req, res) => {
 //           success: true,
 //         });
 //       }
-     
-//     }  
+
+//     }
 //   } catch (error) {
 //     console.error("Error during profile completion:", error);
 //     res
@@ -418,7 +491,9 @@ export const isAdminVerifiedUser = async (req, res) => {
 
     // Return success response
     return res.status(200).json({
-      message: `User KYC is ${auth.isAdminVerifyTheUser ? "approved" : "disapproved"}`,
+      message: `User KYC is ${
+        auth.isAdminVerifyTheUser ? "approved" : "disapproved"
+      }`,
       success: true,
     });
   } catch (error) {
@@ -429,5 +504,3 @@ export const isAdminVerifiedUser = async (req, res) => {
     });
   }
 };
-
-
