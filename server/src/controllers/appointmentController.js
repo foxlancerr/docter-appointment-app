@@ -5,6 +5,7 @@ import Notification from "../model/notification.model.js"; // Import Notificatio
 import Admin from "../model/admin.model.js"; // Import Notification model
 import { getPatientById } from "./patientController.js";
 import Auth from "../model/auth.model.js";
+import Doctor from "../model/docter.model.js";
 
 // @desc    Check if doctor is available
 // @route   GET /api/v1/appointments/check-availability
@@ -232,6 +233,7 @@ export const createAppointment = async (req, res) => {
         allergies,
         emergencyContact,
         adminRef: currentPatient._id, // Set the adminRef to the admin's ID
+        auth: req.userId, // Set the adminRef to the admin's ID
       });
       await newPatient.save();
       
@@ -246,6 +248,7 @@ export const createAppointment = async (req, res) => {
           medications,
           allergies,
           emergencyContact,
+          auth:req.userId
         },
         { new: true }
       );
@@ -262,10 +265,11 @@ export const createAppointment = async (req, res) => {
     const newAppointment = new Appointment({
       patient: patientId,
       doctor: doctorId,
+      auth: req.userId,
       startTime,
       endTime,
     });
-    // await newAppointment.save();
+    await newAppointment.save();
 
     // Update Auth model to link patientId for admin
     if (authUser.userType === "admin") {
@@ -347,25 +351,56 @@ export const updateAppointmentStatus = async (req, res) => {
 // @desc    Get all appointments
 // @route   GET /api/v1/appointments
 // @access  Public
+// export const getAllAppointments = async (req, res) => {
+//   try {
+//     // Fetch all appointments
+//     const appointments = await Appointment.find()
+//       .populate('doctor') // Populate doctor details
+//       .populate('patient') // Populate doctor details
+//       .exec();
+//     res.status(200).json({ success: true, data: appointments });
+//   } catch (error) {
+//     console.error('Error fetching appointments:', error); // Log error for debugging
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+
+// @desc    Get all appointments
+// @route   GET /api/v1/appointments
+// @access  Public
 export const getAllAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find()
-      .populate("patient")
-      .populate("doctor");
+      .populate({
+        path: 'patient',
+        populate: {
+          path: 'auth',
+          select: 'username email isProfileComplete isAdminVerifyTheUser appointments userType isEmailVerified profileImage'
+        }
+      })
+      .populate({
+        path: 'doctor',
+        populate: {
+          path: 'auth',
+          select: 'username email isProfileComplete isAdminVerifyTheUser appointments userType isEmailVerified profileImage'
+        }
+      });
 
-    res.status(200).json({
-      message: "Appointments retrieved successfully",
-      success: true,
-      data: appointments,
-    });
+      console.log(appointments)
+
+    res.status(200).json({ success: true, data: appointments });
   } catch (error) {
-    res.status(500).json({
-      message: "Error fetching appointments",
-      success: false,
-      error: error.message,
-    });
+    console.error('Error fetching appointments:', error); // Log error for debugging
+    res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+
+
+
+
+
 
 // @desc    Get an appointment by ID
 // @route   GET /api/v1/appointments/:id

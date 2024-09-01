@@ -320,7 +320,7 @@ export const getAllPatients = async (req, res) => {
     // Fetch all patients and populate the 'adminRef' field to get admin details
     const patients = await Patient.find().populate('adminRef', '-password');
 
-    console.log("patient >>>>>>>>>>>>>>>>>>>>", patients);
+    // console.log("patient >>>>>>>>>>>>>>>>>>>>", patients);
 
     if (!patients || patients.length === 0) {
       return res.status(404).json({
@@ -341,8 +341,9 @@ export const getAllPatients = async (req, res) => {
         // Merge patient data with auth and admin data
         const mergedData = {
           ...patient.toObject(),
-            ...(authData ? authData.toObject() : {}), // Destructure auth data if available
-            ...(patient.adminRef ? patient.adminRef.toObject() : {}), // Include admin details if available
+          ...(authData ? authData.toObject() : {}), // Destructure auth data if available
+          ...(patient.adminRef ? patient.adminRef.toObject() : {}), // Include admin details if available
+          _id:patient._id
           
         };
         return mergedData;
@@ -371,6 +372,8 @@ export const getAllPatients = async (req, res) => {
 export const getPatientById = async (req, res) => {
   try {
     const patient = await Patient.findById(req.params.id);
+    console.log(req.body)
+    console.log(patient)
     if (!patient) {
       return res.status(404).json({
         message: "Patient not found",

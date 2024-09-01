@@ -1,20 +1,20 @@
 import React from "react";
 import { Input } from "../ui/input";
 
-function InputBox({ type, label, _name }) {
+function InputBox({ type, label, _name,cls }) {
   return (
     <div>
       <label
         htmlFor="subject"
         className="block text-sm font-medium text-[#023e7d]"
       >
-        {_name}
+        {label}
       </label>
       <Input
         id="subject"
         type={type}
         name={_name}
-        className="mt-1 "
+        className={`mb-1 ${cls}`}
       />
     </div>
   );

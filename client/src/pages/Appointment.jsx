@@ -201,7 +201,7 @@ const Appointment = () => {
           <DatePickerBox
             value={startTime}
             onChange={(selctedTime) => setStartTime(selctedTime)}
-            type="time"
+            type="date-time"
           />
         </div>
         <div className="flex gap-1 flex-col flex-1">
@@ -211,7 +211,7 @@ const Appointment = () => {
           <DatePickerBox
             value={endTime}
             onChange={(selctedTime) => setEndTime(selctedTime)}
-            type="time"
+            type="date-time"
           />
         </div>
       </div>

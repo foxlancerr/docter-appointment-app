@@ -43,9 +43,9 @@ function DashboardDoctorDetail() {
               <div className="flex justify-between items-center">
                 <div>
                   <CardTitle className="text-[#023e7d]">
-                    {doctorDetail.name}
+                    {doctorDetail?.firstname} {doctorDetail?.lastname}
                   </CardTitle>
-                  <CardDescription>{doctorDetail.specialty}</CardDescription>
+                  <CardDescription>{doctorDetail?.specialty}</CardDescription>
                   <div className="flex items-center mt-2">
                     {doctorDetail.verified && (
                       <div className="flex gap-2 items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full">

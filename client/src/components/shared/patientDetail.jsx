@@ -17,6 +17,7 @@ function PatientDetailComponent() {
   const [patientDetail, setPatientDetail] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log(id)
 
   useEffect(() => {
     const fetchPatientDetail = async () => {

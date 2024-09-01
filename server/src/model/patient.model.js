@@ -11,6 +11,10 @@ const patientSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    auth: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Auth'
+    },
     profileImage: String,
     adminRef: { type: mongoose.Schema.Types.ObjectId, ref: "Admin", default: null },
     phone: {
