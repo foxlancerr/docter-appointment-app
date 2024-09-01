@@ -125,7 +125,7 @@ export default function UserTable() {
         </TableRow>
       </TableHeader>
       <TableBody className="bg-white divide-y divide-gray-200">
-        {filteredPatients.map((patient, index) => (
+        {filteredPatients.filter(kyc => kyc?.isProfileComplete).map((patient, index) => (
           <TableRow
             key={patient.id + index}
             className="hover:bg-gray-100 items-center"
