@@ -81,7 +81,7 @@ export const createDoctor = async (req, res) => {
     res.status(201).json({
       data: savedDoctor,
       success: true,
-      message: "new doctor saved successfully",
+      message: "You are successfully apply for doctor account, wait untill admin approved",
     });
   } catch (error) {
     res

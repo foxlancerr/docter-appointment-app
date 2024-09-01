@@ -186,121 +186,9 @@ function AfterSignInForm() {
     </div>
   );
 
-  // const renderDoctorForm = () => {
-  //   return (
-  //     <>  
-  //           <div className="bg-white p-10 rounded-2xl shadow-lg max-md:p-6">
-  //             <div className="grid grid-cols-2 gap-5 max-md:grid-cols-1">
-  //               <InputBox _name="firstname" type="text" label="First Name" />
-  //               <InputBox _name="lastname" type="text" label="Last Name" />
-  //             </div>
-  //             <div className="grid grid-cols-2 mt-3 gap-5 max-md:grid-cols-1">
-  //               <InputBox _name="phone" type="tel" label="Phone Number" />
-  //               <div>
-  //       <span className="block text-sm font-medium text-[#023e7d] mb-1">
-  //         Gender
-  //       </span>
-  //       <Select
-  //         className=""
-  //         onValueChange={(value) => setGenderType(value)}
-  //         defaultValue={genderType}
-  //       >
-  //         <SelectTrigger className="w-full">
-  //           <SelectValue placeholder="Select User Type" />
-  //         </SelectTrigger>
-  //         <SelectContent className="bg-white">
-  //           <SelectGroup className="">
-  //             <SelectItem value="Male">Male</SelectItem>
-  //             <SelectItem value="Female">Female</SelectItem>
-  //             <SelectItem value="Other">Other</SelectItem>
-  //           </SelectGroup>
-  //         </SelectContent>
-  //       </Select>
-  //     </div>
-       
-  //             </div>
-  //             <div className="grid grid-cols-2 mt-3 gap-5 max-md:grid-cols-1">
-  //               <InputBox _name="address" type="text" label="Address" />
-  //             </div>
-  //           </div>
-  //           <hr className="my-10" />
-  //           <div className="bg-white p-10 rounded-2xl shadow-lg max-md:p-6">
-  //             <div className="grid grid-cols-2 gap-5 max-md:grid-cols-1">
-  //               <InputBox _name="department" type="text" label="Department" />
-  //               <InputBox _name="profession" type="text" label="Profession" />
-  //             </div>
-  //             <div className="grid grid-cols-2 mt-3 gap-5 max-md:grid-cols-1">
-  //               <InputBox
-  //                 _name="yearsExperience"
-  //                 type="number"
-  //                 label="Experience (Years)"
-  //               />
-  //               <InputBox
-  //                 _name="license"
-  //                 type="text"
-  //                 label="Medical License Number"
-  //               />
-  //             </div>
-  //             <div className="grid grid-cols-2 mt-3 gap-5 max-md:grid-cols-1">
-  //               <InputBox
-  //                 _name="feePerConsultation"
-  //                 type="number"
-  //                 label="Fee Per Consultation"
-  //               />
-  //               <div>
-  //                 <label className="block text-lg font-semibold mb-2">
-  //                   Days Available
-  //                 </label>
-  //                 <div className="grid grid-cols-4">
-  //                   {[
-  //                     "Monday",
-  //                     "Tuesday",
-  //                     "Wednesday",
-  //                     "Thursday",
-  //                     "Friday",
-  //                     "Saturday",
-  //                     "Sunday",
-  //                   ].map((day) => (
-  //                     <div key={day} className="flex items-center">
-  //                       <input
-  //                         type="checkbox"
-  //                         id={day}
-  //                         name="daysAvailable"
-  //                         value={day}
-  //                         className="mr-2"
-  //                       />
-  //                       <label htmlFor={day} className="text-base">
-  //                         {day}
-  //                       </label>
-  //                     </div>
-  //                   ))}
-  //                 </div>
-  //               </div>
-  //             </div>
-  //             <div className="mt-3">
-  //               <div>
-  //                 <label className="block text-lg font-semibold mb-2">
-  //                   Available Timing
-  //                 </label>
-  //                 <div className="flex gap-x-5">
-  //                   <InputBox
-  //                     _name="startTime"
-  //                     type="time"
-  //                     label="Start Time"
-  //                   />
-  //                   <InputBox _name="endTime" type="time" label="End Time" />
-  //                 </div>
-  //               </div>
-  //             </div>
-  //           </div>
-  //     </>
-  //   );
-  // };
-
   const renderDoctorForm = () => {
     return (
       <>  
-        {/* Basic Information Section */}
         <div className="bg-white p-10 rounded-2xl shadow-lg max-md:p-6">
           <div className="grid grid-cols-2 gap-5 max-md:grid-cols-1">
             <InputBox _name="firstname" type="text" label="First Name" />
@@ -335,8 +223,6 @@ function AfterSignInForm() {
         </div>
   
         <hr className="my-10" />
-  
-        {/* Professional Information Section */}
         <div className="bg-white p-10 rounded-2xl shadow-lg max-md:p-6">
           <div className="grid grid-cols-2 gap-5 max-md:grid-cols-1">
             <InputBox _name="specialty" type="text" label="Specialty" />
@@ -357,8 +243,6 @@ function AfterSignInForm() {
           <div className="mt-3">
             <label className="block text-lg font-semibold mb-2">Experience</label>
             <div className="space-y-4">
-              {/* Placeholder for dynamic experience fields */}
-              {/* You may need to map through an array of experience objects and render them */}
             </div>
           </div>
           <div className="mt-3">
@@ -411,7 +295,7 @@ function AfterSignInForm() {
     <HomeLayout>
       <section className="bg-white p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
       <h1 className="text-3xl font-semibold pb-2 border-b-2 mb-10 text-[#023e7d]">
-          Complete Basic Information
+          Complete Your Details
         </h1>
         <form onSubmit={handleSubmit} id="complete-profile">
           {renderFormByUserType()}
