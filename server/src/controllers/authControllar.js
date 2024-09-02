@@ -43,9 +43,9 @@ export const userRegister = async (req, res) => {
     const verificationToken = generateVerificationToken();
 
     // Generate verification URL
-    // const verificationUrl = `${req.protocol}://${req.get(
-    //   "host"
-    // )}/api/v1/auth/verify-email/${verificationToken}`;
+    const verificationUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/auth/verify-email/${verificationToken}`;
 
     // Initialize variables for the references
     let adminId = null;
