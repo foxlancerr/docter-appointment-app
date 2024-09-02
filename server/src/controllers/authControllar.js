@@ -102,24 +102,13 @@ export const userRegister = async (req, res) => {
     await Notification.insertMany(adminNotifications);
     await userNotification.save();
 
-    // // Create new user with unverified status
-    // const newUser = await Auth.create({
-    //   username,
-    //   email,
-    //   password,
-    //   userType,
-    //   isEmailVerified: false,
-    //   profileImage: profileImageUrl,
-    //   emailVerificationToken: verificationToken,
-    // });
-
     // Send verification email
-    // const message = verifyEmailTemplate(username, verificationUrl);
-    // const emailSended = await sendEmailToVerifyUser({
-    //   email: newUser.email,
-    //   subject: "Verify Your Email",
-    //   message,
-    // });
+    const message = verifyEmailTemplate(username, verificationUrl);
+    const emailSended = await sendEmailToVerifyUser({
+      email: newUser.email,
+      subject: "Verify Your Email",
+      message,
+    });
 
     return res.status(201).json({
       message: `${username}, you have successfully registered. Please check your email to verify your account.`,
