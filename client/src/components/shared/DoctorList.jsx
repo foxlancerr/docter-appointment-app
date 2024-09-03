@@ -22,17 +22,24 @@ function DoctorList() {
   useEffect(() => {
     fetchDoctorList()
       .then((response) => {
-        setDoctorList(response.data);
-        setTotalDoctors(response.data.length);
+        // Filter doctors whose profiles are complete
+        const completeDoctors = response.data.filter(
+          (doctor) => doctor?.auth?.isProfileComplete
+        );
+        console.log(completeDoctors)
+        setDoctorList(completeDoctors);
       })
       .catch((err) => {
         console.error(err);
+        toast.error("Failed to fetch doctor list.");
       });
   }, []);
 
   const filteredDoctors = doctorList?.filter((doctor) =>
     doctor?.firstname?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
+
+  console.log(filteredDoctors)
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -65,7 +72,7 @@ function DoctorList() {
         </div>
       </div>
       <section className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-5 overflow-hidden px-10">
-        {currentDoctors.map((item, index) => (
+        {currentDoctors?.map((item, index) => (
           <DoctorCard doctor={item} key={index}></DoctorCard>
         ))}
       </section>

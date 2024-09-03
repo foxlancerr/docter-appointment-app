@@ -26,8 +26,8 @@ function Header() {
           </div>
           <ul className="hidden md:flex space-x-6">
             <li>
-              <Link to="/" className="hover:text-gray-300">
-                Home
+              <Link to="/dashboard" className="hover:text-gray-300">
+                Dashboard
               </Link>
             </li>
             <li>

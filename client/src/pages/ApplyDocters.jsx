@@ -6,6 +6,7 @@ import HomeLayout from "@/components/HomeLayout";
 import axios from "axios";
 import { BACKEND_API_URL } from "@/constants";
 import toast from "react-hot-toast";
+import { getItemFromLocalStorage } from "@/utils/webLocalStorage";
 const DoctorDetailsForm = () => {
   const [formData, setFormData] = useState({
     firstname: "",
@@ -87,6 +88,7 @@ const DoctorDetailsForm = () => {
       const response = await axios.post(`${BACKEND_API_URL}/api/v1/doctor`, formData, {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${getItemFromLocalStorage("token")}`,
         },
       });
       const result = response.data;
