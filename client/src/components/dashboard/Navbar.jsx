@@ -53,7 +53,14 @@ function Navbar() {
   };
 
   useEffect(() => {
-    fetchNotifications();
+    fetchNotifications()
+
+    const intervalId = setInterval(() => {
+      fetchNotifications();
+    }, 5000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
 

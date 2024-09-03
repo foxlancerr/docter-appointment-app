@@ -81,14 +81,14 @@ useEffect(() => {
 
         {/* private page */}
 
-        <Route
+        {/* <Route
           path="/dashboard/doctors/:doctorId"
           element={
             <ProtectedRoutes>
               <DashboardDoctorDetail />
             </ProtectedRoutes>
           }
-        ></Route>
+        ></Route> */}
         <Route
           path="/dashboard/patient/appointment/:doctorId"
           element={

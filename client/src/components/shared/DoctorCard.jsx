@@ -5,9 +5,10 @@ import { IoMdStar } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { Card } from "../ui/card";
 import toast from "react-hot-toast";
+import { GoUnverified } from "react-icons/go";
 
 function DoctorCard({ doctor }) {
-  console.log(doctor)
+  console.log(doctor);
   const navigate = useNavigate();
 
   const handleViewProfile = () => {
@@ -36,12 +37,23 @@ function DoctorCard({ doctor }) {
           <div>
             <div className="flex items-center gap-3">
               <h2 className="text-xl md:text-2xl font-bold text-[#023e7d]">
-                {doctor?.firstname } {doctor?.lastname}
+                {doctor?.firstname} {doctor?.lastname}
               </h2>
-              <div className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-                <p className="text-xs md:text-sm font-semibold">PMC Verified</p>
-                <GoVerified className="text-sm md:text-lg" />
-              </div>
+              {doctor?.auth?.isAdminVerifyTheUser ? (
+                <div className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+                  <p className="text-xs md:text-sm font-semibold">
+                    PMC Verified
+                  </p>
+                  <GoVerified className="text-sm md:text-lg" />
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 bg-yellow-300 text-black px-3 py-1 rounded-full">
+                  <p className="text-xs md:text-sm font-semibold">
+                    PMC Unverified
+                  </p>
+                  <GoUnverified className="text-lg md:text-lg" />
+                </div>
+              )}
             </div>
             <p className="text-sm md:text-base text-gray-600 mt-2">
               {doctor.specialty}

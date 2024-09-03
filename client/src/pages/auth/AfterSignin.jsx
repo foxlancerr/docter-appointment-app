@@ -56,7 +56,7 @@ function AfterSignInForm() {
         toast.error(result.message);
       } else {
         toast.success(result.message);
-        // navigate("/dashboard"); // Navigate after successful form submission
+        navigate("/dashboard"); // Navigate after successful form submission
       }
     } catch (err) {
       console.error(err);

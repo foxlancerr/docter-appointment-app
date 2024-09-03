@@ -8,7 +8,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { GoVerified } from "react-icons/go";
+import { GoUnverified, GoVerified } from "react-icons/go";
 import { IoMdStar } from "react-icons/io";
 import Layout from "./DashboardLayout";
 import AppointmentCard from "../shared/bookAppointmentCard";
@@ -47,12 +47,21 @@ function DashboardDoctorDetail() {
                   </CardTitle>
                   <CardDescription>{doctorDetail?.specialty}</CardDescription>
                   <div className="flex items-center mt-2">
-                    {doctorDetail.verified && (
-                      <div className="flex gap-2 items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-                        <p className="text-xs font-semibold">PMC Verified</p>
-                        <GoVerified className="text-lg" />
-                      </div>
-                    )}
+                  {doctorDetail?.auth?.isAdminVerifyTheUser ? (
+                <div className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+                  <p className="text-xs md:text-sm font-semibold">
+                    PMC Verified
+                  </p>
+                  <GoVerified className="text-sm md:text-lg" />
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 bg-yellow-300 text-black px-3 py-1 rounded-full">
+                  <p className="text-xs md:text-sm font-semibold">
+                    PMC Unverified
+                  </p>
+                  <GoUnverified className="text-lg md:text-lg" />
+                </div>
+              )}
                   </div>
                   <div className="flex items-center mt-2">
                     <span className="flex text-yellow-500 text-lg">

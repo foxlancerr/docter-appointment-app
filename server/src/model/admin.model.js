@@ -15,7 +15,7 @@ const adminSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      unique: true,
+      default:'+92 345-4542333-4'
     },
     hireDate: {
       type: Date,

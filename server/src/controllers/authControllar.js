@@ -43,9 +43,9 @@ export const userRegister = async (req, res) => {
     const verificationToken = generateVerificationToken();
 
     // Generate verification URL
-    const verificationUrl = `${req.protocol}://${req.get(
-      "host"
-    )}/api/v1/auth/verify-email/${verificationToken}`;
+    // const verificationUrl = `${req.protocol}://${req.get(
+    //   "host"
+    // )}/api/v1/auth/verify-email/${verificationToken}`;
 
     // Initialize variables for the references
     let adminId = null;
@@ -54,7 +54,10 @@ export const userRegister = async (req, res) => {
 
     // Create a new document in the respective model based on userType
     if (userType === "admin") {
-      const newAdmin = await Admin.create({});
+      console.log('called admin >>>>>>>>>>>')
+
+      const newAdmin = await Admin.create({phone:'342-232311'});
+      console.log(newAdmin)
       adminId = newAdmin._id;
     } else if (userType === "patient") {
       const newPatient = await Patient.create({
@@ -102,13 +105,13 @@ export const userRegister = async (req, res) => {
     await Notification.insertMany(adminNotifications);
     await userNotification.save();
 
-    // Send verification email
-    const message = verifyEmailTemplate(username, verificationUrl);
-    const emailSended = await sendEmailToVerifyUser({
-      email: newUser.email,
-      subject: "Verify Your Email",
-      message,
-    });
+    // // Send verification email
+    // const message = verifyEmailTemplate(username, verificationUrl);
+    // const emailSended = await sendEmailToVerifyUser({
+    //   email: newUser.email,
+    //   subject: "Verify Your Email",
+    //   message,
+    // });
 
     return res.status(201).json({
       message: `${username}, you have successfully registered. Please check your email to verify your account.`,
