@@ -27,7 +27,11 @@ function Aside() {
           return (
             <Link
               key={item.label}
-              to={item.route}
+              to={
+                item.route && item.route == "/dashboard/profile"
+                  ? `${item.route}/${user._id}`
+                  : item.route
+              }
               className={`flex gap-3 items-center justify-start rounded py-3 px-4 hover:bg-[#023e7d] ${
                 pathname == item.route && "bg-[#023e7d] text-white-100"
               }`}

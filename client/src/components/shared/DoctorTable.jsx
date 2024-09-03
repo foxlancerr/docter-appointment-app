@@ -14,34 +14,33 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import { Switch } from "@/components/ui/switch"; // Import ShadCN UI Switch
-import { Label } from "@/components/ui/label";  // Import ShadCN UI Label if needed
-import { BACKEND_API_URL, patientList } from "@/constants";
+import { BACKEND_API_URL } from "@/constants";
 
 const getCellStyle = (isApproved) => {
-  console.log("isApproved >>>>>>>",isApproved)
   if (isApproved) {
     return "bg-green-300/90 text-green-700"; // Green for approved
-  }  else{
-   return "bg-blue-300/90 text-blue-700";
+  } else {
+    return "bg-blue-300/90 text-blue-700"; // Blue for not approved
   }
 };
 
 export default function UserTable() {
   const navigate = useNavigate();
-  const [patients, setPatients] = useState([]);
+  const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
 
   const handleToggleApproval = async (id) => {
     try {
-    
-      const response = await axios.patch(
-        `${BACKEND_API_URL}/api/v1/auth/approve/${id}`,
-      );
-      console.log('called')
+      const response = await axios.patch(`${BACKEND_API_URL}/api/v1/auth/approve/${id}`);
       if (response.status === 201) {
         toast.success(response?.data?.data?.message);
+        // Update the doctor's approval status in the state
+        setDoctors((prevDoctors) =>
+          prevDoctors.map((doctor) =>
+            doctor._id === id ? { ...doctor, auth: { ...doctor.auth, isAdminVerifyTheUser: !doctor.auth.isAdminVerifyTheUser } } : doctor
+          )
+        );
       }
     } catch (error) {
       setError(error.response?.data?.message || error.message);
@@ -49,15 +48,14 @@ export default function UserTable() {
   };
 
   useEffect(() => {
-    const fetchPatients = async () => {
+    const fetchDoctors = async () => {
       try {
-        const response = await axios.get(
-          `${BACKEND_API_URL}/api/v1/patients`
-        );
+        const response = await axios.get(`${BACKEND_API_URL}/api/v1/doctor`);
         if (!Array.isArray(response.data.data)) {
           throw new Error("Invalid data format: Expected an array.");
         }
-        setPatients(response.data.data);
+        // Filter only doctors with complete profiles
+        setDoctors(response.data.data?.filter(doctor => doctor?.auth?.isProfileComplete));
       } catch (error) {
         setError(error.response?.data?.message || error.message);
       } finally {
@@ -65,34 +63,22 @@ export default function UserTable() {
       }
     };
 
-    fetchPatients();
+    fetchDoctors();
   }, []);
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(
-        `${BACKEND_API_URL}/api/v1/patients/${id}`
-      );
+      const response = await axios.delete(`${BACKEND_API_URL}/api/v1/patients/${id}`);
       if (response.status === 200) {
-        toast.success("Patient deleted successfully");
-        setPatients((prevPatients) =>
-          prevPatients.filter((patient) => patient._id !== id)
+        toast.success("Doctor deleted successfully");
+        setDoctors((prevDoctors) =>
+          prevDoctors.filter((doctor) => doctor._id !== id)
         );
       }
     } catch (error) {
       setError(error.response?.data?.message || error.message);
     }
   };
-
- 
-
-  console.log(patients[0])
-  const filteredPatients = patients.filter((patient) =>
-    patient?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-    (patient?.allergies[0]?.allergen || "")
-      .toLowerCase()
-      ?.includes(searchTerm?.toLowerCase())
-  );
 
   if (loading) {
     return <div>Loading...</div>;
@@ -102,15 +88,15 @@ export default function UserTable() {
     return <div className="text-red-500">Error: {error}</div>;
   }
 
-  if (!patients.length) {
-    return <div>No patients found.</div>;
+  if (!doctors.length) {
+    return <div>No Doctor found.</div>;
   }
 
   return (
     <Table className="min-w-full divide-y divide-gray-200 shadow-md">
       <TableHeader className="bg-[#015A78]/80 text-white">
         <TableRow>
-          {["#", "Name", "Gender", "DOB", "Approve/Disapprove", "Action"].map(
+          {["#", "Details", "Specialty", "Experience", "Fees", "Approve/Disapprove", "Action"].map(
             (item, index) => (
               <TableHead
                 key={item + index}
@@ -125,9 +111,9 @@ export default function UserTable() {
         </TableRow>
       </TableHeader>
       <TableBody className="bg-white divide-y divide-gray-200">
-        {filteredPatients.map((patient, index) => (
+        {doctors.map((doctor, index) => (
           <TableRow
-            key={patient.id + index}
+            key={doctor._id}
             className="hover:bg-gray-100 items-center"
           >
             <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -135,39 +121,41 @@ export default function UserTable() {
             </TableCell>
             <TableCell className="px-6 py-4 flex gap-3 items-center whitespace-nowrap text-sm font-medium text-gray-900">
               <img
-                src={patient?.profileImage}
-                className="w-10 h-10 rounded-full"
-                alt="Image1"
+                src={doctor?.auth?.profileImage}
+                className="w-10 h-10 rounded-full bg-green-400"
+                alt="Doctor Profile"
               />
               <div>
                 <h1 className="font-bold text-black-300 text-sm">
-                  {`${patient?.firstname} ${patient?.lastname}`}
+                  {`${doctor?.firstname} ${doctor?.lastname}`}
                 </h1>
-                <p>{patient?.phone}</p>
+                <p>{doctor.phone}</p>
+                <p>Address: {doctor?.address}</p>
               </div>
             </TableCell>
             <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              {patient?.gender}
+              {doctor.specialty}
             </TableCell>
             <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              {dayjs(patient?.dateOfBirth).format("DD MMM YYYY")}
+              {doctor?.yearsExperience} years
+            </TableCell>
+            <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              ${doctor?.fees}
             </TableCell>
             <TableCell className="">
               <p
                 className={`px-5 py-3 whitespace-nowrap font-bold text-sm w-max rounded-full ${getCellStyle(
-                  index,
-                  patient.isApprove
+                  doctor?.auth?.isAdminVerifyTheUser
                 )} text-center`}
               >
                 <Switch
-                  id={`switch-${patient._id}`}
-                  checked={patient.isUserVerified}
+                  id={`switch-${doctor?._id}`}
+                  checked={doctor?.auth?.isAdminVerifyTheUser}
                   onCheckedChange={() =>
-                    handleToggleApproval(patient._id)
+                    handleToggleApproval(doctor?._id)
                   }
                 />
               </p>
-              
             </TableCell>
             <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end gap-2 text-2xl items-center">
               <Popover className="relative">
@@ -180,13 +168,13 @@ export default function UserTable() {
                   <span
                     className="cursor-pointer flex items-center gap-2 px-3"
                     onClick={() => {
-                      navigate(`/patient-detail/${patient._id}`);
+                      navigate(`/doctors/${doctor._id}`);
                     }}
                   >
                     <span>View</span>
                   </span>
                   <span className=" cursor-pointer flex items-center gap-2 px-3">
-                    <span onClick={() => handleDelete(patient._id)}>
+                    <span onClick={() => handleDelete(doctor._id)}>
                       Delete
                     </span>
                   </span>
