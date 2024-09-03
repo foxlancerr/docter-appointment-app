@@ -61,12 +61,12 @@ export const doctorSideBarLinks = [
   },
   {
     label: "Appointments",
-    route: "/appointments",
+    route: "/dashboard/appointments",
     icon: FaCalendarAlt,
   },
   {
     label: "Profile",
-    route: "/dashboard/doctor-profile/",
+    route: "/dashboard/profile",
     icon: FaUser,
   },
 ];

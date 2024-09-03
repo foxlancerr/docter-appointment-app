@@ -5,6 +5,8 @@ import {
   updateAppointmentStatus,
   getAllAppointments,
   getAppointmentById,
+  getSpecificDoctorAppointmentsList,
+  deleteAppointmentById,
 } from "../controllers/appointmentController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
@@ -14,6 +16,8 @@ appointmentRouter.get("/check-availability", checkAvailability);
 appointmentRouter.post("/", authMiddleware,createAppointment);
 appointmentRouter.patch("/:id/update-status", updateAppointmentStatus);
 appointmentRouter.get("/", getAllAppointments);
+appointmentRouter.get("/specific-doctor",authMiddleware, getSpecificDoctorAppointmentsList);
 appointmentRouter.get("/:id", getAppointmentById);
+appointmentRouter.get("/:id", deleteAppointmentById);
 
 export default appointmentRouter;

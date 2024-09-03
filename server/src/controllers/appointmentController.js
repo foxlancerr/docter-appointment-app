@@ -396,6 +396,40 @@ export const getAllAppointments = async (req, res) => {
 };
 
 
+// @desc    Get all appointments
+// @route   GET /api/v1/appointments/specific-doctor
+// @access  Public
+export const getSpecificDoctorAppointmentsList = async (req, res) => {
+  try {
+    const appointments = await Appointment.find({doctor:req.userId})
+      .populate({
+        path: 'patient',
+        populate: {
+          path: 'auth',
+          select: 'username email isProfileComplete isAdminVerifyTheUser appointments userType isEmailVerified profileImage'
+        }
+      })
+      .populate({
+        path: 'doctor',
+        populate: {
+          path: 'auth',
+          select: 'username email isProfileComplete isAdminVerifyTheUser appointments userType isEmailVerified profileImage'
+        }
+      });
+
+      if(!appointments){
+        return res.status(404).json({message:'No Appointment is found',success:false, data:[]})
+      }
+      console.log(appointments)
+
+    res.status(200).json({ success: true, data: appointments });
+  } catch (error) {
+    console.error('Error fetching appointments:', error); // Log error for debugging
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
 
 
 
@@ -420,6 +454,33 @@ export const getAppointmentById = async (req, res) => {
 
     res.status(200).json({
       message: "Appointment retrieved successfully",
+      success: true,
+      data: appointment,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching appointment",
+      success: false,
+      error: error.message,
+    });
+  }
+};
+// @desc    Get an appointment by ID
+// @route   GET /api/v1/appointments/:id
+// @access  Public
+export const deleteAppointmentById = async (req, res) => {
+  try {
+    const appointment = await Appointment.findByIdAndDelete(req.params.id)
+
+    if (!appointment) {
+      return res.status(404).json({
+        message: "Appointment not found",
+        success: false,
+      });
+    }
+
+    res.status(200).json({
+      message: "Appointment Deleted successfully",
       success: true,
       data: appointment,
     });
