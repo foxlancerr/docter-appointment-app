@@ -28,6 +28,7 @@ import { logInUser } from "./store/features/userInfo/userInfoSlice";
 import axios from "axios";
 import { BACKEND_API_URL } from "./constants";
 import NotificationPage from "./components/landing-page/Header/Notification";
+import UserDetail from "./components/dashboard/patient/UserDetailPage";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -80,7 +81,6 @@ useEffect(() => {
         <Route path="/doctors/:id" element={<DoctorDetail />}></Route>
 
         {/* private page */}
-
         <Route
           path="/dashboard/doctors/:doctorId"
           element={
@@ -102,6 +102,14 @@ useEffect(() => {
           element={
             <ProtectedRoutes>
               <Patient />
+            </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/dashboard/user-details/:id"
+          element={
+            <ProtectedRoutes>
+              <UserDetail />
             </ProtectedRoutes>
           }
         ></Route>

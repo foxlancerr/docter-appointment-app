@@ -367,116 +367,6 @@ export const afterSiginBasicInfoForm = async (req, res) => {
 
 
 
-
-
-
-
-// // @desc    complete admin/patient profile
-// // @route   POST http://localhost:3000/api/v1/auth/basic-info/:id
-// // @access  Public
-// export const afterSiginBasicInfoForm = async (req, res) => {
-//   const { id } = req.params;
-//   const { lastname, firstname, phone, address, description,dateOfBirth,permissionLevel,gender } = req.body;
-
-//   try {
-//     // Check if the authId corresponds to a verified doctor
-//     const auth = await Auth.findById(id);
-//     if (!auth || !auth.isEmailVerified) {
-//       return res
-//         .status(400)
-//         .json({ message: "Invalid user or user not verified", success: false });
-//     }
-
-//     // Create Doctor profile
-//     if(auth.userType == "admin"){
-//       if(auth.adminId ){
-//         const existingAdmin = await Admin.findByIdAndUpdate({_id:auth.adminId},{
-//            lastname,
-//            firstname,
-//           phone,
-//           address,
-//           description,
-//           permissionLevel,
-//           gender
-//         },{ new: true, runValidators: true })
-//         await existingAdmin.save()
-//         auth.isProfileComplete = true;
-//         await auth.save()
-//         return res.status(201).json({
-//           message: "Admin profile completed successfully!",
-//           existingAdmin,
-//           success: true,
-//         });
-//       }else{
-//         const admin = new Admin({
-//           lastname,
-//            firstname,
-//           phone,
-//           address,
-//           description,
-//           permissionLevel,
-//           gender
-//         });
-//         await admin.save();
-//         auth.isProfileComplete = true;
-//       await auth.save()
-//         return res.status(201).json({
-//           message: "Admin profile completed successfully!",
-//           admin,
-//           success: true,
-//         });
-//       }
-
-//     }else if(auth.userType == "patient"){
-//       if(auth.patientId){
-//         const existingPatient = await Patient.findByIdAndUpdate({_id:auth.patientId},{
-//           lastname,
-//            firstname,
-//           phone,
-//           address,
-//           description,
-//           gender,
-//           dateOfBirth,
-//         },{ new: true, runValidators: true })
-//         await existingPatient.save()
-//         auth.isProfileComplete = true;
-//         return res.status(201).json({
-//           message: "Patient profile completed successfully!",
-//           existingPatient,
-//           success: true,
-//         });
-//       }else{
-//         const patient = new Patient({
-//           lastname,
-//            firstname,
-//           phone,
-//           address,
-//           dateOfBirth,
-//           gender,
-//           description,
-//         });
-//         await patient.save();
-//         auth.isProfileComplete = true;
-//         await auth.save()
-//        return res.status(201).json({
-//           message: "Patient profile completed successfully!",
-//           patient,
-//           success: true,
-//         });
-//       }
-
-//     }
-//   } catch (error) {
-//     console.error("Error during profile completion:", error);
-//     res
-//       .status(500)
-//       .json({
-//         error: "An error occurred while completing the profile",
-//         success: false,
-//       });
-//   }
-// };
-
 // @desc    Complete admin/patient profile
 // @route   PATCH http://localhost:3000/api/v1/auth/approve/:id
 // @access  Public
@@ -485,7 +375,7 @@ export const isAdminVerifiedUser = async (req, res) => {
 
   try {
     // Find the auth document by patientId
-    const auth = await Auth.findOne({ patientId: id });
+    const auth = await Auth.findOne({ _id: id });
 
     if (!auth) {
       return res.status(400).json({
@@ -504,6 +394,7 @@ export const isAdminVerifiedUser = async (req, res) => {
         auth.isAdminVerifyTheUser ? "approved" : "disapproved"
       }`,
       success: true,
+      data :auth
     });
   } catch (error) {
     console.error("Error during update auth verification:", error);
@@ -511,5 +402,92 @@ export const isAdminVerifiedUser = async (req, res) => {
       error: "An error occurred during the profile verification update",
       success: false,
     });
+  }
+};
+
+
+// @desc    Get All Auth Users
+// @route   POST http://localhost:3000/api/v1/users
+// @access  Public
+export const getAllRegisterUser = async (req, res) => {
+  try {
+    const users = await Auth.find().select('username createdAt _id profileImage isProfileComplete');
+    res.status(200).json({
+      data: users,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Server error", success: false, error: error });
+  }
+};
+
+// @desc    Get Doctor based on id
+// @route   GET http://localhost:3000/api/v1/auth/user:id
+// @access  Public
+export const getUserById = async (req, res) => {
+  try {
+    const auth = await Auth.findById(req.params.id).select('-password');
+    if (!auth) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({
+      data: auth,
+
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Server error", success: false, error: error });
+  }
+};
+
+
+
+// @desc    Update Doctors based on ID
+// @route   POST http://localhost:3000/api/v1/auth/user:id
+// @access  Public
+export const updateUserById = async (req, res) => {
+  try {
+    const updatedAuth = await Auth.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedAuth) {
+      return res
+        .status(404)
+        .json({ message: "Auth User is not found", success: false });
+    }
+    res
+      .status(200)
+      .json({ message: "Doctor updated", success: true, data: updatedAuth });
+  } catch (error) {
+    res.status(400).json({ message: "Error updating doctor", error });
+  }
+};
+
+// @desc   Delete Doctors based on ID
+// @route   POST http://localhost:3000/api/v1/auth/user/:id
+// @access  Public
+export const deleteUserById = async (req, res) => {
+  try {
+    const deletedAuth = await Auth.findByIdAndDelete(req.params.id);
+    if (!deletedAuth) {
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
+    }
+    res.status(200).json({
+      message: "User deleted successfully",
+      data: deletedAuth,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Server error", success: false, error: error });
   }
 };
