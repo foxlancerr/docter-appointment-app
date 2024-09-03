@@ -28,7 +28,7 @@ export const getAllDoctors = async (req, res) => {
 // @access  Public
 export const getDoctorById = async (req, res) => {
   try {
-    const doctor = await Doctor.findById(req.params.id).populate('auth').select('-password email');
+    const doctor = await Doctor.findById(req.params.id).populate('auth').select('-password');
     if (!doctor) {
       return res.status(404).json({ message: "Doctor not found" });
     }
