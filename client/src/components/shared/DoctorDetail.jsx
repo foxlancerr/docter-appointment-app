@@ -75,11 +75,11 @@ function DoctorDetail() {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="">
                   <img src={doctorDetail?.auth &&  doctorDetail?.auth?.profileImage } alt= {`${doctorDetail?.firstname} profile image`} 
-                  width={50}
-                  height={50}
-                  className=""
+                  width={100}
+                  height={100}
+                  className="rounded-full mb-3"
                   />
                   <p className="text-gray-500 font-semibold text-sm">
                     <span className="text-[#023e7d] font-semibold text-sm">
