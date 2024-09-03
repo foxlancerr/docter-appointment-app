@@ -14,16 +14,10 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import { Switch } from "@/components/ui/switch"; // Import ShadCN UI Switch
-import { Label } from "@/components/ui/label";  // Import ShadCN UI Label if needed
-import { BACKEND_API_URL, patientList } from "@/constants";
+import { BACKEND_API_URL } from "@/constants";
 
 const getCellStyle = (isApproved) => {
-  console.log("isApproved >>>>>>>",isApproved)
-  if (isApproved) {
-    return "bg-green-300/90 text-green-700"; // Green for approved
-  }  else{
-   return "bg-blue-300/90 text-blue-700";
-  }
+  return isApproved ? "bg-green-300/90 text-green-700" : "bg-blue-300/90 text-blue-700";
 };
 
 export default function UserTable() {
@@ -35,13 +29,12 @@ export default function UserTable() {
 
   const handleToggleApproval = async (id) => {
     try {
-    
       const response = await axios.patch(
-        `${BACKEND_API_URL}/api/v1/auth/approve/${id}`,
+        `${BACKEND_API_URL}/api/v1/auth/approve/${id}`
       );
-      console.log('called')
-      if (response.status === 201) {
-        toast.success(response?.data?.data?.message);
+      if (response.success) {
+        toast.success(response?.data?.message);
+        // Optionally refresh data or update the specific patient status locally
       }
     } catch (error) {
       setError(error.response?.data?.message || error.message);
@@ -52,7 +45,7 @@ export default function UserTable() {
     const fetchPatients = async () => {
       try {
         const response = await axios.get(
-          `${BACKEND_API_URL}/api/v1/patients`
+          `${BACKEND_API_URL}/api/v1/auth/users`
         );
         if (!Array.isArray(response.data.data)) {
           throw new Error("Invalid data format: Expected an array.");
@@ -71,7 +64,7 @@ export default function UserTable() {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `${BACKEND_API_URL}/api/v1/patients/${id}`
+        `${BACKEND_API_URL}/api/v1/auth/users/${id}`
       );
       if (response.status === 200) {
         toast.success("Patient deleted successfully");
@@ -84,14 +77,8 @@ export default function UserTable() {
     }
   };
 
- 
-
-  console.log(patients[0])
-  const filteredPatients = patients.filter((patient) =>
-    patient?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-    (patient?.allergies[0]?.allergen || "")
-      .toLowerCase()
-      ?.includes(searchTerm?.toLowerCase())
+  const filteredPatients = patients?.filter((patient) =>
+    patient?.username?.toLowerCase()?.includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -110,25 +97,23 @@ export default function UserTable() {
     <Table className="min-w-full divide-y divide-gray-200 shadow-md">
       <TableHeader className="bg-[#015A78]/80 text-white">
         <TableRow>
-          {["#", "Name", "Gender", "DOB", "Approve/Disapprove", "Action"].map(
-            (item, index) => (
-              <TableHead
-                key={item + index}
-                className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
-                  index === 5 && "flex items-center justify-end"
-                }`}
-              >
-                {item}
-              </TableHead>
-            )
-          )}
+          {["#", "Username", "Created At", "Approval Status", "Action"].map((item, index) => (
+            <TableHead
+              key={item + index}
+              className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
+                index === 5 && "flex items-center justify-end"
+              }`}
+            >
+              {item}
+            </TableHead>
+          ))}
         </TableRow>
       </TableHeader>
       <TableBody className="bg-white divide-y divide-gray-200">
-        {filteredPatients.filter(kyc => kyc?.isProfileComplete).map((patient, index) => (
+        {filteredPatients?.map((patient, index) => (
           <TableRow
-            key={patient.id + index}
-            className="hover:bg-gray-100 items-center"
+            key={patient._id + index}
+            className="hover:bg-gray-100 items-center relative"
           >
             <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
               {index + 1}
@@ -137,37 +122,32 @@ export default function UserTable() {
               <img
                 src={patient?.profileImage}
                 className="w-10 h-10 rounded-full"
-                alt="Image1"
+                alt="Profile"
               />
               <div>
                 <h1 className="font-bold text-black-300 text-sm">
-                  {`${patient?.firstname} ${patient?.lastname}`}
+                  {patient?.username}
                 </h1>
-                <p>{patient?.phone}</p>
+                <p>{patient?.email}</p>
               </div>
             </TableCell>
             <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              {patient?.gender}
-            </TableCell>
-            <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              {dayjs(patient?.dateOfBirth).format("DD MMM YYYY")}
+              {dayjs(patient?.createdAt).format("DD MMM YYYY")}
             </TableCell>
             <TableCell className="">
               <p
                 className={`px-5 py-3 whitespace-nowrap font-bold text-sm w-max rounded-full ${getCellStyle(
-                  index,
-                  patient.isApprove
+                  patient.isProfileComplete
                 )} text-center`}
               >
                 <Switch
                   id={`switch-${patient._id}`}
-                  checked={patient.isUserVerified}
+                  checked={patient.isAdminVerifyTheUser}
                   onCheckedChange={() =>
                     handleToggleApproval(patient._id)
                   }
                 />
               </p>
-              
             </TableCell>
             <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end gap-2 text-2xl items-center">
               <Popover className="relative">
@@ -179,16 +159,15 @@ export default function UserTable() {
                 <PopoverContent className="flex bg-white w-max flex-col gap-2 absolute right-2 top-0">
                   <span
                     className="cursor-pointer flex items-center gap-2 px-3"
-                    onClick={() => {
-                      navigate(`/patient-detail/${patient._id}`);
-                    }}
+                    onClick={() => navigate(`/dashboard/user-details/${patient._id}`)}
                   >
                     <span>View</span>
                   </span>
-                  <span className=" cursor-pointer flex items-center gap-2 px-3">
-                    <span onClick={() => handleDelete(patient._id)}>
-                      Delete
-                    </span>
+                  <span
+                    className="cursor-pointer flex items-center gap-2 px-3"
+                    onClick={() => handleDelete(patient._id)}
+                  >
+                    <span>Delete</span>
                   </span>
                 </PopoverContent>
               </Popover>

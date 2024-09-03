@@ -6,6 +6,7 @@ import doctorRouter from "./routes/doctorRouter.js";
 import notificationRouter from "./routes/notificationRouter.js";
 import appointmentRouter from "./routes/appointmentRouter.js";
 import authRouter from "./routes/authRouter.js";
+import statsRouter from "./routes/statsRouter.js";
 
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 
 //routes declaration
 // app.use("/api/v1/users", userRouter);
+app.use("/api/v1/stats", statsRouter);
 app.use("/api/v1/doctor", doctorRouter);
 app.use("/api/v1/appointments", appointmentRouter);
 // app.use("/api/v1/admins", adminRouter);
