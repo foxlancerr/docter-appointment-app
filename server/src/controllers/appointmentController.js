@@ -348,22 +348,6 @@ export const updateAppointmentStatus = async (req, res) => {
   }
 };
 
-// @desc    Get all appointments
-// @route   GET /api/v1/appointments
-// @access  Public
-// export const getAllAppointments = async (req, res) => {
-//   try {
-//     // Fetch all appointments
-//     const appointments = await Appointment.find()
-//       .populate('doctor') // Populate doctor details
-//       .populate('patient') // Populate doctor details
-//       .exec();
-//     res.status(200).json({ success: true, data: appointments });
-//   } catch (error) {
-//     console.error('Error fetching appointments:', error); // Log error for debugging
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
 
 // @desc    Get all appointments
 // @route   GET /api/v1/appointments
@@ -442,8 +426,19 @@ export const getSpecificDoctorAppointmentsList = async (req, res) => {
 export const getAppointmentById = async (req, res) => {
   try {
     const appointment = await Appointment.findById(req.params.id)
-      .populate("patient")
-      .populate("doctor");
+      .populate({
+        path: 'patient',
+        populate: {
+          path: 'auth',
+          select: '-password'
+        }
+      })
+      .populate({
+        path: 'doctor',
+        populate: {
+          path: 'auth',
+        }
+      });
 
     if (!appointment) {
       return res.status(404).json({
@@ -465,8 +460,9 @@ export const getAppointmentById = async (req, res) => {
     });
   }
 };
+
 // @desc    Get an appointment by ID
-// @route   GET /api/v1/appointments/:id
+// @route   DELETE /api/v1/appointments/:id
 // @access  Public
 export const deleteAppointmentById = async (req, res) => {
   try {

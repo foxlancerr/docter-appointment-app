@@ -18,6 +18,6 @@ appointmentRouter.patch("/:id/update-status", updateAppointmentStatus);
 appointmentRouter.get("/", getAllAppointments);
 appointmentRouter.get("/specific-doctor",authMiddleware, getSpecificDoctorAppointmentsList);
 appointmentRouter.get("/:id", getAppointmentById);
-appointmentRouter.get("/:id", deleteAppointmentById);
+appointmentRouter.delete("/:id", deleteAppointmentById);
 
 export default appointmentRouter;

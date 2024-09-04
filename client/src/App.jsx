@@ -31,6 +31,8 @@ import NotificationPage from "./components/landing-page/Header/Notification";
 import UserDetail from "./components/dashboard/patient/UserDetailPage";
 import AppointmentTable from "./components/shared/AppointmentTable";
 import ProfilePage from "./components/dashboard/Profile/ProfilePage";
+import DoctorTableAdmin from "./components/dashboard/admin/DoctorTable";
+import AppointmentDetailComponent from "./components/dashboard/patient/appointmentDetails";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -116,6 +118,14 @@ useEffect(() => {
           }
         ></Route>
         <Route
+          path="/dashboard/doctors"
+          element={
+            <ProtectedRoutes>
+              <DoctorTableAdmin />
+            </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
           path="/dashboard/user-details/:id"
           element={
             <ProtectedRoutes>
@@ -181,10 +191,18 @@ useEffect(() => {
           }
         ></Route>
         <Route
-          path="/patient-detail/:id"
+          path="/dashboard/patient-detail/:id"
           element={
             <ProtectedRoutes>
               <PatientDetail></PatientDetail>
+            </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/dashboard/appointment-detail/:id"
+          element={
+            <ProtectedRoutes>
+              <AppointmentDetailComponent></AppointmentDetailComponent>
             </ProtectedRoutes>
           }
         ></Route>

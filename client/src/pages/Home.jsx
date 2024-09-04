@@ -12,7 +12,7 @@ import { GlobalContext } from "@/context/GlobalContext";
 import { logInUser } from "@/store/features/userInfo/userInfoSlice";
 import { getItemFromLocalStorage } from "@/utils/webLocalStorage";
 import { useContext, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
   const { loguserInfo, setLoad } = useContext(GlobalContext);
@@ -38,11 +38,30 @@ const Home = () => {
       });
   }, []);
 
-  const tabsData = [
-    { label: 'Users', component: UserTable },
-    { label: 'Patients', component: PatientTable },
-    { label: 'Doctors', component: DoctorTable },
-  ];
+  const authenticUser = useSelector((state) => state?.userInfo?.user);
+  
+  // Conditionally setting tabsData based on userType
+  let tabsData = [];
+
+  if (authenticUser?.userType === "admin") {
+    tabsData = [
+      { label: 'Users', component: UserTable },
+      { label: 'Patients', component: PatientTable },
+      { label: 'Doctors', component: DoctorTable },
+    ];
+  } else if (authenticUser?.userType === "doctor") {
+    tabsData = [
+      { label: 'Patients', component: PatientTable },
+      { label: 'Doctors', component: DoctorTable },
+    ];
+  } else if (authenticUser?.userType === "patient") {
+    tabsData = [
+      { label: 'Doctors', component: DoctorTable },
+      { label: 'Appointment', component: PatientTable },
+    ];
+  }
+
+  console.log(tabsData)
   return (
     // <h1>hii</h1>
     <Layout>

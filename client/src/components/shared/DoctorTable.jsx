@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import { Switch } from "@/components/ui/switch"; // Import ShadCN UI Switch
 import { BACKEND_API_URL } from "@/constants";
+import { useSelector } from "react-redux";
 
 const getCellStyle = (isApproved) => {
   if (isApproved) {
@@ -29,16 +30,27 @@ export default function UserTable() {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const authenticUser = useSelector((state) => state?.userInfo?.user);
 
   const handleToggleApproval = async (id) => {
     try {
-      const response = await axios.patch(`${BACKEND_API_URL}/api/v1/auth/approve/${id}`);
+      const response = await axios.patch(
+        `${BACKEND_API_URL}/api/v1/auth/approve/${id}`
+      );
       if (response.status === 201) {
         toast.success(response?.data?.data?.message);
         // Update the doctor's approval status in the state
         setDoctors((prevDoctors) =>
           prevDoctors.map((doctor) =>
-            doctor._id === id ? { ...doctor, auth: { ...doctor.auth, isAdminVerifyTheUser: !doctor.auth.isAdminVerifyTheUser } } : doctor
+            doctor._id === id
+              ? {
+                  ...doctor,
+                  auth: {
+                    ...doctor.auth,
+                    isAdminVerifyTheUser: !doctor.auth.isAdminVerifyTheUser,
+                  },
+                }
+              : doctor
           )
         );
       }
@@ -55,7 +67,11 @@ export default function UserTable() {
           throw new Error("Invalid data format: Expected an array.");
         }
         // Filter only doctors with complete profiles
-        setDoctors(response.data.data?.filter(doctor => doctor?.auth?.isProfileComplete));
+        setDoctors(
+          response.data.data?.filter(
+            (doctor) => doctor?.auth?.isProfileComplete
+          )
+        );
       } catch (error) {
         setError(error.response?.data?.message || error.message);
       } finally {
@@ -68,7 +84,9 @@ export default function UserTable() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`${BACKEND_API_URL}/api/v1/patients/${id}`);
+      const response = await axios.delete(
+        `${BACKEND_API_URL}/api/v1/patients/${id}`
+      );
       if (response.status === 200) {
         toast.success("Doctor deleted successfully");
         setDoctors((prevDoctors) =>
@@ -96,26 +114,33 @@ export default function UserTable() {
     <Table className="min-w-full divide-y divide-gray-200 shadow-md">
       <TableHeader className="bg-[#015A78]/80 text-white">
         <TableRow>
-          {["#", "Details", "Specialty", "Experience", "Fees", "Approve/Disapprove", "Action"].map(
-            (item, index) => (
-              <TableHead
-                key={item + index}
-                className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
-                  index === 5 && "flex items-center justify-end"
-                }`}
-              >
-                {item}
-              </TableHead>
-            )
+          {["#", "Username", "Specaility", "Experaince","Fees","Approval Status", "Action"].map(
+            (item, index) => {
+              // Hide "Approval Status" column for non-admin users
+              if (
+                item === "Approval Status" &&
+                authenticUser.userType !== "admin"
+              ) {
+                return null;
+              }
+
+              return (
+                <TableHead
+                  key={item + index}
+                  className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
+                    index === 4 && "flex items-center justify-end"
+                  }`}
+                >
+                  {item}
+                </TableHead>
+              );
+            }
           )}
         </TableRow>
       </TableHeader>
       <TableBody className="bg-white divide-y divide-gray-200">
         {doctors.map((doctor, index) => (
-          <TableRow
-            key={doctor._id}
-            className="hover:bg-gray-100 items-center"
-          >
+          <TableRow key={doctor._id} className="hover:bg-gray-100 items-center">
             <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
               {index + 1}
             </TableCell>
@@ -130,7 +155,7 @@ export default function UserTable() {
                   {`${doctor?.firstname} ${doctor?.lastname}`}
                 </h1>
                 <p>{doctor.phone}</p>
-                <p>Address: {doctor?.address}</p>
+                <p className="">Address: {doctor?.address}</p>
               </div>
             </TableCell>
             <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -142,21 +167,22 @@ export default function UserTable() {
             <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
               ${doctor?.fees}
             </TableCell>
-            <TableCell className="">
-              <p
-                className={`px-5 py-3 whitespace-nowrap font-bold text-sm w-max rounded-full ${getCellStyle(
-                  doctor?.auth?.isAdminVerifyTheUser
-                )} text-center`}
-              >
-                <Switch
-                  id={`switch-${doctor?._id}`}
-                  checked={doctor?.auth?.isAdminVerifyTheUser}
-                  onCheckedChange={() =>
-                    handleToggleApproval(doctor?._id)
-                  }
-                />
-              </p>
-            </TableCell>
+
+            {authenticUser?.userType == "admin" && (
+              <TableCell className="">
+                <p
+                  className={`px-5 py-3 whitespace-nowrap font-bold text-sm w-max rounded-full ${getCellStyle(
+                    doctor?.auth?.isAdminVerifyTheUser
+                  )} text-center`}
+                >
+                  <Switch
+                    id={`switch-${doctor?._id}`}
+                    checked={doctor?.auth?.isAdminVerifyTheUser}
+                    onCheckedChange={() => handleToggleApproval(doctor?._id)}
+                  />
+                </p>
+              </TableCell>
+            )}
             <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end gap-2 text-2xl items-center">
               <Popover className="relative">
                 <PopoverTrigger asChild>
@@ -174,9 +200,7 @@ export default function UserTable() {
                     <span>View</span>
                   </span>
                   <span className=" cursor-pointer flex items-center gap-2 px-3">
-                    <span onClick={() => handleDelete(doctor._id)}>
-                      Delete
-                    </span>
+                    <span onClick={() => handleDelete(doctor._id)}>Delete</span>
                   </span>
                 </PopoverContent>
               </Popover>

@@ -15,9 +15,12 @@ import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import { Switch } from "@/components/ui/switch"; // Import ShadCN UI Switch
 import { BACKEND_API_URL } from "@/constants";
+import { useSelector } from "react-redux";
 
 const getCellStyle = (isApproved) => {
-  return isApproved ? "bg-green-300/90 text-green-700" : "bg-blue-300/90 text-blue-700";
+  return isApproved
+    ? "bg-green-300/90 text-green-700"
+    : "bg-blue-300/90 text-blue-700";
 };
 
 export default function UserTable() {
@@ -26,6 +29,7 @@ export default function UserTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const authenticUser = useSelector((state) => state?.userInfo?.user);
 
   const handleToggleApproval = async (id) => {
     try {
@@ -94,19 +98,31 @@ export default function UserTable() {
   }
 
   return (
-    <Table className="min-w-full divide-y divide-gray-200 shadow-md">
+    <Table className="divide-y divide-gray-200 shadow-md">
       <TableHeader className="bg-[#015A78]/80 text-white">
         <TableRow>
-          {["#", "Username", "Created At", "Approval Status", "Action"].map((item, index) => (
-            <TableHead
-              key={item + index}
-              className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
-                index === 5 && "flex items-center justify-end"
-              }`}
-            >
-              {item}
-            </TableHead>
-          ))}
+          {["#", "Username", "Created At", "Approval Status", "Action"].map(
+            (item, index) => {
+              // Hide "Approval Status" column for non-admin users
+              if (
+                item === "Approval Status" &&
+                authenticUser.userType !== "admin"
+              ) {
+                return null;
+              }
+
+              return (
+                <TableHead
+                  key={item + index}
+                  className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
+                    index === 4 && "flex items-center justify-end"
+                  }`}
+                >
+                  {item}
+                </TableHead>
+              );
+            }
+          )}
         </TableRow>
       </TableHeader>
       <TableBody className="bg-white divide-y divide-gray-200">
@@ -134,21 +150,21 @@ export default function UserTable() {
             <TableCell className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
               {dayjs(patient?.createdAt).format("DD MMM YYYY")}
             </TableCell>
-            <TableCell className="">
-              <p
-                className={`px-5 py-3 whitespace-nowrap font-bold text-sm w-max rounded-full ${getCellStyle(
-                  patient.isProfileComplete
-                )} text-center`}
-              >
-                <Switch
-                  id={`switch-${patient._id}`}
-                  checked={patient.isAdminVerifyTheUser}
-                  onCheckedChange={() =>
-                    handleToggleApproval(patient._id)
-                  }
-                />
-              </p>
-            </TableCell>
+            {authenticUser?.userType == "admin" && (
+              <TableCell className="">
+                <p
+                  className={`px-5 py-3 whitespace-nowrap font-bold text-sm w-max rounded-full ${getCellStyle(
+                    patient.isProfileComplete
+                  )} text-center`}
+                >
+                  <Switch
+                    id={`switch-${patient._id}`}
+                    checked={patient.isAdminVerifyTheUser}
+                    onCheckedChange={() => handleToggleApproval(patient._id)}
+                  />
+                </p>
+              </TableCell>
+            )}
             <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end gap-2 text-2xl items-center">
               <Popover className="relative">
                 <PopoverTrigger asChild>
@@ -159,7 +175,9 @@ export default function UserTable() {
                 <PopoverContent className="flex bg-white w-max flex-col gap-2 absolute right-2 top-0">
                   <span
                     className="cursor-pointer flex items-center gap-2 px-3"
-                    onClick={() => navigate(`/dashboard/user-details/${patient._id}`)}
+                    onClick={() =>
+                      navigate(`/dashboard/user-details/${patient._id}`)
+                    }
                   >
                     <span>View</span>
                   </span>

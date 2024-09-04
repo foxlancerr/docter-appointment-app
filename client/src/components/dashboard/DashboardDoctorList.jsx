@@ -21,11 +21,16 @@ function DashboardDoctorList() {
   useEffect(() => {
     fetchDoctorList()
       .then((response) => {
-        setDoctorList(response.data);
-        setTotalDoctors(response.data.length);
+        // Filter doctors whose profiles are complete
+        const completeDoctors = response.data.filter(
+          (doctor) => doctor?.auth?.isProfileComplete
+        );
+        console.log(completeDoctors)
+        setDoctorList(completeDoctors);
       })
       .catch((err) => {
         console.error(err);
+        toast.error("Failed to fetch doctor list.");
       });
   }, []);
 
