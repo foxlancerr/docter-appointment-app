@@ -371,7 +371,7 @@ export const getAllPatients = async (req, res) => {
 // @access  Public
 export const getPatientById = async (req, res) => {
   try {
-    const patient = await Patient.findById(req.params.id);
+    const patient = await Patient.findById(req.params.id).populate('auth');
     console.log(req.body)
     console.log(patient)
     if (!patient) {

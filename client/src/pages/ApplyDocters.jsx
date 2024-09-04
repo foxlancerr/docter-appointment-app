@@ -7,6 +7,7 @@ import axios from "axios";
 import { BACKEND_API_URL } from "@/constants";
 import toast from "react-hot-toast";
 import { getItemFromLocalStorage } from "@/utils/webLocalStorage";
+import Layout from "@/components/dashboard/DashboardLayout";
 const DoctorDetailsForm = () => {
   const [formData, setFormData] = useState({
     firstname: "",
@@ -108,11 +109,14 @@ const DoctorDetailsForm = () => {
   };
 
   return (
-    <HomeLayout>
+    <Layout>
       <form
         className="mx-auto bg-white p-8 rounded-xl shadow-lg"
         onSubmit={handleSubmit}
       >
+        <h1 className="text-3xl font-semibold pb-2 border-b-2 mb-10 text-[#023e7d]">
+        Fill Form
+        </h1>
         <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-[#023e7d]">
@@ -338,7 +342,7 @@ const DoctorDetailsForm = () => {
           </Button>
         </div>
       </form>
-    </HomeLayout>
+    </Layout>
   );
 };
 

@@ -42,6 +42,11 @@ export const userSideBarLinks = [
     icon: FaCalendarAlt,
   },
   {
+    label: "Doctors",
+    route: "/dashboard/doctors",
+    icon: FaCalendarAlt,
+  },
+  {
     label: "Profile",
     route: "/dashboard/profile",
     icon: FaCog,
@@ -212,5 +217,5 @@ export const patientList = [
   },
 ];
 
-// export const BACKEND_API_URL = 'https://docter-appointment-app-backend.vercel.app'
-export const BACKEND_API_URL = 'http://localhost:3000'
+export const BACKEND_API_URL = 'https://docter-appointment-app-backend.vercel.app'
+// export const BACKEND_API_URL = 'http://localhost:3000'

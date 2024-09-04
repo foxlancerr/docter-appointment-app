@@ -92,7 +92,7 @@ export default function ProfilePage() {
                 : "bg-yellow-300"
             } `}
           >
-            {user?.isAdminVerifyTheUser ? "Verified Users" : "Unverified Users"}
+            {user?.isAdminVerifyTheUser ? "Verified" : "Unverified"}
           </div>
         )}
         <div className="flex items-center mb-6">

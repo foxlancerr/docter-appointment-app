@@ -134,7 +134,7 @@ export default function DoctorTableAdmin() {
         <Table className="min-w-full divide-y divide-gray-200 shadow-md">
           <TableHeader className="bg-[#015A78]/80 text-white">
             <TableRow>
-              {["#", "Username", "Created At", "Approval Status", "Action"].map(
+              {["#", "Doctor Details", "Created At", "Approval Status","Experiance","Fees", "Action"].map(
                 (item, index) => {
                   // Hide "Approval Status" column for non-admin users
                   if (
@@ -219,11 +219,7 @@ export default function DoctorTableAdmin() {
                       >
                         <span>View</span>
                       </span>
-                      <span className=" cursor-pointer flex items-center gap-2 px-3">
-                        <span onClick={() => handleDelete(doctor._id)}>
-                          Delete
-                        </span>
-                      </span>
+                     {authenticUser.userType == "admin" || authenticUser.userType == "doctor"}
                     </PopoverContent>
                   </Popover>
                 </TableCell>
