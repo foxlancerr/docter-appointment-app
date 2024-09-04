@@ -16,9 +16,9 @@ import dayjs from "dayjs";
 import { Switch } from "@/components/ui/switch"; // Import ShadCN UI Switch
 import { Label } from "@/components/ui/label"; // Import ShadCN UI Label if needed
 import { BACKEND_API_URL, patientHero } from "@/constants";
-import Layout from "../dashboard/DashboardLayout";
 import HomeCard from "../dashboard/HomeCard";
 import { getItemFromLocalStorage } from "@/utils/webLocalStorage";
+import Layout from "../dashboard/DashboardLayout";
 
 export default function AppointmentTable() {
   const navigate = useNavigate();

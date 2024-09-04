@@ -31,6 +31,7 @@ import NotificationPage from "./components/landing-page/Header/Notification";
 import UserDetail from "./components/dashboard/patient/UserDetailPage";
 import AppointmentTable from "./components/shared/AppointmentTable";
 import ProfilePage from "./components/dashboard/Profile/ProfilePage";
+import DoctorTableAdmin from "./components/dashboard/admin/DoctorTable";
 // import DoctorNotification from "./pages/DocterNotification";
 // import UserNotification from "./pages/DocterNotification";
 // import Appointment from "./pages/Appointment";
@@ -112,6 +113,14 @@ useEffect(() => {
           element={
             <ProtectedRoutes>
               <AppointmentTable />
+            </ProtectedRoutes>
+          }
+        ></Route>
+        <Route
+          path="/dashboard/doctors"
+          element={
+            <ProtectedRoutes>
+              <DoctorTableAdmin />
             </ProtectedRoutes>
           }
         ></Route>

@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { BACKEND_API_URL } from "@/constants";
 import { Switch } from "@/components/ui/switch";
 import Layout from "../DashboardLayout";
+import { useSelector } from "react-redux";
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -13,6 +14,7 @@ export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const authenticUser = useSelector((state) => state?.userInfo?.user);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -52,7 +54,7 @@ export default function ProfilePage() {
       const response = await axios.patch(
         `${BACKEND_API_URL}/api/v1/auth/approve/${id}`
       );
-      
+
       if (response.data.success) {
         toast.success(response.data.message);
 
@@ -119,28 +121,32 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-        <div className="flex justify-end">
-          <div className="flex gap-3 items-center">
-            <p className="mb-3 font-semibold">{!user.isAdminVerifyTheUser ? "verify ON" : "Verify OFF"}</p>
-            <p
-              className={`px-5 py-2 whitespace-nowrap font-bold text-sm w-max rounded-full ${getCellStyle(
-                user.isProfileComplete
-              )} text-center`}
+        {authenticUser?.userType == "admin" && (
+          <div className="flex justify-end">
+            <div className="flex gap-3 items-center">
+              <p className="mb-3 font-semibold">
+                {!user.isAdminVerifyTheUser ? "verify ON" : "Verify OFF"}
+              </p>
+              <p
+                className={`px-5 py-2 whitespace-nowrap font-bold text-sm w-max rounded-full ${getCellStyle(
+                  user.isProfileComplete
+                )} text-center`}
+              >
+                <Switch
+                  id={`switch-${user._id}`}
+                  checked={user.isAdminVerifyTheUser}
+                  onCheckedChange={() => handleToggleApproval(user._id)}
+                />
+              </p>
+            </div>
+            <button
+              onClick={handleDelete}
+              className="px-5 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-300"
             >
-              <Switch
-                id={`switch-${user._id}`}
-                checked={user.isAdminVerifyTheUser}
-                onCheckedChange={() => handleToggleApproval(user._id)}
-              />
-            </p>
+              Delete
+            </button>
           </div>
-          <button
-            onClick={handleDelete}
-            className="px-5 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-300"
-          >
-            Delete
-          </button>
-        </div>
+        )}
       </div>
     </Layout>
   );

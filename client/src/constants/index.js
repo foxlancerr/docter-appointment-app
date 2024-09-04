@@ -42,9 +42,9 @@ export const userSideBarLinks = [
     icon: FaCalendarAlt,
   },
   {
-    label: "Messages",
-    route: "/messages",
-    icon: FaEnvelope,
+    label: "Profile",
+    route: "/dashboard/profile",
+    icon: FaCog,
   },
 ];
 
@@ -67,7 +67,7 @@ export const doctorSideBarLinks = [
   {
     label: "Profile",
     route: "/dashboard/profile",
-    icon: FaUser,
+    icon: FaCog,
   },
 ];
 
@@ -78,23 +78,23 @@ export const adminSideBarLinks = [
     icon: FaTachometerAlt,
   },
   {
-    label: "Manage Users",
-    route: "/admin/users",
+    label: "Manage Patients",
+    route: "/dashboard/patients",
     icon: FaUsers,
   },
   {
     label: "Manage Doctors",
-    route: "/admin/doctors",
+    route: "/dashboard/doctors",
     icon: FaUserMd,
   },
   {
-    label: "Appointments",
-    route: "/admin/appointments",
+    label: "Manage Appointments",
+    route: "/dashboard/appointments",
     icon: FaCalendarAlt,
   },
   {
-    label: "Settings",
-    route: "/admin/settings",
+    label: "Profile",
+    route: "/dashboard/profile",
     icon: FaCog,
   },
 ];

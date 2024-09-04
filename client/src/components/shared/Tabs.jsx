@@ -19,7 +19,7 @@ import {
 export function DefaultTabs({tabsData}) {
     console.log(tabsData)
   return (
-    <Tabs defaultValue={tabsData[0].label.toLowerCase()} className="w-max">
+    <Tabs defaultValue={tabsData[0].label.toLowerCase()} className="">
       <TabsList className="w-full">
       {tabsData?.map((content)=>{
         return <TabsTrigger key={content?.label} value={content?.label?.toLowerCase()}>
