@@ -70,6 +70,7 @@ const AppointmentDetailComponent = () => {
 
   const { patient, doctor, status, appointmentDateTime } = appointment;
 
+  console.log(patient)
   return (
     <Layout>
       <Box sx={{ padding: 2 }}>
@@ -77,15 +78,15 @@ const AppointmentDetailComponent = () => {
           {/* Patient Details Card */}
           <Grid item xs={12} md={6}>
             <Card>
-              {authenticUser && (
+              {patient &&  patient?.auth && (
                 <div
                   className={`mb-4 h-auto py-3 font-semibold text-center rounded-md text-xl ${
-                    authenticUser.isAdminVerifyTheUser
+                    patient?.auth?.isAdminVerifyTheUser
                       ? "text-white  bg-green-400"
                       : "bg-yellow-300"
                   } `}
                 >
-                  {authenticUser?.isAdminVerifyTheUser
+                  {  patient?.auth?.isAdminVerifyTheUser
                     ? "Verified"
                     : "Unverified"}
                 </div>
@@ -171,15 +172,15 @@ const AppointmentDetailComponent = () => {
           {/* Doctor Details Card */}
           <Grid item xs={12} md={6}>
             <Card>
-              {authenticUser && (
+              {doctor && doctor.auth && (
                 <div
                   className={`mb-4 h-auto py-3 font-semibold text-center rounded-md text-xl ${
-                    authenticUser.isAdminVerifyTheUser
+                    doctor?.auth?.isAdminVerifyTheUser
                       ? "text-white  bg-green-400"
                       : "bg-yellow-300"
                   } `}
                 >
-                  {authenticUser?.isAdminVerifyTheUser
+                  {doctor?.auth?.isAdminVerifyTheUser
                     ? "Verified"
                     : "Unverified"}
                 </div>
