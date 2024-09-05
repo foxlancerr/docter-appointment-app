@@ -25,6 +25,7 @@ export const fetchDoctorById = async (id) => {
       throw new Error("Failed to fetch doctors");
     }
     const data = await response.json();
+    console.log(data)
     return data;
   } catch (error) {
     console.error("Error fetching doctor list:", error);
@@ -86,6 +87,7 @@ export const bookAppointment = async (_data) => {
     });
 
     const appointmentData = await appointmentResponse.json();
+    console.log(appointmentData)
     if (!appointmentData.success) {
       return appointmentData;
     }

@@ -31,36 +31,62 @@ export default function UserTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const authenticUser = useSelector((state) => state?.userInfo?.user);
 
+  // const handleToggleApproval = async (id) => {
+  //   try {
+  //     const response = await axios.patch(
+  //       `${BACKEND_API_URL}/api/v1/auth/approve/${id}`
+  //     );
+  //     if (response.success) {
+  //       toast.success(response?.data?.message);
+  //       fetchPatients();
+  //       // Optionally refresh data or update the specific patient status locally
+  //     }
+  //   } catch (error) {
+  //     setError(error.response?.data?.message || error.message);
+  //   }
+  // };
+
   const handleToggleApproval = async (id) => {
     try {
       const response = await axios.patch(
         `${BACKEND_API_URL}/api/v1/auth/approve/${id}`
       );
-      if (response.success) {
+      if (response?.data?.success) {
         toast.success(response?.data?.message);
-        // Optionally refresh data or update the specific patient status locally
+  
+        // Update the specific patient status locally
+        setPatients((prevPatients) =>
+          prevPatients.map((patient) =>
+            patient._id === id
+              ? { ...patient, isAdminVerifyTheUser: !patient.isAdminVerifyTheUser }
+              : patient
+          )
+        );
       }
     } catch (error) {
       setError(error.response?.data?.message || error.message);
     }
   };
+  
+
+  const fetchPatients = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_API_URL}/api/v1/auth/users`
+      );
+      if (!Array.isArray(response.data.data)) {
+        throw new Error("Invalid data format: Expected an array.");
+      }
+      setPatients(response.data.data);
+    } catch (error) {
+      setError(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const response = await axios.get(
-          `${BACKEND_API_URL}/api/v1/auth/users`
-        );
-        if (!Array.isArray(response.data.data)) {
-          throw new Error("Invalid data format: Expected an array.");
-        }
-        setPatients(response.data.data);
-      } catch (error) {
-        setError(error.response?.data?.message || error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  
 
     fetchPatients();
   }, []);
@@ -154,7 +180,7 @@ export default function UserTable() {
               <TableCell className="">
                 <p
                   className={`px-5 py-3 whitespace-nowrap font-bold text-sm w-max rounded-full ${getCellStyle(
-                    patient.isProfileComplete
+                    patient.isAdminVerifyTheUser
                   )} text-center`}
                 >
                   <Switch

@@ -43,9 +43,9 @@ export const userRegister = async (req, res) => {
     const verificationToken = generateVerificationToken();
 
     // Generate verification URL
-    // const verificationUrl = `${req.protocol}://${req.get(
-    //   "host"
-    // )}/api/v1/auth/verify-email/${verificationToken}`;
+    const verificationUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/auth/verify-email/${verificationToken}`;
 
     // Initialize variables for the references
     let adminId = null;
@@ -106,12 +106,12 @@ export const userRegister = async (req, res) => {
     await userNotification.save();
 
     // // Send verification email
-    // const message = verifyEmailTemplate(username, verificationUrl);
-    // const emailSended = await sendEmailToVerifyUser({
-    //   email: newUser.email,
-    //   subject: "Verify Your Email",
-    //   message,
-    // });
+    const message = verifyEmailTemplate(username, verificationUrl);
+    const emailSended = await sendEmailToVerifyUser({
+      email: newUser.email,
+      subject: "Verify Your Email",
+      message,
+    });
 
     return res.status(201).json({
       message: `${username}, you have successfully registered. Please check your email to verify your account.`,
@@ -414,7 +414,7 @@ export const isAdminVerifiedUser = async (req, res) => {
 // @access  Public
 export const getAllRegisterUser = async (req, res) => {
   try {
-    const users = await Auth.find().select('username createdAt _id profileImage isProfileComplete');
+    const users = await Auth.find().select('username createdAt _id profileImage isAdminVerifyTheUser');
     res.status(200).json({
       data: users,
       success: true,

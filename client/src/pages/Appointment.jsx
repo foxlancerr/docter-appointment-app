@@ -449,9 +449,14 @@ const Appointment = () => {
       patientId: currentPatientId,
     };
 
+    
+    
     const response = await bookAppointment(appointmentData);
+    console.log(response.success)
     if (response.success) {
-      toast.success(response.message);
+      console.log(response)
+      toast.success("Appointment completed, wait to doctor approve")
+      // toast.success(response.message);
       navigate("/");
     } else {
       toast.error(response.message);
