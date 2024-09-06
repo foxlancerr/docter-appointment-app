@@ -453,9 +453,10 @@ const Appointment = () => {
     
     const response = await bookAppointment(appointmentData);
     console.log(response.success)
+    alert("Appointment completed, wait to doctor approve")
+
     if (response.success) {
       console.log(response)
-      toast.success("Appointment completed, wait to doctor approve")
       // toast.success(response.message);
       navigate("/");
     } else {

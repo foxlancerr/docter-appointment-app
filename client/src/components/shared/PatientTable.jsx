@@ -118,6 +118,8 @@ export default function UserTable() {
     return <div>No patients found.</div>;
   }
 
+  console.log(patientList[0])
+
   return (
     <Table className="min-w-full divide-y divide-gray-200 shadow-md">
       <TableHeader className="bg-[#015A78]/80 text-white">
@@ -129,7 +131,7 @@ export default function UserTable() {
             "Doctor ",
             "Disease",
             "appointment Date/Time",
-            "Approve/Disapprove",
+            // "Approve/Disapprove",
             "Action",
           ].map((item, index) => (
             <TableHead
@@ -217,7 +219,7 @@ export default function UserTable() {
               {dayjs(patient?.startTime).format("DD MM YYYY-hh:mm A")}
             </TableCell>
 
-            <TableCell className="">
+            {/* <TableCell className="">
               <p
                 className={`px-5 py-3 whitespace-nowrap font-bold text-sm w-max rounded-full ${getApproveStyle(
                   patient.isApprove
@@ -226,10 +228,10 @@ export default function UserTable() {
                 <Switch
                   id={`switch-${patient?.patient?._id}`}
                   checked={patient.isUserVerified}
-                  onCheckedChange={() => handleToggleApproval(patient._id)}
+                  onCheckedChange={() => handleToggleApproval(patient?.auth._id)}
                 />
               </p>
-            </TableCell>
+            </TableCell> */}
             <TableCell className="text-[1.2rem] text-gray-500 flex h-full justify-end gap-2 text-2xl items-center">
               <Popover className="relative">
                 <PopoverTrigger asChild>

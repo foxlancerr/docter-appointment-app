@@ -26,7 +26,8 @@ function HomeHero() {
   });
   return (
     <section
-      className="h-[320px] max-sm:h-[250px] rounded-[20px] max-sm:rounded p-8 max-sm:p-5 flex items-end justify-start  bg-cover bg-center shadow shadow-[#023e7d]/30 relative overflow-hidden"
+
+      className="h-[320px] max-sm:h-[250px] rounded-[20px] bg-red-300 max-sm:rounded p-8 max-sm:p-5 flex items-end justify-start  bg-cover bg-center shadow shadow-[#023e7d]/30 relative overflow-hidden"
       style={{ backgroundImage: `url(${DashboardHeroImage})` }}
     >
       <div>
